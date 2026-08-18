@@ -16,17 +16,17 @@
 ## Validation evidence
 
 ```text
-Registry manifests: 39 valid
-Graph entities: 39
-Graph edges: 65
+Registry manifests: 40 valid
+Graph entities: 40
+Graph edges: 69
 Graph conflicts: 0
 Graph validation errors: 0
 Graph validation warnings: 0
-Test files: 8 passed
-Tests: 17 passed
+Test files: 15 passed
+Tests: 40 passed
 ```
 
-The generated graph content hash is `03cb514741b2b758a1efd7da422b23c793ef149f36af4e6c6b28ce53805dbe4f` for the registry state committed with this completion record. The generator is deterministic: unchanged canonical registry inputs produce unchanged output and snapshot identifiers.
+The generated graph content hash is `575629e9aee6c499e267084fd821af66843e5dc3d3157fb5510669bffbb19751` for the registry state committed with this completion record. The generator is deterministic: unchanged canonical registry inputs produce unchanged output and snapshot identifiers.
 
 ## Controls preserved
 

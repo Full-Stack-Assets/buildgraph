@@ -1,1 +1,1 @@
-{"counts":{"conflict_count":0,"entity_counts":{"Integration":5,"Policy":4,"Portfolio":1,"Project":1,"Role":6,"Runtime":4,"Skill":18},"total_edges":65,"total_entities":39},"error_count":0,"errors":[],"schema_version":"buildgraph/15-e.1","valid":true,"warning_count":0,"warnings":[]}
+{"counts":{"conflict_count":0,"entity_counts":{"Integration":6,"Policy":4,"Portfolio":1,"Project":1,"Role":6,"Runtime":4,"Skill":18},"total_edges":69,"total_entities":40},"error_count":0,"errors":[],"schema_version":"buildgraph/15-e.1","valid":true,"warning_count":0,"warnings":[]}
