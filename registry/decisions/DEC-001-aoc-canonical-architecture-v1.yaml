@@ -1,0 +1,23 @@
+api_version: buildgraph/v1
+kind: DecisionSpec
+metadata:
+  id: DEC-001
+  name: Adopt AOC Canonical Architecture v1
+  version: 1.0.0
+  status: canonical
+  owner: Human Principal
+spec:
+  project_id: buildgraph-core
+  title: Adopt the Agent Operating Company canonical architecture as a BuildGraph extension.
+  current_version: 1.0.0
+  proposed_change: Add the AOC constitutional layer, first-class ontology, relationship rules, division manifests, capability registry, runtime contract, and reconciliation evidence.
+  reason: Prevent taxonomy drift and make capability resolution, runtime portability, evidence, and change control enforceable.
+  alternatives:
+    - Continue with informal conversation artifacts.
+    - Create a parallel architecture repository.
+    - Expand the agent catalog before normalizing the existing library.
+  affected_entities: [Organization, Division, Product, Project, Role, Skill, Capability, AgentDefinition, AgentInstance, Workflow, Factory, WorkOrder, ExecutionRun, Runtime, Evidence]
+  migration: Preserve existing v0.2 manifests and graph IDs while adding v1 entity kinds and backward-compatible RoleSpec and SkillSpec aliases.
+  backward_compatibility: Existing Portfolio, Project, Role, Skill, Integration, Policy, Workflow, and Runtime manifests continue to compile under BuildGraph v1.
+  approval: Authorized by the Human Principal through the explicit implementation request.
+  policy_ids: [approval-policy, release-policy]

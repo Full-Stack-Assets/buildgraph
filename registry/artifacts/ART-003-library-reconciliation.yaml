@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ArtifactSpec
+metadata:
+  id: ART-003
+  name: Existing Library Reconciliation Matrix
+  version: 1.0.0
+  status: verified
+  owner: DIV-02
+spec:
+  artifact_type: reconciliation-matrix
+  uri: docs/architecture/EXISTING_LIBRARY_RECONCILIATION_MATRIX.csv
+  media_type: text/csv
+  checksum_sha256: 61f68c1d40036cf8c7921de43ea4aceff52985a96cffba60d295d3bd29ce9107
+  execution_run_id: RUN-2026-001
+  evidence_state: VERIFIED

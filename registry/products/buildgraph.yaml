@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ProductSpec
+metadata:
+  id: PRD-001
+  name: BuildGraph
+  version: 1.0.0
+  status: active
+  owner: Full-Stack-Assets
+spec:
+  organization_id: ORG-001
+  home_division_id: DIV-04
+  purpose: Provide the canonical, runtime-neutral architecture, registry, graph, evidence, and governance control plane for agentic work.
+  capability_ids: [CAP-002, CAP-003, CAP-009, CAP-010]
+  project_ids: [buildgraph-core]
+  evidence_state: TESTED

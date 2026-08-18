@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ArtifactSpec
+metadata:
+  id: ART-004
+  name: Runtime Adapter Contract v1
+  version: 1.0.0
+  status: canonical
+  owner: DIV-04
+spec:
+  artifact_type: runtime-contract
+  uri: docs/architecture/RUNTIME_ADAPTER_CONTRACT_V1.md
+  media_type: text/markdown
+  checksum_sha256: bb75a362beeeebacf0050bed6c95cddf20a927382d8cf4da4c69a4834fe34a25
+  execution_run_id: RUN-2026-001
+  evidence_state: TESTED

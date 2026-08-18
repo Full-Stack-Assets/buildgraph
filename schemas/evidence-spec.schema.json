@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/evidence-spec.schema.json",
+  "title": "BuildGraph EvidenceSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "api_version",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "api_version": {
+      "const": "buildgraph/v1"
+    },
+    "kind": {
+      "const": "EvidenceSpec"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "version",
+        "status",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/evidenceId"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 3
+        },
+        "version": {
+          "$ref": "common.schema.json#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/canonicalStatus"
+        },
+        "owner": {
+          "$ref": "common.schema.json#/$defs/owner"
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "claim",
+        "capability_ids",
+        "artifact_ids",
+        "execution_run_id",
+        "source_uri",
+        "collected_at",
+        "checksum_sha256",
+        "collector"
+      ],
+      "properties": {
+        "state": {
+          "$ref": "common.schema.json#/$defs/evidenceState"
+        },
+        "claim": {
+          "type": "string",
+          "minLength": 10
+        },
+        "capability_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/capabilityId"
+          }
+        },
+        "artifact_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/architectureArtifactId"
+          }
+        },
+        "execution_run_id": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/executionRunId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_uri": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "collected_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "checksum_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "collector": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

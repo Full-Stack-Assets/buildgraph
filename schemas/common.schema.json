@@ -23,6 +23,70 @@
       "type": "string",
       "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"
     },
+    "organizationId": {
+      "type": "string",
+      "pattern": "^ORG-[0-9]{3}$"
+    },
+    "divisionId": {
+      "type": "string",
+      "pattern": "^DIV-(0[1-9]|10)$"
+    },
+    "productId": {
+      "type": "string",
+      "pattern": "^PRD-[0-9]{3}$"
+    },
+    "capabilityId": {
+      "type": "string",
+      "pattern": "^CAP-[0-9]{3}$"
+    },
+    "agentDefinitionId": {
+      "type": "string",
+      "pattern": "^AGD-[0-9]{3}$"
+    },
+    "agentInstanceId": {
+      "type": "string",
+      "pattern": "^AGI-[0-9]{3}$"
+    },
+    "factoryId": {
+      "type": "string",
+      "pattern": "^FAC-[0-9]{3}$"
+    },
+    "workOrderId": {
+      "type": "string",
+      "pattern": "^WO-[0-9]{4}-[0-9]{3}$"
+    },
+    "executionRunId": {
+      "type": "string",
+      "pattern": "^RUN-[0-9]{4}-[0-9]{3}$"
+    },
+    "toolId": {
+      "type": "string",
+      "pattern": "^TOL-[0-9]{3}$"
+    },
+    "providerId": {
+      "type": "string",
+      "pattern": "^PRV-[0-9]{3}$"
+    },
+    "evidenceId": {
+      "type": "string",
+      "pattern": "^EVD-[0-9]{3}$"
+    },
+    "verificationId": {
+      "type": "string",
+      "pattern": "^VER-[0-9]{3}$"
+    },
+    "architectureArtifactId": {
+      "type": "string",
+      "pattern": "^ART-[0-9]{3}$"
+    },
+    "decisionId": {
+      "type": "string",
+      "pattern": "^DEC-[0-9]{3}$"
+    },
+    "constraintId": {
+      "type": "string",
+      "pattern": "^CON-[0-9]{3}$"
+    },
     "taskId": {
       "type": "string",
       "pattern": "^task_[A-Za-z0-9_-]{6,128}$"
@@ -41,7 +105,36 @@
     },
     "runtimeId": {
       "type": "string",
-      "enum": ["manus", "openai", "cursor", "github", "grok", "claude"]
+      "enum": ["manus", "openai", "cursor", "github", "gemini", "grok", "claude", "codex", "local"]
+    },
+    "autonomyTier": {
+      "type": "string",
+      "enum": ["A0", "A1", "A2", "A3", "A4"]
+    },
+    "evidenceState": {
+      "type": "string",
+      "enum": ["UNVERIFIED", "DECLARED", "TESTED", "VERIFIED", "SUPERSEDED", "REVOKED"]
+    },
+    "functionalDomain": {
+      "type": "string",
+      "enum": [
+        "governance-and-orchestration",
+        "knowledge-and-research",
+        "product-and-design",
+        "engineering-and-platform",
+        "data-analytics-and-ai",
+        "revenue-and-customer",
+        "operations-and-supply-chain",
+        "finance-risk-and-legal",
+        "people-and-learning",
+        "creative-media-and-brand",
+        "healthcare-and-public-service",
+        "built-environment-science-and-field"
+      ]
+    },
+    "canonicalStatus": {
+      "type": "string",
+      "enum": ["draft", "active", "canonical", "verified", "deprecated", "suspended", "retired", "completed"]
     },
     "operatingClass": {
       "type": "string",

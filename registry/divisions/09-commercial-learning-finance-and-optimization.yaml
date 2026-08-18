@@ -1,0 +1,21 @@
+api_version: buildgraph/v1
+kind: DivisionSpec
+metadata:
+  id: DIV-09
+  name: Commercial Learning, Finance & Optimization
+  version: 1.0.0
+  status: canonical
+  owner: Human Principal
+spec:
+  organization_id: ORG-001
+  purpose: Measure commercial performance, improve operating economics, and turn results into reusable organizational learning.
+  operating_classes: [knowledge, analysis]
+  functional_domains: [finance-risk-and-legal, people-and-learning, data-analytics-and-ai]
+  autonomy_ceiling: A2
+  integration_ceiling: I1
+  role_definition_ids: []
+  capability_ids: [CAP-013]
+  product_ids: []
+  evidence_requirements:
+    - Source provenance is retained for consequential outputs.
+    - Quality gates and approval boundaries are recorded before external or irreversible action.

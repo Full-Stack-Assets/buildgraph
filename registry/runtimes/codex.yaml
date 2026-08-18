@@ -1,0 +1,60 @@
+api_version: buildgraph/v0.2
+kind: RuntimeAdapter
+metadata:
+  id: codex
+  name: Codex Declarative Adapter
+  version: 0.1.0
+  status: draft
+  owner: Full-Stack-Assets
+spec:
+  contract:
+    runtime_id: codex
+    supported_models: [deployment-configured-codex-model]
+    supported_tools: [TOL-001, TOL-002, TOL-003]
+    supports_mcp: true
+    supports_files: true
+    supports_repo_context: true
+    supports_persistent_memory: false
+    supports_scheduled_execution: true
+    supports_background_execution: true
+    supports_structured_output: true
+    permission_model: Workspace sandbox, repository scope, approval policy, and typed tool bindings.
+    context_limits:
+      mode: model_dependent
+      max_context_tokens: null
+      notes: The effective ceiling is captured by the deployment-specific runtime profile and execution receipt.
+    artifact_support: [code, documents, structured-data, repository-diffs, test-results]
+    authentication_model: User-authorized workspace identity with scoped provider, repository, and MCP credentials.
+    known_constraints:
+      - Scheduled and background execution depend on the hosting environment and are never inferred from the canonical definition.
+    evidence_state: DECLARED
+    supported_agent_definition_ids: [AGD-001]
+  input:
+    supported_artifact_types: [documents, structured-task-context, code-context]
+    structured_input: true
+    context_limit_note: Canonical context is minimized to task, policy, source, and artifact references.
+    redaction_behavior: Restricted or out-of-scope data is blocked before runtime projection.
+  output:
+    structured_result: true
+    receipt_format: BuildGraph ResultEnvelope v0.2
+    failure_classification: true
+  tools:
+    supports_typed_tools: true
+    allowlist_method: Task passport, runtime profile, and deployment tool bindings.
+    interception: The adapter validates authority, scope, and evidence requirements before tool execution.
+  authority:
+    maximum_supported_tier: I2
+    can_create_drafts: true
+    can_create_pull_requests: true
+    requires_native_confirmation: true
+  durability:
+    asynchronous: true
+    resumption: Execution receipts and artifacts are externalized into BuildGraph before resumption.
+    idempotency_support: The adapter carries the canonical work-order idempotency key.
+  observability:
+    trace_fields: [task_id, trace_id, agent_instance_id, runtime_id]
+    cost_fields: [latency_ms, cost_unit]
+  controls:
+    secret_handling: Secret material remains in the deployment credential broker and is never embedded in canonical manifests.
+    revocation: Passport, credential, or tool-scope revocation blocks further execution.
+    failure_mode: fail_closed

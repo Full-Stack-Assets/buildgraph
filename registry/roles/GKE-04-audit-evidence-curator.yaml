@@ -12,6 +12,7 @@ spec:
   operating_class: knowledge
   primary_domain: governance-and-orchestration
   risk_tier: moderate
+  autonomy_ceiling: A1
   authority_ceiling: I2
   accountable_human_owner: Full-Stack-Assets
   technical_owner: Full-Stack-Assets

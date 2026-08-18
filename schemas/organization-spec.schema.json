@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/organization-spec.schema.json",
+  "title": "BuildGraph OrganizationSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "api_version",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "api_version": {
+      "const": "buildgraph/v1"
+    },
+    "kind": {
+      "const": "OrganizationSpec"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "version",
+        "status",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/organizationId"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 3
+        },
+        "version": {
+          "$ref": "common.schema.json#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/canonicalStatus"
+        },
+        "owner": {
+          "$ref": "common.schema.json#/$defs/owner"
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "human_authority",
+        "division_ids",
+        "product_ids",
+        "buildgraph_boundary",
+        "skill_os_boundary",
+        "change_mode"
+      ],
+      "properties": {
+        "purpose": {
+          "type": "string",
+          "minLength": 15
+        },
+        "human_authority": {
+          "type": "string",
+          "minLength": 3
+        },
+        "division_ids": {
+          "type": "array",
+          "minItems": 10,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/divisionId"
+          }
+        },
+        "product_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/productId"
+          }
+        },
+        "buildgraph_boundary": {
+          "type": "string",
+          "minLength": 15
+        },
+        "skill_os_boundary": {
+          "type": "string",
+          "minLength": 15
+        },
+        "change_mode": {
+          "const": "VERSIONED_ONLY"
+        }
+      }
+    }
+  }
+}

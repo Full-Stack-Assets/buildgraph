@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/agent-instance-spec.schema.json",
+  "title": "BuildGraph AgentInstanceSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "api_version",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "api_version": {
+      "const": "buildgraph/v1"
+    },
+    "kind": {
+      "const": "AgentInstanceSpec"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "version",
+        "status",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/agentInstanceId"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 3
+        },
+        "version": {
+          "$ref": "common.schema.json#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/canonicalStatus"
+        },
+        "owner": {
+          "$ref": "common.schema.json#/$defs/owner"
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "agent_definition_id",
+        "runtime_id",
+        "model_id",
+        "environment",
+        "tool_ids",
+        "integration_ids",
+        "credential_reference_policy",
+        "evidence_state"
+      ],
+      "properties": {
+        "agent_definition_id": {
+          "$ref": "common.schema.json#/$defs/agentDefinitionId"
+        },
+        "runtime_id": {
+          "$ref": "common.schema.json#/$defs/runtimeId"
+        },
+        "model_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "environment": {
+          "type": "string",
+          "enum": [
+            "reference",
+            "development",
+            "staging",
+            "production"
+          ]
+        },
+        "tool_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/toolId"
+          }
+        },
+        "integration_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/integrationId"
+          }
+        },
+        "credential_reference_policy": {
+          "const": "references_only_no_secret_material"
+        },
+        "evidence_state": {
+          "$ref": "common.schema.json#/$defs/evidenceState"
+        }
+      }
+    }
+  }
+}

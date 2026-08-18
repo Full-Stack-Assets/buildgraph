@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ArtifactSpec
+metadata:
+  id: ART-001
+  name: AOC Canonical Architecture v1
+  version: 1.0.0
+  status: canonical
+  owner: DIV-04
+spec:
+  artifact_type: architecture-specification
+  uri: docs/architecture/AGENT_OPERATING_COMPANY_CANONICAL_ARCHITECTURE.md
+  media_type: text/markdown
+  checksum_sha256: 788b57699a1f8fb161d8885481fd8b4206e4b8c422f3b7e17acf63dcca7fd703
+  execution_run_id: RUN-2026-001
+  evidence_state: TESTED

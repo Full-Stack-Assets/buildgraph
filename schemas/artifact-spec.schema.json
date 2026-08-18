@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/artifact-spec.schema.json",
+  "title": "BuildGraph ArtifactSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "api_version",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "api_version": {
+      "const": "buildgraph/v1"
+    },
+    "kind": {
+      "const": "ArtifactSpec"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "version",
+        "status",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/architectureArtifactId"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 3
+        },
+        "version": {
+          "$ref": "common.schema.json#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/canonicalStatus"
+        },
+        "owner": {
+          "$ref": "common.schema.json#/$defs/owner"
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "artifact_type",
+        "uri",
+        "media_type",
+        "checksum_sha256",
+        "execution_run_id",
+        "evidence_state"
+      ],
+      "properties": {
+        "artifact_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "uri": {
+          "type": "string",
+          "format": "uri-reference"
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "checksum_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "execution_run_id": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/executionRunId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "evidence_state": {
+          "$ref": "common.schema.json#/$defs/evidenceState"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+api_version: buildgraph/v1
+kind: CapabilitySpec
+metadata:
+  id: CAP-006
+  name: client-conversion
+  version: 1.0.0
+  status: canonical
+  owner: DIV-08
+spec:
+  code: CLIENT_CONVERSION
+  purpose: Convert qualified client interest into bounded, reviewable proposals, next steps, and work-order candidates.
+  home_division_id: DIV-08
+  operating_classes: [creation, delivery_operations]
+  functional_domains: [revenue-and-customer]
+  provider_role_ids: []
+  implementing_skill_ids: [SKL-013, SKL-015]
+  required_tool_ids: [TOL-002]
+  runtime_support:
+    - runtime_id: openai
+      state: DECLARED
+      evidence_refs: [registry/runtimes/openai.yaml]
+    - runtime_id: cursor
+      state: DECLARED
+      evidence_refs: [registry/runtimes/cursor.yaml]
+    - runtime_id: manus
+      state: DECLARED
+      evidence_refs: [registry/runtimes/manus.yaml]
+    - runtime_id: github
+      state: DECLARED
+      evidence_refs: [registry/runtimes/github.yaml]
+    - runtime_id: gemini
+      state: DECLARED
+      evidence_refs: [registry/runtimes/gemini.yaml]
+    - runtime_id: grok
+      state: DECLARED
+      evidence_refs: [registry/runtimes/grok.yaml]
+    - runtime_id: claude
+      state: DECLARED
+      evidence_refs: [registry/runtimes/claude.yaml]
+    - runtime_id: codex
+      state: DECLARED
+      evidence_refs: [registry/runtimes/codex.yaml]
+    - runtime_id: local
+      state: DECLARED
+      evidence_refs: [registry/runtimes/local.yaml]
+  evidence_requirements:
+    - A declared implementation identifies its role, skill, tool, runtime, and policy bindings.
+    - TESTED or VERIFIED status cites reproducible execution evidence.

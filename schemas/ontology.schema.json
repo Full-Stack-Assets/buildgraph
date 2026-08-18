@@ -1,0 +1,111 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/ontology.schema.json",
+  "title": "BuildGraph Agent Operating Company Ontology",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "status",
+    "version",
+    "authority",
+    "change_mode",
+    "entity_types",
+    "compatibility_aliases",
+    "operating_classes",
+    "functional_domains",
+    "autonomy_tiers",
+    "integration_tiers",
+    "evidence_states",
+    "relationship_types"
+  ],
+  "properties": {
+    "status": {"const": "CANONICAL"},
+    "version": {"$ref": "common.schema.json#/$defs/semanticVersion"},
+    "authority": {"const": "architecture"},
+    "change_mode": {"const": "VERSIONED_ONLY"},
+    "entity_types": {
+      "type": "array",
+      "minItems": 24,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "enum": [
+          "Organization",
+          "Division",
+          "Portfolio",
+          "Product",
+          "Project",
+          "RoleDefinition",
+          "SkillDefinition",
+          "Capability",
+          "AgentDefinition",
+          "AgentInstance",
+          "Workflow",
+          "Factory",
+          "WorkOrder",
+          "ExecutionRun",
+          "Tool",
+          "Provider",
+          "Integration",
+          "Runtime",
+          "Policy",
+          "Constraint",
+          "Evidence",
+          "Verification",
+          "Artifact",
+          "Decision"
+        ]
+      }
+    },
+    "compatibility_aliases": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["RoleSpec", "SkillSpec"],
+      "properties": {
+        "RoleSpec": {"const": "RoleDefinition"},
+        "SkillSpec": {"const": "SkillDefinition"}
+      }
+    },
+    "operating_classes": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {"$ref": "common.schema.json#/$defs/operatingClass"}
+    },
+    "functional_domains": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "uniqueItems": true,
+      "items": {"$ref": "common.schema.json#/$defs/functionalDomain"}
+    },
+    "autonomy_tiers": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {"$ref": "common.schema.json#/$defs/autonomyTier"}
+    },
+    "integration_tiers": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": {"$ref": "common.schema.json#/$defs/integrationTier"}
+    },
+    "evidence_states": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "items": {"$ref": "common.schema.json#/$defs/evidenceState"}
+    },
+    "relationship_types": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "relationship-type.schema.json"}
+    }
+  }
+}

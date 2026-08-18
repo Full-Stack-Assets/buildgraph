@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/relationship-type.schema.json",
+  "title": "BuildGraph Controlled Relationship Type",
+  "type": "string",
+  "enum": [
+    "authorizes",
+    "belongs_to",
+    "contains",
+    "executes",
+    "governed_by",
+    "governs",
+    "implements",
+    "instantiates",
+    "owns",
+    "produces",
+    "provides",
+    "requires",
+    "supplied_by",
+    "supports",
+    "uses",
+    "validates"
+  ]
+}

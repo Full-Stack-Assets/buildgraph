@@ -7,6 +7,28 @@ metadata:
   status: pilot
   owner: Full-Stack-Assets
 spec:
+  contract:
+    runtime_id: github
+    supported_models: [not-applicable]
+    supported_tools: [TOL-001, TOL-003]
+    supports_mcp: false
+    supports_files: true
+    supports_repo_context: true
+    supports_persistent_memory: false
+    supports_scheduled_execution: true
+    supports_background_execution: true
+    supports_structured_output: true
+    permission_model: Repository and workflow permissions constrained by branch protection and environment rules.
+    context_limits:
+      mode: deployment_defined
+      max_context_tokens: null
+      notes: Context is bounded by checked-out repository content, workflow inputs, and artifact retention.
+    artifact_support: [code, repository-diffs, checks, workflow-artifacts, structured-data]
+    authentication_model: GitHub App, workflow token, or user authorization scoped to repository and environment.
+    known_constraints:
+      - GitHub is an execution and system-of-record adapter rather than a frontier-model runtime.
+    evidence_state: TESTED
+    supported_agent_definition_ids: []
   input:
     supported_artifact_types: [repositories, code-diffs, pull-requests, continuous-integration-output]
     structured_input: true
