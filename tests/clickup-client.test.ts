@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { ClickUpClient, ClickUpHttpError } from "../adapters/clickup/client.js";
+import { ClickUpClient } from "../adapters/clickup/client.js";
+import type { ClickUpHttpError } from "../adapters/clickup/client.js";
 
 describe("ClickUpClient", () => {
   it("sends authorization and JSON while capturing rate-limit headers", async () => {
@@ -45,7 +46,9 @@ describe("ClickUpClient", () => {
         headers: { "content-type": "application/json" }
       })
     ];
-    const sleep = vi.fn(async (_ms: number) => undefined);
+    const sleep = vi.fn(async (ms: number) => {
+      expect(ms).toBeGreaterThanOrEqual(0);
+    });
     const fetchFn = vi.fn(async () => responses.shift()!);
     const client = new ClickUpClient({
       token: "pk_test",
