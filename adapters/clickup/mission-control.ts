@@ -88,6 +88,13 @@ export type MissionControlHealth = {
   lastError: string | null;
 };
 
+export type MissionControlConnectionVerification = {
+  authorized: true;
+  userId: string;
+  workspaceId: string;
+  spaceCount: number;
+};
+
 type ClickUpTaskResponse = {
   id?: string | number;
   url?: string;
@@ -96,6 +103,19 @@ type ClickUpTaskResponse = {
 
 type ClickUpCommentResponse = {
   id?: string | number;
+  [key: string]: unknown;
+};
+
+type ClickUpAuthorizedUserResponse = {
+  user?: {
+    id?: string | number;
+    [key: string]: unknown;
+  };
+  [key: string]: unknown;
+};
+
+type ClickUpSpacesResponse = {
+  spaces?: unknown[];
   [key: string]: unknown;
 };
 
@@ -160,6 +180,34 @@ export class ClickUpMissionControl {
     this.#config = options.config;
     this.#idempotencyStore = options.idempotencyStore;
     this.#queue = options.queue;
+  }
+
+  async verifyConnection(): Promise<MissionControlConnectionVerification> {
+    try {
+      const userResponse = await this.#client.request<ClickUpAuthorizedUserResponse>("GET", "/user");
+      const userId = userResponse.user?.id;
+      if (userId === undefined || userId === null) {
+        throw new Error("ClickUp authorized user response did not include a user ID");
+      }
+
+      const workspaceId = this.#config.workspaceId;
+      const spacesResponse = await this.#client.request<ClickUpSpacesResponse>(
+        "GET",
+        `/team/${encodeURIComponent(workspaceId)}/space?archived=false`
+      );
+      const spaces = Array.isArray(spacesResponse.spaces) ? spacesResponse.spaces : [];
+      this.#lastError = null;
+
+      return {
+        authorized: true,
+        userId: String(userId),
+        workspaceId,
+        spaceCount: spaces.length
+      };
+    } catch (error) {
+      this.#lastError = errorMessage(error);
+      throw error;
+    }
   }
 
   async createWorkItem(input: CreateWorkItemInput): Promise<CreatedWorkItem> {
