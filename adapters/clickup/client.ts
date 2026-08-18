@@ -39,8 +39,14 @@ function readRateLimit(headers: Headers): ClickUpRateLimitSnapshot {
   };
 }
 
-function isRetryableStatus(status: number): boolean {
-  return status === 429 || status >= 500;
+function isRetryableRequest(method: ClickUpHttpMethod, status: number): boolean {
+  if (status === 429) {
+    return true;
+  }
+  if (status < 500) {
+    return false;
+  }
+  return method === "GET" || method === "PUT";
 }
 
 export class ClickUpHttpError extends Error {
@@ -48,12 +54,12 @@ export class ClickUpHttpError extends Error {
   readonly responseBody: string;
   readonly retryable: boolean;
 
-  constructor(status: number, responseBody: string) {
+  constructor(status: number, responseBody: string, retryable = false) {
     super(`ClickUp API request failed with status ${status}`);
     this.name = "ClickUpHttpError";
     this.status = status;
     this.responseBody = responseBody;
-    this.retryable = isRetryableStatus(status);
+    this.retryable = retryable;
   }
 }
 
@@ -115,9 +121,10 @@ export class ClickUpClient {
       }
 
       const responseBody = await response.text();
-      const error = new ClickUpHttpError(response.status, responseBody);
+      const retryable = isRetryableRequest(method, response.status);
+      const error = new ClickUpHttpError(response.status, responseBody, retryable);
 
-      if (!error.retryable || attempt >= this.#maxRetries) {
+      if (!retryable || attempt >= this.#maxRetries) {
         throw error;
       }
 
