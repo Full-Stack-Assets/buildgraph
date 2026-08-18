@@ -52,6 +52,7 @@ CLICKUP_WORKSPACE_ID=90141126753
 BUILDGRAPH_CLICKUP_IDEMPOTENCY_PATH=.runtime/clickup-idempotency.json
 BUILDGRAPH_CLICKUP_CONCURRENCY=2
 BUILDGRAPH_CLICKUP_MAX_PENDING=100
+BUILDGRAPH_CLICKUP_PENDING_LEASE_MS=900000
 ```
 
 Optional:
@@ -60,9 +61,27 @@ Optional:
 CLICKUP_API_BASE_URL=https://api.clickup.com/api/v2
 ```
 
-The runtime fails closed when `CLICKUP_API_TOKEN` is absent, when `CLICKUP_WORKSPACE_ID` is absent, or when the supplied Workspace ID does not match the committed Mission Control map.
+`BUILDGRAPH_CLICKUP_PENDING_LEASE_MS` controls how long a persisted in-progress mutation is treated as an active lease. The default is 900000 milliseconds (15 minutes), with a minimum accepted value of 1000 milliseconds. A worker that crashes cannot therefore leave an idempotency key locked forever; after the configured lease expires, another worker may reclaim it.
+
+The runtime fails closed when `CLICKUP_API_TOKEN` is absent, when `CLICKUP_WORKSPACE_ID` is absent, when the supplied Workspace ID does not match the committed Mission Control map, or when numeric runtime controls are invalid.
 
 ## Activation
+
+With `CLICKUP_API_TOKEN` and `CLICKUP_WORKSPACE_ID` already injected into the process environment by the runtime or secret manager, run the read-only connection check:
+
+```bash
+npm run clickup:verify
+```
+
+To verify against an alternate non-secret lane-map file:
+
+```bash
+npm run clickup:verify -- path/to/clickup-mission-control.json
+```
+
+The command prints only the safe verification summary: authorization state, authenticated user ID, configured Workspace ID, and visible Space count. It does not print the API token and does not perform a mutation.
+
+The same check is available programmatically:
 
 ```ts
 import {
@@ -124,7 +143,8 @@ The transport does not hardcode a ClickUp plan-specific throughput assumption. I
 Behavior:
 
 - `429`: wait until the server reset time when provided, then retry within the configured attempt limit.
-- retryable `5xx`: bounded exponential backoff.
+- `5xx` on `GET` or `PUT`: bounded exponential backoff because those operations are safe to replay at the transport layer.
+- `5xx` on `POST`: fail closed without automatic replay because the remote mutation may already have committed before the error was returned.
 - non-retryable `4xx`: fail immediately.
 - queue overflow: reject rather than silently drop work.
 
@@ -137,6 +157,10 @@ All mutations require a BuildGraph idempotency key.
 The default runtime uses `JsonFileIdempotencyStore` and writes only operation state plus normalized mutation results to `.runtime/clickup-idempotency.json`. The directory is ignored by Git.
 
 Confirmed successful mutations are replay-safe within that ledger: calling the same completed key returns the stored result without issuing another ClickUp write.
+
+Pending mutation records behave as leases rather than permanent locks. A fresh pending lease blocks duplicate execution. Once its configured lease duration has expired, it can be released and reacquired, allowing durable recovery after a worker crash or process restart.
+
+A `POST` that returns an ambiguous server error is not automatically replayed. The failed local lease is released for an explicit later recovery decision, but the transport itself will not immediately send the mutation a second time.
 
 The JSON store is suitable for a single local worker process. A distributed runtime should replace it with a shared transactional `IdempotencyStore` implementation before horizontally scaling workers.
 
@@ -162,14 +186,19 @@ Repository tests cover:
 - rate-limit header parsing;
 - reset-aware `429` retry;
 - non-retry of authorization failures;
+- non-replay of ambiguous `POST` `5xx` failures;
+- bounded retry of transient read `5xx` failures;
 - persistent idempotency;
-- pending-key fail-closed behavior;
+- fresh pending-key fail-closed behavior;
+- stale pending-lease recovery;
+- pending-lease environment validation;
 - bounded queue concurrency and overflow;
 - semantic lane whitelisting;
 - completed-write deduplication;
 - approval gating for protected status transitions;
 - failed-write retry behavior;
 - read-only connection verification;
+- one-command read-only operator verification;
 - environment and Workspace validation;
 - integration registry validation.
 

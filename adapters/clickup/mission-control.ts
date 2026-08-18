@@ -30,6 +30,8 @@ export type ClickUpMissionControlOptions = {
   config: MissionControlConfig;
   idempotencyStore: IdempotencyStore;
   queue: BoundedAsyncQueue;
+  pendingLeaseMs?: number;
+  now?: () => number;
 };
 
 export type CreateWorkItemInput = {
@@ -131,6 +133,7 @@ const PROTECTED_STATUSES = new Set([
   "closed",
   "done"
 ]);
+const DEFAULT_PENDING_LEASE_MS = 15 * 60 * 1000;
 
 function requireNonEmpty(value: string, label: string): string {
   const normalized = value.trim();
@@ -168,6 +171,8 @@ export class ClickUpMissionControl {
   readonly #config: MissionControlConfig;
   readonly #idempotencyStore: IdempotencyStore;
   readonly #queue: BoundedAsyncQueue;
+  readonly #pendingLeaseMs: number;
+  readonly #now: () => number;
   #lastError: string | null = null;
 
   constructor(options: ClickUpMissionControlOptions) {
@@ -176,10 +181,17 @@ export class ClickUpMissionControl {
       requireNonEmpty(options.config.lists[lane], `ClickUp list ID for ${lane}`);
     }
 
+    const pendingLeaseMs = options.pendingLeaseMs ?? DEFAULT_PENDING_LEASE_MS;
+    if (!Number.isFinite(pendingLeaseMs) || pendingLeaseMs <= 0) {
+      throw new Error("pending mutation lease must be greater than zero milliseconds");
+    }
+
     this.#client = options.client;
     this.#config = options.config;
     this.#idempotencyStore = options.idempotencyStore;
     this.#queue = options.queue;
+    this.#pendingLeaseMs = pendingLeaseMs;
+    this.#now = options.now ?? Date.now;
   }
 
   async verifyConnection(): Promise<MissionControlConnectionVerification> {
@@ -331,7 +343,11 @@ export class ClickUpMissionControl {
       return existing.result as T;
     }
     if (existing?.state === "pending") {
-      throw new Error(`idempotency key is already in progress: ${key}`);
+      const startedAtMs = Date.parse(existing.startedAt);
+      if (!Number.isFinite(startedAtMs) || this.#now() - startedAtMs < this.#pendingLeaseMs) {
+        throw new Error(`idempotency key is already in progress: ${key}`);
+      }
+      await this.#idempotencyStore.release(key);
     }
 
     await this.#idempotencyStore.begin(key);

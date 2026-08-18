@@ -73,4 +73,40 @@ describe("ClickUpClient", () => {
     });
     expect(fetchFn).toHaveBeenCalledTimes(1);
   });
+
+  it("does not replay an ambiguous POST after a 5xx response", async () => {
+    const responses = [
+      new Response("server failed after mutation may have committed", { status: 500 }),
+      new Response(JSON.stringify({ id: "duplicate-task" }), {
+        status: 200,
+        headers: { "content-type": "application/json" }
+      })
+    ];
+    const sleep = vi.fn(async () => undefined);
+    const fetchFn = vi.fn(async () => responses.shift()!);
+    const client = new ClickUpClient({ token: "pk_test", fetchFn, sleep, maxRetries: 3 });
+
+    await expect(client.request("POST", "/list/123/task", { name: "Do not duplicate" })).rejects.toMatchObject({
+      status: 500
+    });
+    expect(fetchFn).toHaveBeenCalledTimes(1);
+    expect(sleep).not.toHaveBeenCalled();
+  });
+
+  it("still retries a transient 5xx for a read", async () => {
+    const responses = [
+      new Response("temporary upstream failure", { status: 503 }),
+      new Response(JSON.stringify({ id: "task-1" }), {
+        status: 200,
+        headers: { "content-type": "application/json" }
+      })
+    ];
+    const sleep = vi.fn(async () => undefined);
+    const fetchFn = vi.fn(async () => responses.shift()!);
+    const client = new ClickUpClient({ token: "pk_test", fetchFn, sleep, maxRetries: 2, backoffBaseMs: 250 });
+
+    await expect(client.request("GET", "/task/task-1")).resolves.toEqual({ id: "task-1" });
+    expect(fetchFn).toHaveBeenCalledTimes(2);
+    expect(sleep).toHaveBeenCalledWith(250);
+  });
 });

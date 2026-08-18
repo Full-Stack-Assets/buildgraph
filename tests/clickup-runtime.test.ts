@@ -57,6 +57,17 @@ describe("ClickUp runtime activation", () => {
     })).toThrow("does not match Mission Control config");
   });
 
+  it("fails closed for an invalid pending mutation lease duration", () => {
+    expect(() => createClickUpMissionControlFromEnvironment({
+      config,
+      env: {
+        CLICKUP_API_TOKEN: "pk_test",
+        CLICKUP_WORKSPACE_ID: "workspace-test",
+        BUILDGRAPH_CLICKUP_PENDING_LEASE_MS: "0"
+      }
+    })).toThrow("BUILDGRAPH_CLICKUP_PENDING_LEASE_MS must be an integer greater than or equal to 1000");
+  });
+
   it("builds a runtime and verifies authenticated user plus workspace access without a write", async () => {
     const requestedUrls: string[] = [];
     const fetchFn = vi.fn(async (input: string | URL | Request) => {
@@ -79,7 +90,8 @@ describe("ClickUp runtime activation", () => {
       env: {
         CLICKUP_API_TOKEN: "pk_test",
         CLICKUP_WORKSPACE_ID: "workspace-test",
-        BUILDGRAPH_CLICKUP_IDEMPOTENCY_PATH: ".runtime/test-clickup-idempotency.json"
+        BUILDGRAPH_CLICKUP_IDEMPOTENCY_PATH: ".runtime/test-clickup-idempotency.json",
+        BUILDGRAPH_CLICKUP_PENDING_LEASE_MS: "900000"
       },
       fetchFn: fetchFn as typeof fetch
     });
