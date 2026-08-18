@@ -47,7 +47,7 @@ BuildGraph v0 implements the governed registry and validation foundation. It doe
 10. Unit 15-E deterministic canonical graph compiler, validation report, snapshot, and preflight reuse query.
 11. **Next:** Unit 16-E unified validation CLI and machine-readable error model.
 
-See `docs/FURTHER_DEVELOPMENT_PLAN.md` for the evaluation of remaining work and the serial plan during implementation. See `docs/adr/ADR-001-buildgraph-v0-scope.md` for the v0 authority boundary.
+See `docs/FURTHER_DEVELOPMENT_PLAN.md` for remaining work during implementation. See `docs/ACQUISITION_READINESS.md` for the sell-side overlay. See `docs/adr/ADR-001-buildgraph-v0-scope.md` for the v0 authority boundary.
 
 ## Development
 

@@ -1,11 +1,13 @@
 # BuildGraph Further Development and Improvement Plan
 
-**Status:** Proposed planning baseline for implementation.  
+**Status:** Proposed planning baseline for implementation, acquisition-priority overlay applied.  
 **Date:** 2026-08-18  
 **Evaluated revision:** `main` at `02498fd`  
 **Authority boundary:** BuildGraph v0 remains I0–I2. This plan does not authorize I3/I4 execution, credential brokerage, production deployment, protected-branch merge, payment, external publication, or unrestricted runtime tool access.
 
 This document is the working plan for further development **during implementation**. It reconciles the verified repository on `main`, the stale status documents, and the in-flight Agent Operating Company (AOC) architecture draft. It is not itself an architecture decision and does not promote any `TESTED` AOC claim to `VERIFIED`.
+
+Sell-side overlay: `docs/ACQUISITION_READINESS.md`. Claim filter: `docs/CLAIM_EVIDENCE_LEDGER.md`. Diligence, not operating a company, now sets unit priority.
 
 ## 1. Evaluation of the current verified state
 
@@ -79,7 +81,7 @@ ADR-001 remains binding. The following decisions must be recorded before the nam
 
 | Gate | Blocks | Interim implementation posture |
 |---|---|---|
-| First operational domain and pilot workflow | First `WorkflowSpec`, Temporal, n8n, autonomous loops | Keep workflow schema; do not invent a production workflow |
+| First operational domain and pilot workflow | First `WorkflowSpec`, Temporal, n8n, autonomous loops | Keep workflow schema. If a 15-minute diligence demo is later authorized, the domain is **control-plane governance**, not finance or M&A execution |
 | Work-management source of truth | ClickUp vs Linear split, event ingress | ClickUp INT-021 remains the sandbox Mission Control binding; INT-003 stays generic |
 | Canonical knowledge source and retention | Notion/Workspace connector, INT-001 activation | Knowledge remains a declared integration, not a live connector |
 | Named human owners per role, data, policy, and evaluation | Promotion of `pilot` roles to `approved`; `VERIFIED` claims | Owner fields stay `Full-Stack-Assets` until named |
@@ -89,6 +91,22 @@ ADR-001 remains binding. The following decisions must be recorded before the nam
 ## 5. Serial implementation sequence
 
 Work proceeds in this order unless a later ADR supersedes it. Each unit is executable without live credentials except where explicitly labeled as an operator-only smoke check.
+
+### Acquisition priority overlay
+
+Keep the unit definitions below, but **reorder delivery for diligence**, not for running a company. Do not invent an M&A capability, factory, or division. CAP-013 and CAP-007 stay `DECLARED` on the AOC draft and must not be used to assert deal advice.
+
+| Priority | Unit | Why a buyer cares |
+|---|---|---|
+| 1 | 16-E unified validation CLI + CI graph/registry gates | A diligence clone must pass one command; today `npm run validate` is not what CI runs |
+| 2 | 17-E evals + real skill fixtures | Empty `evals/` and missing `fixtures/skills/` look like vapor |
+| 3 | IP/hygiene pack: explicit proprietary statement, contributor assignment note, secret scan, dependency NOTICE | Corp-dev legal starts here |
+| 4 | One supervised I2 demo workflow after the ADR-001 domain decision | Buyers need a 15-minute path, not ten divisions. Domain, if chosen, is control-plane governance |
+| 5 | 18-E ClickUp envelope binding | Useful only as proof the control plane governs a real system of record |
+| Hold | Absorb AOC PR #3 as `VERIFIED` | Independent review only; pitching ten divisions before evidence will poison the sale |
+| Hold | Grok/Claude adapters, Temporal, n8n, I3/I4 | Not accretive until the wedge is real |
+
+Near-term PR slicing in section 7 follows this overlay: 16-E, then 17-E, then IP hygiene, then the gated demo, then 18-E. AOC absorption stays held at `TESTED`.
 
 ### Unit 16-E — Unified validation CLI and machine-readable error model
 
@@ -127,9 +145,23 @@ Work proceeds in this order unless a later ADR supersedes it. Each unit is execu
 
 **Out of scope:** live model scoring, reputation, multi-agent competition.
 
+### Unit IP-E — Proprietary and dependency hygiene pack
+
+**Why this is next after 17-E for acquisition:** corp-dev legal opens LICENSE, git authorship, and third-party notices before a demo. The package is `UNLICENSED`, which can mean proprietary, but there is no NOTICE, no contributor assignment record, and some commits use a personal or student email.
+
+**Deliver:**
+
+1. An explicit proprietary (or other Human-Principal-chosen) license statement that matches the selling entity.
+2. A contributor and agent-assisted-commit assignment note for counsel, not a public solicitation.
+3. A dependency NOTICE for `ajv`, `yaml`, and other runtime/dev packages.
+4. A documented secret-scan result (no tokens in git, `.env` ignored).
+5. No live ClickUp token and no invented customer or revenue claims.
+
+**Out of scope:** choosing counsel, forming the entity, valuing the company, or contacting buyers.
+
 ### Unit 18-E — Bind ClickUp Mission Control to canonical envelopes
 
-**Why this is next:** ClickUp is the only I2 write path, but it is a side adapter. Tasks can mutate Mission Control without a TaskEnvelope, passport, or ResultEnvelope. That splits the evidence graph.
+**Why this is later under the acquisition overlay:** ClickUp is the only I2 write path, but it is a side adapter. Envelope binding proves the control plane can govern a system of record. It is not how a buyer first validates the repo. Tasks can still mutate Mission Control without a TaskEnvelope, passport, or ResultEnvelope; that split remains a later defect, not the first diligence gap.
 
 **Deliver:**
 
@@ -143,9 +175,11 @@ Work proceeds in this order unless a later ADR supersedes it. Each unit is execu
 
 ### Unit 19-E — First WorkflowSpec after the ADR-001 domain decision
 
-Only after the first operational domain and work-management source of truth are recorded.
+Only after the first operational domain and work-management source of truth are recorded. Under the acquisition overlay this is the **supervised I2 demo**, priority 4, ahead of ClickUp envelope binding but still gated on ADR-001.
 
-**Deliver:** a single pilot `WorkflowSpec` (manual trigger, I2 ceiling, named escalation owner) that uses existing roles/skills and, if ClickUp remains the work queue, INT-021 lanes. The workflow compiler projects steps; it does not start a worker.
+If that domain decision is made for diligence, it must be **control-plane governance**: registry validation, routing, projection, receipt, graph hash. It must not be finance, M&A execution, contract signature, payment, or buyer outreach.
+
+**Deliver:** a single pilot `WorkflowSpec` (manual trigger, I2 ceiling, named escalation owner) that uses existing roles/skills. The workflow compiler projects steps; it does not start a worker. ClickUp INT-021 lanes are optional and must not be required to complete the 15-minute path.
 
 ### Downstream units (unchanged deferrals)
 
@@ -165,6 +199,7 @@ These are not separate product features. They should be folded into the serial u
 | Correct README repository map (`graph/`, `router/`; remove or create `compilers/`) | 16-E |
 | Align `CODEOWNERS` with actual trees | 16-E |
 | Snapshot retention: stop accumulating unbounded `generated/buildgraph/snapshots/` files without a policy | 16-E |
+| Explicit proprietary/NOTICE/assignment hygiene | IP-E |
 | `package.json` `validate` becomes the one command CI and humans run | 16-E |
 
 ### 6.2 Shared internals
@@ -198,8 +233,8 @@ Every unit PR must:
 
 1. Update `docs/IMPLEMENTATION_STATUS.md` with current manifest, test, and graph counts.
 2. State the next serial unit and the still-open ADR-001 gates.
-3. Avoid claiming `VERIFIED`, `live`, or `complete` for connectors, runtimes, or AOC architecture without independent review evidence.
-4. Keep archive mapping documents historical; put current frontier only in implementation status and this plan.
+3. Avoid claiming `VERIFIED`, `live`, or `complete` for connectors, runtimes, or AOC architecture without independent review evidence. Acquisition language must match `docs/CLAIM_EVIDENCE_LEDGER.md`.
+4. Keep archive mapping documents historical; put current frontier only in implementation status, this plan, and `docs/ACQUISITION_READINESS.md`.
 
 ## 7. Recommended near-term PR slicing
 
@@ -212,11 +247,12 @@ Implementation agents should open small PRs in this order. Do not combine AOC ab
 | 16-E.3 | CI, tsconfig, README/CODEOWNERS map, generated-graph freshness | 16-E.2 |
 | 17-E.1 | Skill fixtures named by the current registry | 16-E |
 | 17-E.2 | Eval runner and first offline suites | 17-E.1 |
+| IP-E | Proprietary statement, assignment note, NOTICE, secret-scan record | 17-E |
+| 19-E | Supervised I2 control-plane demo WorkflowSpec | ADR-001 domain and source-of-truth decisions; IP-E recommended |
 | 18-E.1 | Envelope/passport/approval gating in ClickUp facade | 16-E, 17-E |
 | 18-E.2 | ResultEnvelope receipts for ClickUp mutations | 18-E.1 |
-| 19-E | First WorkflowSpec | ADR-001 domain and source-of-truth decisions |
 | AOC review | Independent architecture and reconciliation review of PR #3 | 16-E recommended first |
-| AOC absorb | Rebase PR #3 onto unified validator; keep evidence state `TESTED` | AOC review |
+| AOC absorb | Rebase PR #3 onto unified validator; keep evidence state `TESTED` | AOC review; do not mark `VERIFIED` |
 
 ## 8. Risks if implementation ignores this plan
 
@@ -225,6 +261,7 @@ Implementation agents should open small PRs in this order. Do not combine AOC ab
 3. **Evidence bypass.** ClickUp mutations without ResultEnvelopes create an unauditable work queue that looks like Mission Control.
 4. **Architecture fork.** Building AOC features on `main` in parallel with PR #3 will duplicate ontology and graph IDs.
 5. **Authority creep.** ClickUp I2 writes plus AOC capability claims can be misread as permission to activate I3 connectors, schedulers, or production GitHub actions.
+6. **Acquisition overclaim.** Pitching ten AOC divisions, DECLARED capabilities, or a going concern will fail M&A diligence. See `docs/ACQUISITION_READINESS.md`.
 
 ## 9. Explicit non-goals until later ADRs
 
@@ -236,3 +273,7 @@ Implementation agents should open small PRs in this order. Do not combine AOC ab
 - Redis/Postgres idempotency or horizontally scaled ClickUp workers
 - Production deployment, protected-branch merge, payment, identity change, or public communication
 - Treating PR #3, mock receipts, archive `COMPLETE` files, or a connected MCP session as verified operational authority
+- Agent or worker outreach to M&A, bankers, or corp-dev
+- Valuing the company, drafting a purchase agreement, or giving legal/tax advice
+- Adding an M&A division, buyer-scraping integration, or treating AOC ten-division YAML as a going concern
+- I3/I4, payments, or production GitHub merge in order to “look bigger”

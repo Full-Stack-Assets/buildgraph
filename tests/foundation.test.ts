@@ -12,6 +12,8 @@ const requiredPaths = [
   "docs/adr/ADR-001-buildgraph-v0-scope.md",
   "docs/IMPLEMENTATION_STATUS.md",
   "docs/FURTHER_DEVELOPMENT_PLAN.md",
+  "docs/ACQUISITION_READINESS.md",
+  "docs/CLAIM_EVIDENCE_LEDGER.md",
   "schemas",
   "registry",
   "policies",

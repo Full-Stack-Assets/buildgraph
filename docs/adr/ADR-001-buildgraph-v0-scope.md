@@ -30,3 +30,7 @@ The following decisions must be explicitly recorded before the corresponding imp
 4. Human ownership for role, technical, data/integration, policy, and evaluation decisions.
 5. The timing of persistent execution through Temporal and low-risk event ingress through n8n.
 6. Any move above I2 or the addition of an action-capable production integration.
+
+## Implementation recording (not a change to this decision)
+
+This ADR remains accepted and unchanged. If deferred decision 1 is later recorded in order to support a supervised diligence demo, the first operational domain should be **control-plane governance** (registry validation, routing, projection, receipt, graph hash). It must not be finance, M&A execution, contract signature, payment, or buyer outreach. See `docs/ACQUISITION_READINESS.md`.

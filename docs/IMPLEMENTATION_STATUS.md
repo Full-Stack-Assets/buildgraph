@@ -3,7 +3,9 @@
 **Status:** Foundation, Unit 15-E graph compiler, capability router, and sandbox ClickUp Mission Control adapter implemented and locally verified.  
 **Execution boundary:** Registry, contract, validation, projection, receipt-normalization, offline graph compilation, and bounded I2 ClickUp Mission Control writes. No live runtime invocation of Manus/OpenAI/Cursor/GitHub, no new connector activation beyond the optional operator-injected ClickUp token, no credential provisioning, scheduler, durable workflow worker, external communication, publication, protected-branch merge, deployment, payment, identity change, or destructive action is enabled.
 
-**Planning baseline:** `docs/FURTHER_DEVELOPMENT_PLAN.md`
+**Planning baseline:** `docs/FURTHER_DEVELOPMENT_PLAN.md`  
+**Sell-side overlay:** `docs/ACQUISITION_READINESS.md`  
+**Claim filter:** `docs/CLAIM_EVIDENCE_LEDGER.md`
 
 ## Completed units
 
@@ -60,4 +62,4 @@ The generated graph content hash is `575629e9aee6c499e267084fd821af66843e5dc3d31
 
 **Unit 16-E: Unified Validation CLI and Machine-Readable Error Model.**
 
-A pilot-specific workflow and owner-approved integration binding remain required for Unit 19-E, but they depend on ADR-001 decisions that are not yet recorded: operating domain, named owners, work and knowledge sources of truth, and any nonproduction I3 permission. Until those decisions exist, BuildGraph stays inside its validated I0–I2 foundation plus the sandbox ClickUp Mission Control path.
+Acquisition priority after 16-E is eval-fixture closure, then IP hygiene, then a gated control-plane demo. ClickUp envelope binding and AOC absorption stay later or held. A pilot-specific workflow still depends on ADR-001 decisions. If that domain is recorded for diligence, it is control-plane governance, not finance or M&A execution. Until those decisions exist, BuildGraph stays inside its validated I0–I2 foundation plus the sandbox ClickUp Mission Control path.
