@@ -44,7 +44,11 @@ function makeControl(fetchFn: typeof fetch, maxRetries = 0): ClickUpMissionContr
 
 describe("ClickUpMissionControl", () => {
   it("deduplicates completed create writes and routes them only to the configured lane", async () => {
-    const fetchFn = vi.fn(async () => jsonResponse({ id: "cu-1", url: "https://app.clickup.com/t/cu-1" }));
+    let requestedUrl = "";
+    const fetchFn = vi.fn(async (input: string | URL | Request) => {
+      requestedUrl = String(input);
+      return jsonResponse({ id: "cu-1", url: "https://app.clickup.com/t/cu-1" });
+    });
     const control = makeControl(fetchFn as typeof fetch);
 
     const first = await control.createWorkItem({
@@ -67,7 +71,7 @@ describe("ClickUpMissionControl", () => {
       taskUrl: "https://app.clickup.com/t/cu-1"
     });
     expect(fetchFn).toHaveBeenCalledTimes(1);
-    expect(String(fetchFn.mock.calls[0]?.[0])).toContain("/list/list-command/task");
+    expect(requestedUrl).toContain("/list/list-command/task");
   });
 
   it("rejects an unknown lane before making an HTTP request", async () => {
@@ -125,7 +129,11 @@ describe("ClickUpMissionControl", () => {
       jsonResponse({ id: "cu-4", name: "Observed task" }),
       jsonResponse({ id: 98765 })
     ];
-    const fetchFn = vi.fn(async () => responses.shift()!);
+    let lastRequestedUrl = "";
+    const fetchFn = vi.fn(async (input: string | URL | Request) => {
+      lastRequestedUrl = String(input);
+      return responses.shift()!;
+    });
     const control = makeControl(fetchFn as typeof fetch);
 
     await expect(control.getTask("cu-4")).resolves.toMatchObject({ id: "cu-4", name: "Observed task" });
@@ -137,7 +145,7 @@ describe("ClickUpMissionControl", () => {
 
     expect(comment).toEqual({ action: "commented", taskId: "cu-4", commentId: "98765" });
     expect(fetchFn).toHaveBeenCalledTimes(2);
-    expect(String(fetchFn.mock.calls[1]?.[0])).toContain("/task/cu-4/comment");
+    expect(lastRequestedUrl).toContain("/task/cu-4/comment");
   });
 
   it("reports queue and rate-limit health without credentials", async () => {
