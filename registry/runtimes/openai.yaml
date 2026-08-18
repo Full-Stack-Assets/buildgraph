@@ -1,0 +1,38 @@
+api_version: buildgraph/v0.2
+kind: RuntimeAdapter
+metadata:
+  id: openai
+  name: OpenAI Controlled Adapter
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  input:
+    supported_artifact_types: [documents, structured-task-context, code-context]
+    structured_input: true
+    context_limit_note: Task context is bounded by the passport and source references.
+    redaction_behavior: Use task-scoped minimization and block restricted data without approved policy.
+  output:
+    structured_result: true
+    receipt_format: BuildGraph ResultEnvelope v0.2
+    failure_classification: true
+  tools:
+    supports_typed_tools: true
+    allowlist_method: Task passport integration scope list.
+    interception: BuildGraph adapter validates scope before projection.
+  authority:
+    maximum_supported_tier: I2
+    can_create_drafts: true
+    can_create_pull_requests: false
+    requires_native_confirmation: true
+  durability:
+    asynchronous: true
+    resumption: Task result is normalized into the evidence ledger on completion.
+    idempotency_support: Task idempotency key is retained by the adapter layer.
+  observability:
+    trace_fields: [task_id, trace_id, agent_instance_id, runtime_id]
+    cost_fields: [latency_ms, cost_unit]
+  controls:
+    secret_handling: No plaintext secret is included in the runtime projection.
+    revocation: Passport expiry or revocation blocks further execution.
+    failure_mode: fail_closed
