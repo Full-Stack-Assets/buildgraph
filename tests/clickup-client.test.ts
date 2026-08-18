@@ -1,6 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
 import { ClickUpClient } from "../adapters/clickup/client.js";
-import type { ClickUpHttpError } from "../adapters/clickup/client.js";
 
 describe("ClickUpClient", () => {
   it("sends authorization and JSON while capturing rate-limit headers", async () => {
@@ -69,7 +68,7 @@ describe("ClickUpClient", () => {
     const fetchFn = vi.fn(async () => new Response("forbidden", { status: 403 }));
     const client = new ClickUpClient({ token: "pk_test", fetchFn, maxRetries: 4 });
 
-    await expect(client.request("GET", "/task/task-1")).rejects.toMatchObject<Partial<ClickUpHttpError>>({
+    await expect(client.request("GET", "/task/task-1")).rejects.toMatchObject({
       status: 403
     });
     expect(fetchFn).toHaveBeenCalledTimes(1);
