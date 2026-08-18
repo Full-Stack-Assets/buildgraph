@@ -94,6 +94,12 @@ export function createClickUpMissionControlFromEnvironment(
     || ".runtime/clickup-idempotency.json";
   const concurrency = parseIntegerSetting(env, "BUILDGRAPH_CLICKUP_CONCURRENCY", 2, 1);
   const maxPending = parseIntegerSetting(env, "BUILDGRAPH_CLICKUP_MAX_PENDING", 100, 0);
+  const pendingLeaseMs = parseIntegerSetting(
+    env,
+    "BUILDGRAPH_CLICKUP_PENDING_LEASE_MS",
+    15 * 60 * 1000,
+    1000
+  );
 
   const clientOptions: ConstructorParameters<typeof ClickUpClient>[0] = { token };
   if (options.fetchFn !== undefined) clientOptions.fetchFn = options.fetchFn;
@@ -103,6 +109,7 @@ export function createClickUpMissionControlFromEnvironment(
     client: new ClickUpClient(clientOptions),
     config: options.config,
     idempotencyStore: options.idempotencyStore ?? new JsonFileIdempotencyStore(idempotencyPath),
-    queue: options.queue ?? new BoundedAsyncQueue({ concurrency, maxPending })
+    queue: options.queue ?? new BoundedAsyncQueue({ concurrency, maxPending }),
+    pendingLeaseMs
   });
 }
