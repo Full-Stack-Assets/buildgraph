@@ -67,6 +67,22 @@ The runtime fails closed when `CLICKUP_API_TOKEN` is absent, when `CLICKUP_WORKS
 
 ## Activation
 
+With `CLICKUP_API_TOKEN` and `CLICKUP_WORKSPACE_ID` already injected into the process environment by the runtime or secret manager, run the read-only connection check:
+
+```bash
+npm run clickup:verify
+```
+
+To verify against an alternate non-secret lane-map file:
+
+```bash
+npm run clickup:verify -- path/to/clickup-mission-control.json
+```
+
+The command prints only the safe verification summary: authorization state, authenticated user ID, configured Workspace ID, and visible Space count. It does not print the API token and does not perform a mutation.
+
+The same check is available programmatically:
+
 ```ts
 import {
   createClickUpMissionControlFromEnvironment,
@@ -182,6 +198,7 @@ Repository tests cover:
 - approval gating for protected status transitions;
 - failed-write retry behavior;
 - read-only connection verification;
+- one-command read-only operator verification;
 - environment and Workspace validation;
 - integration registry validation.
 
