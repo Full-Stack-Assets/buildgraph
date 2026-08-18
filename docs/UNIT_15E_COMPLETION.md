@@ -1,0 +1,37 @@
+# Unit 15-E Completion Evidence
+
+**Status:** Executable completion achieved within the current BuildGraph v0 authority boundary.
+
+## Delivered artifacts
+
+| Artifact | Delivered behavior |
+|---|---|
+| `graph/compiler.ts` | Deterministically compiles the local canonical YAML registry into typed entities, typed relationship edges, explicit unresolved-reference placeholders, a stable content hash, and a graph validation report. |
+| `schemas/graph-entity.schema.json` | Defines required canonical entity fields, provenance, confidence, tags, and metadata. |
+| `schemas/graph-edge.schema.json` | Defines typed, provenance-carrying graph relationships. |
+| `scripts/generate-graph.ts` | Generates portable JSON, JSONL, validation, and content-addressed snapshot outputs from local registry state. |
+| `generated/buildgraph/` | Version-controlled graph projection, entity export, edge export, validation report, and snapshot. |
+| `tests/graph-compiler.test.ts` | Verifies determinism, typed role-to-skill projection, blocking dangling-edge detection, preflight reuse, and portable output creation. |
+
+## Validation evidence
+
+```text
+Registry manifests: 39 valid
+Graph entities: 39
+Graph edges: 65
+Graph conflicts: 0
+Graph validation errors: 0
+Graph validation warnings: 0
+Test files: 8 passed
+Tests: 17 passed
+```
+
+The generated graph content hash is `03cb514741b2b758a1efd7da422b23c793ef149f36af4e6c6b28ce53805dbe4f` for the registry state committed with this completion record. The generator is deterministic: unchanged canonical registry inputs produce unchanged output and snapshot identifiers.
+
+## Controls preserved
+
+The compiler operates only on local version-controlled registry files. It does not start a service, execute a runtime, activate a connector, use a credential, consume the supplied database, query a network, infer observed health, or authorize an action. Imported declarations remain declarations unless independently verified by a future governed integration binding.
+
+## Next closure dependency
+
+The next serial closure unit is **Unit 16-E: Unified Validation CLI and Machine-Readable Error Model**. It will consolidate manifest, graph, task, passport, workflow, and security validation into an offline command interface before any provider, workflow, credential-broker, API, UI, or event-fabric implementation is considered.

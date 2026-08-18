@@ -1,0 +1,36 @@
+Archive:  /home/ubuntu/upload/Agentic_Runtime_v2_Integrated.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+        0  2026-08-18 03:04   artifacts/runtime/
+        0  2026-08-18 03:04   artifacts/runtime/adapters/
+     4326  2026-08-18 03:05   artifacts/runtime/adapters/mock_adapters.py
+        0  2026-08-18 03:07   artifacts/runtime/adapters/real/
+        0  2026-08-18 03:04   artifacts/runtime/cli/
+     2099  2026-08-18 03:05   artifacts/runtime/cli/run.py
+     2346  2026-08-18 03:08   artifacts/runtime/cli/run_v2.py
+        0  2026-08-18 03:04   artifacts/runtime/core/
+      981  2026-08-18 03:05   artifacts/runtime/core/adapter_interface.py
+     2844  2026-08-18 03:05   artifacts/runtime/core/models.py
+        0  2026-08-18 03:07   artifacts/runtime/durable/
+     2574  2026-08-18 03:10   artifacts/runtime/durable/state_store.py
+        0  2026-08-18 03:07   artifacts/runtime/economics/
+     3792  2026-08-18 03:10   artifacts/runtime/economics/ledger.py
+        0  2026-08-18 03:04   artifacts/runtime/examples/
+        0  2026-08-18 03:07   artifacts/runtime/federation/
+     4328  2026-08-18 03:08   artifacts/runtime/federation/nodes.py
+        0  2026-08-18 03:04   artifacts/runtime/logs/
+     1090  2026-08-18 03:10   artifacts/runtime/logs/allocations.jsonl
+     2661  2026-08-18 03:10   artifacts/runtime/logs/checkpoints.jsonl
+      664  2026-08-18 03:10   artifacts/runtime/logs/costs.jsonl
+     2419  2026-08-18 03:10   artifacts/runtime/logs/executions.jsonl
+     1040  2026-08-18 03:06   artifacts/runtime/logs/run-43f55fbdbca8.json
+     1046  2026-08-18 03:06   artifacts/runtime/logs/run-6739491b5444.json
+     1075  2026-08-18 03:06   artifacts/runtime/logs/run-80d8cb8c89ac.json
+     2402  2026-08-18 03:10   artifacts/runtime/logs/workflows.jsonl
+        0  2026-08-18 03:04   artifacts/runtime/orchestrator/
+     1932  2026-08-18 03:05   artifacts/runtime/orchestrator/engine.py
+     4172  2026-08-18 03:08   artifacts/runtime/orchestrator/engine_v2.py
+     1113  2026-08-18 03:05   artifacts/runtime/orchestrator/router.py
+        0  2026-08-18 03:04   artifacts/runtime/tests/
+---------                     -------
+    42904                     31 files

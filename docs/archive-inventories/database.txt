@@ -1,0 +1,14 @@
+Archive:  /home/ubuntu/upload/Agentic_Ecosystem_Database.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+        0  2026-08-18 03:27   artifacts/runtime/db/
+        0  2026-08-18 03:27   artifacts/runtime/db/migrations/
+        0  2026-08-18 03:27   artifacts/runtime/db/schema/
+    12596  2026-08-18 03:28   artifacts/runtime/db/schema/001_core.sql
+        0  2026-08-18 03:27   artifacts/runtime/db/scripts/
+     7049  2026-08-18 03:29   artifacts/runtime/db/scripts/init_db.py
+     2939  2026-08-18 03:29   artifacts/runtime/db/scripts/query_db.py
+        0  2026-08-18 03:27   artifacts/runtime/db/seeds/
+   245760  2026-08-18 03:30   artifacts/runtime/logs/ecosystem.db
+---------                     -------
+   268344                     9 files

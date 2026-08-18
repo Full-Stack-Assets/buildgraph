@@ -1,0 +1,32 @@
+Archive:  /home/ubuntu/upload/Agentic_Reference_Runtime.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+        0  2026-08-18 03:04   artifacts/runtime/
+        0  2026-08-18 03:04   artifacts/runtime/adapters/
+        0  2026-08-18 03:06   artifacts/runtime/adapters/__pycache__/
+     5833  2026-08-18 03:06   artifacts/runtime/adapters/__pycache__/mock_adapters.cpython-312.pyc
+     4326  2026-08-18 03:05   artifacts/runtime/adapters/mock_adapters.py
+        0  2026-08-18 03:04   artifacts/runtime/cli/
+        0  2026-08-18 03:05   artifacts/runtime/cli/__pycache__/
+     3599  2026-08-18 03:05   artifacts/runtime/cli/__pycache__/run.cpython-312.pyc
+     2099  2026-08-18 03:05   artifacts/runtime/cli/run.py
+        0  2026-08-18 03:04   artifacts/runtime/core/
+        0  2026-08-18 03:05   artifacts/runtime/core/__pycache__/
+     2089  2026-08-18 03:06   artifacts/runtime/core/__pycache__/adapter_interface.cpython-312.pyc
+     4804  2026-08-18 03:05   artifacts/runtime/core/__pycache__/models.cpython-312.pyc
+      981  2026-08-18 03:05   artifacts/runtime/core/adapter_interface.py
+     2844  2026-08-18 03:05   artifacts/runtime/core/models.py
+        0  2026-08-18 03:04   artifacts/runtime/examples/
+        0  2026-08-18 03:04   artifacts/runtime/logs/
+     1040  2026-08-18 03:06   artifacts/runtime/logs/run-43f55fbdbca8.json
+     1046  2026-08-18 03:06   artifacts/runtime/logs/run-6739491b5444.json
+     1075  2026-08-18 03:06   artifacts/runtime/logs/run-80d8cb8c89ac.json
+        0  2026-08-18 03:04   artifacts/runtime/orchestrator/
+        0  2026-08-18 03:06   artifacts/runtime/orchestrator/__pycache__/
+     3029  2026-08-18 03:06   artifacts/runtime/orchestrator/__pycache__/engine.cpython-312.pyc
+     1253  2026-08-18 03:06   artifacts/runtime/orchestrator/__pycache__/router.cpython-312.pyc
+     1932  2026-08-18 03:05   artifacts/runtime/orchestrator/engine.py
+     1113  2026-08-18 03:05   artifacts/runtime/orchestrator/router.py
+        0  2026-08-18 03:04   artifacts/runtime/tests/
+---------                     -------
+    37063                     27 files

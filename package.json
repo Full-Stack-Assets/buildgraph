@@ -14,8 +14,10 @@
     "lint": "eslint . --max-warnings=0",
     "test": "vitest run",
     "test:watch": "vitest",
-    "validate": "npm run lint && npm run typecheck && npm run validate:registry && npm test",
+    "validate": "npm run lint && npm run typecheck && npm run validate:registry && npm run validate:graph && npm test",
     "validate:registry": "tsx scripts/validate-registry.ts",
+    "generate:graph": "tsx scripts/generate-graph.ts",
+    "validate:graph": "tsx scripts/generate-graph.ts",
     "clickup:verify": "tsx scripts/clickup-verify.ts"
   },
   "dependencies": {

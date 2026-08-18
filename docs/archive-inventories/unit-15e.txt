@@ -1,0 +1,29 @@
+Archive:  /home/ubuntu/upload/Unit_15E_Executable_Canonical_BuildGraph.zip
+  Length      Date    Time    Name
+---------  ---------- -----   ----
+        0  2026-08-18 03:18   buildgraph/
+       77  2026-08-18 03:18   buildgraph/__init__.py
+     1077  2026-08-18 03:18   buildgraph/cli.py
+        0  2026-08-18 03:19   buildgraph/__pycache__/
+     2088  2026-08-18 03:18   buildgraph/__pycache__/cli.cpython-313.pyc
+    27702  2026-08-18 03:19   buildgraph/__pycache__/generator.cpython-313.pyc
+      227  2026-08-18 03:18   buildgraph/__pycache__/__init__.cpython-313.pyc
+    20697  2026-08-18 03:19   buildgraph/generator.py
+        0  2026-08-18 03:17   tests/
+     3665  2026-08-18 03:19   tests/test_generator.py
+        0  2026-08-18 03:19   tests/__pycache__/
+    18534  2026-08-18 03:19   tests/__pycache__/test_generator.cpython-313-pytest-9.0.2.pyc
+        0  2026-08-18 03:19   output/
+   139586  2026-08-18 03:19   output/buildgraph.json
+        0  2026-08-18 03:19   output/snapshots/
+      427  2026-08-18 03:19   output/snapshots/snapshot-f40596d14316.json
+        0  2026-08-18 03:19   output/edges/
+     8767  2026-08-18 03:19   output/edges/edges.jsonl
+        0  2026-08-18 03:19   output/entities/
+    99434  2026-08-18 03:19   output/entities/entities.jsonl
+        0  2026-08-18 03:19   output/validation/
+      650  2026-08-18 03:19   output/validation/report.json
+      793  2026-08-18 03:19   build_result.json
+     1798  2026-08-18 03:19   UNIT_15E_STATUS.md
+---------                     -------
+   325522                     24 files

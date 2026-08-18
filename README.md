@@ -41,6 +41,7 @@ BuildGraph v0 implements the governed registry and validation foundation. It doe
 5. Task, result, passport, and approval contracts.
 6. Controlled runtime adapter interfaces and receipt normalization.
 7. End-to-end validation.
+8. Unit 15-E deterministic canonical graph compiler, validation report, snapshot, and preflight reuse query.
 
 ## Development
 
@@ -51,6 +52,7 @@ npm install
 npm test
 npm run lint
 npm run typecheck
+npm run generate:graph
 ```
 
 See `docs/adr/ADR-001-buildgraph-v0-scope.md` for the v0 authority boundary.
