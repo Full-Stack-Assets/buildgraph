@@ -1,0 +1,18 @@
+{
+  "workspaceId": "90141126753",
+  "folderId": "901411660496",
+  "lists": {
+    "command_queue": "901419211707",
+    "canonical_registry": "901419211709",
+    "integration_registry": "901419211710",
+    "runtime_agent_work": "901419211712",
+    "approvals_policy_gates": "901419211713",
+    "exceptions_blockers": "901419211715",
+    "evidence_verification": "901419211718",
+    "event_fabric_automations": "901419211719",
+    "durable_workflows": "901419211723",
+    "observability_health": "901419211725",
+    "routing_reputation_experiments": "901419211728",
+    "autonomous_domain_loops": "901419211730"
+  }
+}
