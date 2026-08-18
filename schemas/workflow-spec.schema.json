@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/workflow-spec.schema.json",
+  "title": "BuildGraph WorkflowSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["api_version", "kind", "metadata", "spec"],
+  "properties": {
+    "api_version": {"const": "buildgraph/v0.2"},
+    "kind": {"const": "WorkflowSpec"},
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "version", "status", "owner"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,127}$"},
+        "name": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,127}$"},
+        "version": {"$ref": "common.schema.json#/$defs/semanticVersion"},
+        "status": {"type": "string", "enum": ["draft", "pilot", "approved", "suspended", "retired"]},
+        "owner": {"$ref": "common.schema.json#/$defs/owner"}
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["purpose", "trigger", "states", "steps", "exception_policy", "observability"],
+      "properties": {
+        "purpose": {"type": "string", "minLength": 15},
+        "trigger": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["type"],
+          "properties": {
+            "type": {"type": "string", "enum": ["manual", "event", "schedule", "api"]},
+            "source": {"type": "string"}
+          }
+        },
+        "states": {
+          "type": "array",
+          "minItems": 2,
+          "items": {"$ref": "common.schema.json#/$defs/workStatus"}
+        },
+        "steps": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "role_id", "entry_statuses", "success_status", "failure_status"],
+            "properties": {
+              "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,127}$"},
+              "role_id": {"$ref": "common.schema.json#/$defs/roleId"},
+              "entry_statuses": {"type": "array", "minItems": 1, "items": {"$ref": "common.schema.json#/$defs/workStatus"}},
+              "success_status": {"$ref": "common.schema.json#/$defs/workStatus"},
+              "failure_status": {"$ref": "common.schema.json#/$defs/workStatus"},
+              "approval_required": {"type": "boolean", "default": false}
+            }
+          }
+        },
+        "exception_policy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["max_retries", "escalation_owner"],
+          "properties": {
+            "max_retries": {"type": "integer", "minimum": 0, "maximum": 10},
+            "escalation_owner": {"$ref": "common.schema.json#/$defs/owner"}
+          }
+        },
+        "observability": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["required_events"],
+          "properties": {
+            "required_events": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+          }
+        }
+      }
+    }
+  }
+}

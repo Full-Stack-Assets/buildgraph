@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/integration-spec.schema.json",
+  "title": "BuildGraph IntegrationSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["api_version", "kind", "metadata", "spec"],
+  "properties": {
+    "api_version": {"const": "buildgraph/v0.2"},
+    "kind": {"const": "IntegrationSpec"},
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "name", "version", "status"],
+      "properties": {
+        "id": {"$ref": "common.schema.json#/$defs/integrationId"},
+        "name": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,127}$"},
+        "version": {"$ref": "common.schema.json#/$defs/semanticVersion"},
+        "status": {"$ref": "common.schema.json#/$defs/integrationStatus"}
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system", "owners", "approved_roles", "environment", "permission_tier", "authentication", "data_classifications", "scopes", "prohibited_actions", "human_confirmation", "logging", "monitoring", "failure_behavior"],
+      "properties": {
+        "system": {"type": "string", "minLength": 1},
+        "owners": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["system", "technical", "business_data"],
+          "properties": {
+            "system": {"$ref": "common.schema.json#/$defs/owner"},
+            "technical": {"$ref": "common.schema.json#/$defs/owner"},
+            "business_data": {"$ref": "common.schema.json#/$defs/owner"}
+          }
+        },
+        "approved_roles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "common.schema.json#/$defs/roleId"}
+        },
+        "disallowed_roles": {
+          "type": "array",
+          "items": {"$ref": "common.schema.json#/$defs/roleId"}
+        },
+        "environment": {"type": "string", "enum": ["sandbox", "test", "staging", "production"]},
+        "permission_tier": {"$ref": "common.schema.json#/$defs/integrationTier"},
+        "authentication": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["method", "credential_reference"],
+          "properties": {
+            "method": {"type": "string", "enum": ["service_identity", "delegated_user", "short_lived_token", "connector_reference", "none"]},
+            "credential_reference": {"type": "string", "minLength": 1}
+          }
+        },
+        "data_classifications": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "common.schema.json#/$defs/dataClassification"}
+        },
+        "scopes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["object", "operations", "field_constraints"],
+            "properties": {
+              "object": {"type": "string", "minLength": 1},
+              "operations": {
+                "type": "array",
+                "minItems": 1,
+                "items": {"type": "string", "enum": ["read", "draft_write", "reversible_write", "human_confirmed_action"]}
+              },
+              "field_constraints": {"type": "array", "items": {"type": "string"}}
+            }
+          }
+        },
+        "prohibited_actions": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "human_confirmation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["required_for"],
+          "properties": {
+            "required_for": {"type": "array", "items": {"type": "string", "minLength": 1}},
+            "approval_record_reference": {"type": "string"}
+          }
+        },
+        "logging": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["audit_destination", "retention"],
+          "properties": {
+            "audit_destination": {"type": "string", "minLength": 1},
+            "retention": {"type": "string", "minLength": 1}
+          }
+        },
+        "monitoring": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["alerts"],
+          "properties": {
+            "alerts": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}}
+          }
+        },
+        "failure_behavior": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["fail_closed", "escalation_contact"],
+          "properties": {
+            "fail_closed": {"const": true},
+            "escalation_contact": {"$ref": "common.schema.json#/$defs/owner"}
+          }
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "spec": {
+            "properties": {
+              "permission_tier": {"const": "I4"}
+            },
+            "required": ["permission_tier"]
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "spec": {
+            "properties": {
+              "human_confirmation": {
+                "required": ["required_for", "approval_record_reference"]
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

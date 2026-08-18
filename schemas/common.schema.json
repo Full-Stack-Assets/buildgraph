@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/common.schema.json",
+  "title": "BuildGraph Common Definitions",
+  "$defs": {
+    "semanticVersion": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?(?:\\+[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+    },
+    "roleId": {
+      "type": "string",
+      "pattern": "^[A-Z]{2,5}-[0-9]{2,3}$"
+    },
+    "skillId": {
+      "type": "string",
+      "pattern": "^SKL-[0-9]{3}$"
+    },
+    "integrationId": {
+      "type": "string",
+      "pattern": "^INT-[0-9]{3}$"
+    },
+    "projectId": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]{2,127}$"
+    },
+    "taskId": {
+      "type": "string",
+      "pattern": "^task_[A-Za-z0-9_-]{6,128}$"
+    },
+    "traceId": {
+      "type": "string",
+      "pattern": "^trace_[A-Za-z0-9_-]{6,128}$"
+    },
+    "artifactId": {
+      "type": "string",
+      "pattern": "^artifact_[A-Za-z0-9._:-]{3,256}$"
+    },
+    "approvalId": {
+      "type": "string",
+      "pattern": "^approval_[A-Za-z0-9_-]{6,128}$"
+    },
+    "runtimeId": {
+      "type": "string",
+      "enum": ["manus", "openai", "cursor", "github", "grok", "claude"]
+    },
+    "operatingClass": {
+      "type": "string",
+      "enum": ["control", "knowledge", "creation", "analysis", "evaluation", "delivery_operations"]
+    },
+    "riskTier": {
+      "type": "string",
+      "enum": ["low", "moderate", "high", "restricted"]
+    },
+    "integrationTier": {
+      "type": "string",
+      "enum": ["I0", "I1", "I2", "I3", "I4"]
+    },
+    "roleStatus": {
+      "type": "string",
+      "enum": ["draft", "pilot", "approved", "suspended", "retired"]
+    },
+    "integrationStatus": {
+      "type": "string",
+      "enum": ["proposed", "sandbox", "approved", "suspended", "retired"]
+    },
+    "skillStatus": {
+      "type": "string",
+      "enum": ["specified", "built", "evaluated", "pilot", "promoted", "monitored", "retired"]
+    },
+    "workStatus": {
+      "type": "string",
+      "enum": ["INTAKE", "PLANNED", "IN_PROGRESS", "DRAFT", "NEEDS_REVIEW", "APPROVED_FOR_NEXT_GATE", "BLOCKED", "REJECTED", "RELEASE_READY", "COMPLETED", "ARCHIVED"]
+    },
+    "executionStatus": {
+      "type": "string",
+      "enum": ["QUEUED", "LEASED", "RUNNING", "WAITING_FOR_TOOL", "WAITING_FOR_APPROVAL", "RETRY_SCHEDULED", "CANCELLED", "TIMED_OUT", "FAILED", "SUCCEEDED"]
+    },
+    "dataClassification": {
+      "type": "string",
+      "enum": ["public", "internal", "confidential", "restricted"]
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 256
+    },
+    "reference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 256},
+        "version": {"$ref": "#/$defs/semanticVersion"},
+        "uri": {"type": "string", "format": "uri-reference"}
+      }
+    },
+    "sourceInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "source_status"],
+      "properties": {
+        "source_id": {"type": "string", "minLength": 1},
+        "source_status": {"type": "string", "enum": ["approved", "provisional", "unverified"]},
+        "retrieved_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tools", "source_ids", "workflow_version"],
+      "properties": {
+        "tools": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {"type": "string", "minLength": 1}
+        },
+        "workflow_version": {"$ref": "#/$defs/semanticVersion"},
+        "rights_or_usage_status": {"type": "string"}
+      }
+    }
+  }
+}
