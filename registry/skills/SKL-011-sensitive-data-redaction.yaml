@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-011
+  name: sensitive-data-detection-redaction
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Detect sensitive content, propose minimization or redaction, and block routing when data classification or approved scope is insufficient.
+  inputs: [candidate input or artifact, data-handling policy, permitted classification scope]
+  outputs: [classification findings, redaction proposal, blocked-routing record]
+  limitations: [does not declassify information, does not override data owner, does not expose restricted content]
+  allowed_runtimes: [manus, openai]
+  tool_restrictions: [no external data transfer or publication tool is permitted]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-011-sensitive-input.yaml, fixtures/skills/SKL-011-restricted-routing.yaml]
+    acceptance_criteria: [sensitive findings are classified, restricted routing is blocked, redaction preserves required utility]
+    regression_threshold: No detected restricted content is routed without an explicit approved policy.
+  escalation:
+    triggers: [restricted-data, unclear-classification, sensitive-data-in-log]

@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-015
+  name: option-trade-off-analysis
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Compare viable options against explicit criteria, constraints, risks, cost implications, uncertainty, and accountable decision ownership.
+  inputs: [decision question, option set, evaluation criteria, evidence]
+  outputs: [comparison matrix, assumptions, recommendation rationale, unresolved decisions]
+  limitations: [does not make the final business decision, does not hide uncertainty, does not fabricate cost or performance evidence]
+  allowed_runtimes: [manus, openai, cursor]
+  tool_restrictions: [no action-capable integration is required]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-015-architecture-options.yaml]
+    acceptance_criteria: [criteria are explicit, assumptions are separated, recommendation has named owner]
+    regression_threshold: No recommendation is delivered without a trade-off record.
+  escalation:
+    triggers: [missing-criteria, insufficient-evidence, conflicting-stakeholder-goals]

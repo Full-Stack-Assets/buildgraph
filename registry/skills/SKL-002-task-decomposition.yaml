@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-002
+  name: task-decomposition-dependency-mapping
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Decompose an approved objective into bounded work items, dependencies, assumptions, handoffs, and measurable completion conditions.
+  inputs: [approved objective, scope constraints, source references]
+  outputs: [work breakdown, dependency map, proposed handoffs, blockers]
+  limitations: [does not authorize work, does not change task ownership, does not override policy]
+  allowed_runtimes: [manus, openai, cursor]
+  tool_restrictions: [no external action tool is required]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-002-valid-task.yaml]
+    acceptance_criteria: [all dependencies are explicit, every work item has an owner type, blockers are separated from assumptions]
+    regression_threshold: No critical missing dependency in reviewed pilot fixtures.
+  escalation:
+    triggers: [ambiguous-scope, missing-owner, policy-conflict]

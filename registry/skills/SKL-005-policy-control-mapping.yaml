@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-005
+  name: policy-to-control-mapping
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Translate approved policy statements into explicit role boundaries, integration limits, quality gates, escalation triggers, and validation conditions.
+  inputs: [approved policy, role or integration context, risk classification]
+  outputs: [control mapping, validation criteria, escalation requirements]
+  limitations: [does not create policy authority, does not override existing controls, does not grant permissions]
+  allowed_runtimes: [manus, openai]
+  tool_restrictions: [no action-capable integration is required]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-005-approval-control.yaml]
+    acceptance_criteria: [each policy rule maps to an enforceable control, conflicts are surfaced, authority remains bounded]
+    regression_threshold: No mapped high-risk policy control omits an escalation path.
+  escalation:
+    triggers: [policy-conflict, ambiguous-control, missing-owner]

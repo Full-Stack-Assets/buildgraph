@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-010
+  name: version-lineage-provenance-tracking
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Record source, version, parent-child artifact relationships, transformation context, and rights or usage references for governed artifacts.
+  inputs: [artifact reference, source references, transformation context]
+  outputs: [lineage record, provenance links, missing-lineage report]
+  limitations: [does not invent source history, does not alter master artifacts, does not resolve rights disputes]
+  allowed_runtimes: [manus, openai, cursor, github]
+  tool_restrictions: [writes are append-only metadata or draft artifact records]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-010-derived-artifact.yaml, fixtures/skills/SKL-010-missing-parent.yaml]
+    acceptance_criteria: [parent sources are named, versions are retained, missing lineage blocks promotion]
+    regression_threshold: No derivative artifact reaches release-ready status without required lineage.
+  escalation:
+    triggers: [missing-parent, version-conflict, unclear-rights, retention-conflict]

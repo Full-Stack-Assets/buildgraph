@@ -1,0 +1,28 @@
+api_version: buildgraph/v0.2
+kind: ProjectSpec
+metadata:
+  id: buildgraph-core
+  name: BuildGraph Core
+  version: 0.1.0
+  status: active
+  owner: Full-Stack-Assets
+spec:
+  portfolio_id: full-stack-assets
+  purpose: Implement and validate the private BuildGraph v0 registry, governance contracts, policy packs, and controlled runtime adapter interfaces.
+  domain: governance-and-orchestration
+  systems_of_record:
+    - system: GitHub
+      purpose: Source code, schema, policy, manifest, and CI provenance.
+      authority: canonical
+    - system: BuildGraph registry
+      purpose: Canonical role, skill, integration, policy, and workflow manifest state.
+      authority: canonical
+    - system: ClickUp or Linear
+      purpose: Human work planning and exception coordination when explicitly mapped.
+      authority: work_queue
+  authority:
+    maximum_integration_tier: I2
+    approval_policy_ref: approval-policy
+  data_handling:
+    permitted_classifications: [public, internal, confidential]
+    retention_policy_ref: data-handling-policy

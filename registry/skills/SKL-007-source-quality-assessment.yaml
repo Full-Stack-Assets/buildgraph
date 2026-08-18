@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-007
+  name: source-quality-assessment
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Assess source authority, recency, relevance, provenance, completeness, and conflict risk before evidence is used in a BuildGraph handoff.
+  inputs: [source reference, task context, source freshness requirements]
+  outputs: [source assessment, confidence classification, limitations, refresh recommendation]
+  limitations: [does not convert weak sources into authoritative evidence, does not make business decisions]
+  allowed_runtimes: [manus, openai, grok]
+  tool_restrictions: [research access is read-only]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-007-primary-source.yaml, fixtures/skills/SKL-007-stale-source.yaml]
+    acceptance_criteria: [authority and freshness are stated, conflicts are named, source limitations are explicit]
+    regression_threshold: No stale or weak source is mislabeled as verified without a qualifier.
+  escalation:
+    triggers: [source-conflict, stale-source, unverifiable-provenance]

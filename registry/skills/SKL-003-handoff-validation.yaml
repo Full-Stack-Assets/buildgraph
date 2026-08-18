@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-003
+  name: status-handoff-validation
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Validate that a work result includes status, role identity, inputs, outputs, provenance, quality evidence, risks, human decision, and next handoff.
+  inputs: [candidate result envelope, role contract, workflow state]
+  outputs: [validated handoff, missing-field report, blocked status when incomplete]
+  limitations: [does not waive a quality gate, does not approve a consequential action, does not invent provenance]
+  allowed_runtimes: [manus, openai, cursor, github]
+  tool_restrictions: [no external action tool is required]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-003-valid-handoff.yaml, fixtures/skills/SKL-003-missing-provenance.yaml]
+    acceptance_criteria: [all required envelope fields are checked, incomplete handoffs are blocked, missing items are explicit]
+    regression_threshold: No incomplete handoff is promoted to the next workflow gate.
+  escalation:
+    triggers: [missing-provenance, missing-quality-evidence, invalid-work-status]

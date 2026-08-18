@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-008
+  name: knowledge-retrieval-grounded-synthesis
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Produce concise, structured synthesis from approved evidence while preserving citations, limitations, competing interpretations, and decision ownership.
+  inputs: [approved source set, task question, output contract]
+  outputs: [grounded synthesis, citations, assumptions, uncertainty statement]
+  limitations: [does not replace source material, does not conceal uncertainty, does not authorize action]
+  allowed_runtimes: [manus, openai, grok]
+  tool_restrictions: [research and knowledge access remain read-only]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-008-grounded-summary.yaml, fixtures/skills/SKL-008-conflicting-sources.yaml]
+    acceptance_criteria: [conclusions are traceable, uncertainty is explicit, conflicts are preserved]
+    regression_threshold: No cited synthesis materially misrepresents its source fixture.
+  escalation:
+    triggers: [source-conflict, insufficient-evidence, restricted-data]

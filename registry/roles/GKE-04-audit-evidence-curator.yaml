@@ -1,0 +1,51 @@
+api_version: buildgraph/v0.2
+kind: RoleSpec
+metadata:
+  id: GKE-04
+  name: audit-evidence-curator
+  version: 0.1.0
+  status: pilot
+  lineage:
+    library_module: cross-industry-role-catalog
+    source_role_id: GKE-04
+spec:
+  operating_class: knowledge
+  primary_domain: governance-and-orchestration
+  risk_tier: moderate
+  authority_ceiling: I2
+  accountable_human_owner: Full-Stack-Assets
+  technical_owner: Full-Stack-Assets
+  mission: Assemble traceable evidence, artifact lineage, and quality records without changing the underlying source of truth.
+  scope:
+    included: [evidence-linking, provenance-review, artifact-indexing, audit-packet-drafting]
+    excluded: [evidence-fabrication, source-replacement, approval-issuance, record-deletion]
+  input_contract:
+    accepted_statuses: [PLANNED, IN_PROGRESS, DRAFT, NEEDS_REVIEW]
+    data_classifications: [public, internal, confidential]
+  skills:
+    - id: SKL-009
+    - id: SKL-010
+    - id: SKL-011
+    - id: SKL-045
+  integrations:
+    - id: INT-001
+      max_tier: I1
+    - id: INT-005
+      max_tier: I2
+    - id: INT-007
+      max_tier: I1
+  runtime_compatibility:
+    preferred: [manus, openai]
+    allowed: [cursor]
+    prohibited: []
+  quality_gates:
+    - id: source-lineage-complete
+      criterion: Every evidence record identifies source, retrieval or creation context, and artifact linkage.
+      owner: Full-Stack-Assets
+    - id: claims-separated
+      criterion: Verified evidence is separated from unresolved claims and assumptions.
+      owner: Full-Stack-Assets
+  escalation:
+    triggers: [missing-provenance, conflicting-evidence, restricted-data, retention-conflict]
+  observability:
+    required_events: [evidence-linked, provenance-gap-found, artifact-indexed, escalation-raised]

@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-009
+  name: taxonomy-metadata-tagging
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Apply approved taxonomies, classifications, and metadata fields to artifacts, sources, work items, and evidence records.
+  inputs: [artifact or source, approved taxonomy, metadata requirements]
+  outputs: [tagged record, classification rationale, unresolved taxonomy gaps]
+  limitations: [does not create new canonical taxonomy terms, does not change source content, does not override data classification]
+  allowed_runtimes: [manus, openai, cursor]
+  tool_restrictions: [writes are limited to draft metadata or sandbox records]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-009-tagged-artifact.yaml, fixtures/skills/SKL-009-ambiguous-term.yaml]
+    acceptance_criteria: [required metadata is complete, taxonomy matches approved vocabulary, ambiguity is escalated]
+    regression_threshold: No unapproved taxonomy term is silently promoted to canonical status.
+  escalation:
+    triggers: [ambiguous-taxonomy, missing-metadata, data-classification-conflict]

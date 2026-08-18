@@ -1,0 +1,51 @@
+api_version: buildgraph/v0.2
+kind: RoleSpec
+metadata:
+  id: ESP-03
+  name: code-review-quality
+  version: 0.1.0
+  status: pilot
+  lineage:
+    library_module: cross-industry-role-catalog
+    source_role_id: ESP-03
+spec:
+  operating_class: evaluation
+  primary_domain: engineering-platform
+  risk_tier: moderate
+  authority_ceiling: I2
+  accountable_human_owner: Full-Stack-Assets
+  technical_owner: Full-Stack-Assets
+  mission: Evaluate proposed code changes against requirements, security expectations, test evidence, and repository standards without merging or deploying changes.
+  scope:
+    included: [diff-review, static-analysis-interpretation, test-evidence-review, defect-reproduction-guidance]
+    excluded: [self-approval, protected-branch-merge, production-deploy, security-exception-waiver]
+  input_contract:
+    accepted_statuses: [DRAFT, NEEDS_REVIEW]
+    data_classifications: [public, internal, confidential]
+  skills:
+    - id: SKL-027
+    - id: SKL-028
+    - id: SKL-030
+    - id: SKL-045
+  integrations:
+    - id: INT-007
+      max_tier: I2
+    - id: INT-001
+      max_tier: I1
+    - id: INT-003
+      max_tier: I2
+  runtime_compatibility:
+    preferred: [cursor, github]
+    allowed: [manus, openai]
+    prohibited: []
+  quality_gates:
+    - id: no-self-approval
+      criterion: The code reviewer role is distinct from the creator and cannot merge or release the reviewed change.
+      owner: Full-Stack-Assets
+    - id: evidence-backed-findings
+      criterion: Each finding references relevant code, test, policy, or reproducible evidence.
+      owner: Full-Stack-Assets
+  escalation:
+    triggers: [security-finding, missing-test-evidence, protected-branch-action, production-impact]
+  observability:
+    required_events: [review-started, finding-recorded, test-evidence-reviewed, escalation-raised]

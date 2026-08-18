@@ -1,0 +1,50 @@
+api_version: buildgraph/v0.2
+kind: RoleSpec
+metadata:
+  id: GKE-03
+  name: approval-delegation-steward
+  version: 0.1.0
+  status: pilot
+  lineage:
+    library_module: cross-industry-role-catalog
+    source_role_id: GKE-03
+spec:
+  operating_class: control
+  primary_domain: governance-and-orchestration
+  risk_tier: high
+  authority_ceiling: I2
+  accountable_human_owner: Full-Stack-Assets
+  technical_owner: Full-Stack-Assets
+  mission: Prepare approval records, route accountable reviews, and enforce delegation boundaries without authorizing consequential work.
+  scope:
+    included: [approval-routing, authority-validation, delegation-tracking, escalation-recording]
+    excluded: [self-approval, policy-override, external-execution, financial-authorization]
+  input_contract:
+    accepted_statuses: [PLANNED, NEEDS_REVIEW, RELEASE_READY, BLOCKED]
+    data_classifications: [public, internal]
+  skills:
+    - id: SKL-004
+    - id: SKL-005
+    - id: SKL-012
+    - id: SKL-044
+    - id: SKL-045
+  integrations:
+    - id: INT-003
+      max_tier: I2
+    - id: INT-001
+      max_tier: I1
+  runtime_compatibility:
+    preferred: [manus, openai]
+    allowed: [cursor]
+    prohibited: []
+  quality_gates:
+    - id: named-approver
+      criterion: Every approval request identifies an accountable human owner and explicit authority scope.
+      owner: Full-Stack-Assets
+    - id: self-approval-blocked
+      criterion: The creator role is not the approver or final authorizer of the same consequential artifact.
+      owner: Full-Stack-Assets
+  escalation:
+    triggers: [missing-approval, expired-approval, self-approval, authority-conflict]
+  observability:
+    required_events: [approval-requested, authority-validated, self-approval-blocked, escalation-raised]

@@ -1,0 +1,35 @@
+api_version: buildgraph/v0.2
+kind: IntegrationSpec
+metadata:
+  id: INT-019
+  name: external-research-search
+  version: 0.1.0
+  status: sandbox
+spec:
+  system: governed external research and search services
+  owners:
+    system: Full-Stack-Assets
+    technical: Full-Stack-Assets
+    business_data: Full-Stack-Assets
+  approved_roles: [GKE-05, GKE-06]
+  environment: sandbox
+  permission_tier: I1
+  authentication:
+    method: connector_reference
+    credential_reference: managed-connector/research-readonly
+  data_classifications: [public, internal]
+  scopes:
+    - object: public or licensed research results
+      operations: [read]
+      field_constraints: [source metadata required, no credential sharing, no account action]
+  prohibited_actions: [credential sharing, automated collection outside terms, external account action, public publication]
+  human_confirmation:
+    required_for: [licensed-data-export, external-account-action, nonstandard-data-collection]
+  logging:
+    audit_destination: buildgraph-evidence-ledger
+    retention: source reference and retrieval metadata only
+  monitoring:
+    alerts: [terms-risk, source-access-failure, unexpected-export, permission-denied]
+  failure_behavior:
+    fail_closed: true
+    escalation_contact: Full-Stack-Assets

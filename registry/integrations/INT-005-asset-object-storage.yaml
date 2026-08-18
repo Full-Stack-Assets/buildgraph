@@ -1,0 +1,35 @@
+api_version: buildgraph/v0.2
+kind: IntegrationSpec
+metadata:
+  id: INT-005
+  name: asset-object-storage
+  version: 0.1.0
+  status: sandbox
+spec:
+  system: governed asset and object storage
+  owners:
+    system: Full-Stack-Assets
+    technical: Full-Stack-Assets
+    business_data: Full-Stack-Assets
+  approved_roles: [GKE-04]
+  environment: sandbox
+  permission_tier: I2
+  authentication:
+    method: service_identity
+    credential_reference: buildgraph-service-identity/sandbox-artifact-store
+  data_classifications: [public, internal, confidential]
+  scopes:
+    - object: versioned project artifacts and provenance metadata
+      operations: [read, draft_write]
+      field_constraints: [project folders only, append-only provenance, no public share]
+  prohibited_actions: [delete original artifact, change master label, public sharing, overwrite source artifact]
+  human_confirmation:
+    required_for: [deletion, master-label change, public sharing]
+  logging:
+    audit_destination: buildgraph-evidence-ledger
+    retention: project-defined artifact retention with lineage metadata
+  monitoring:
+    alerts: [delete-attempt, public-share-attempt, hash-mismatch, permission-denied]
+  failure_behavior:
+    fail_closed: true
+    escalation_contact: Full-Stack-Assets

@@ -1,0 +1,13 @@
+api_version: buildgraph/v0.2
+kind: PortfolioSpec
+metadata:
+  id: full-stack-assets
+  name: Full-Stack-Assets Portfolio
+  version: 0.1.0
+  status: active
+  owner: Full-Stack-Assets
+spec:
+  purpose: Coordinate governed agentic capabilities, shared standards, and project-specific operating workflows across the Full-Stack-Assets portfolio.
+  governance_owner: Full-Stack-Assets
+  project_ids: [buildgraph-core]
+  default_policy_refs: [risk-tier-policy, approval-policy, data-handling-policy, release-policy]

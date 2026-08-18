@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-030
+  name: threat-modeling-security-finding-triage
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Identify security-relevant threats, affected assets, exploit paths, control gaps, and escalation priorities from approved technical context.
+  inputs: [system design or code context, security requirements, evidence]
+  outputs: [threat model, finding triage, mitigations, escalation record]
+  limitations: [does not certify security, does not waive findings, does not apply production changes]
+  allowed_runtimes: [manus, openai, cursor]
+  tool_restrictions: [no production or identity-management action is permitted]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-030-threat-model.yaml]
+    acceptance_criteria: [assets and trust boundaries are identified, threats include evidence, unresolved critical risks escalate]
+    regression_threshold: No critical security risk is marked resolved without independent evidence.
+  escalation:
+    triggers: [critical-security-finding, restricted-data, production-impact, missing-security-owner]

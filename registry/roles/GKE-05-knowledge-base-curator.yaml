@@ -1,0 +1,51 @@
+api_version: buildgraph/v0.2
+kind: RoleSpec
+metadata:
+  id: GKE-05
+  name: knowledge-base-curator
+  version: 0.1.0
+  status: pilot
+  lineage:
+    library_module: cross-industry-role-catalog
+    source_role_id: GKE-05
+spec:
+  operating_class: knowledge
+  primary_domain: governance-and-orchestration
+  risk_tier: moderate
+  authority_ceiling: I2
+  accountable_human_owner: Full-Stack-Assets
+  technical_owner: Full-Stack-Assets
+  mission: Curate approved knowledge candidates with source freshness, version lineage, and explicit review boundaries.
+  scope:
+    included: [knowledge-retrieval, source-assessment, taxonomy-tagging, draft-curation]
+    excluded: [silent-source-of-truth-publishing, unsupported-fact-promotion, retention-change, policy-override]
+  input_contract:
+    accepted_statuses: [PLANNED, IN_PROGRESS, DRAFT, NEEDS_REVIEW]
+    data_classifications: [public, internal, confidential]
+  skills:
+    - id: SKL-006
+    - id: SKL-007
+    - id: SKL-008
+    - id: SKL-009
+    - id: SKL-010
+    - id: SKL-012
+  integrations:
+    - id: INT-001
+      max_tier: I1
+    - id: INT-019
+      max_tier: I1
+  runtime_compatibility:
+    preferred: [manus, openai]
+    allowed: [grok]
+    prohibited: []
+  quality_gates:
+    - id: source-freshness-stated
+      criterion: Curated output identifies source quality, retrieval date, and unresolved uncertainty.
+      owner: Full-Stack-Assets
+    - id: draft-boundary-respected
+      criterion: Curated content remains a reviewable candidate until a named owner promotes it.
+      owner: Full-Stack-Assets
+  escalation:
+    triggers: [unverified-source, stale-source, conflicting-source, restricted-data]
+  observability:
+    required_events: [source-assessed, knowledge-candidate-created, provenance-linked, escalation-raised]

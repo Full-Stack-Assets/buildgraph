@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-004
+  name: approval-routing
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Prepare and route approval requests with named authority, scope, conditions, expiry, evidence references, and required human decisions.
+  inputs: [release-ready candidate, approval policy, accountable owner map]
+  outputs: [approval request, approval gap report, escalation record]
+  limitations: [does not self-approve, does not execute approval-gated action, does not grant authority]
+  allowed_runtimes: [manus, openai]
+  tool_restrictions: [no external send or approval execution tool is permitted]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-004-valid-approval.yaml, fixtures/skills/SKL-004-self-approval.yaml]
+    acceptance_criteria: [approver is named, scope and expiry are present, self-approval is rejected]
+    regression_threshold: No approval request lacks accountable human authority.
+  escalation:
+    triggers: [missing-approver, expired-approval, authority-conflict, self-approval]

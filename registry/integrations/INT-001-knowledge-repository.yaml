@@ -1,0 +1,35 @@
+api_version: buildgraph/v0.2
+kind: IntegrationSpec
+metadata:
+  id: INT-001
+  name: knowledge-repository
+  version: 0.1.0
+  status: sandbox
+spec:
+  system: governed knowledge repositories
+  owners:
+    system: Full-Stack-Assets
+    technical: Full-Stack-Assets
+    business_data: Full-Stack-Assets
+  approved_roles: [GKE-03, GKE-04, GKE-05, GKE-06, ESP-01, ESP-03]
+  environment: sandbox
+  permission_tier: I1
+  authentication:
+    method: connector_reference
+    credential_reference: managed-connector/knowledge-readonly
+  data_classifications: [public, internal, confidential]
+  scopes:
+    - object: approved collections and documents
+      operations: [read]
+      field_constraints: [approved collections only, no broad export, no source replacement]
+  prohibited_actions: [publish source-of-truth content, replace approved content, delete records, share externally]
+  human_confirmation:
+    required_for: [source-of-truth publication, external sharing, retention change]
+  logging:
+    audit_destination: buildgraph-evidence-ledger
+    retention: project-defined metadata retention; minimize raw content
+  monitoring:
+    alerts: [permission-denied, restricted-data-access, unexpected-export, source-access-failure]
+  failure_behavior:
+    fail_closed: true
+    escalation_contact: Full-Stack-Assets

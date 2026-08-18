@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-028
+  name: test-design-defect-reproduction
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Design focused tests, reproduce reported defects, identify expected versus observed behavior, and preserve repeatable evidence.
+  inputs: [requirements, defect report or code diff, repository context]
+  outputs: [test cases, reproduction steps, observed results, defect evidence]
+  limitations: [does not change production data, does not merge changes, does not declare a defect fixed without evidence]
+  allowed_runtimes: [cursor, github, manus, openai]
+  tool_restrictions: [execution is limited to isolated or approved test environments]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-028-defect-report.yaml]
+    acceptance_criteria: [steps are reproducible, expected and observed results are separated, evidence is preserved]
+    regression_threshold: No failed reproduction is reported as a verified defect.
+  escalation:
+    triggers: [production-impact, non-reproducible-critical-defect, missing-test-environment]

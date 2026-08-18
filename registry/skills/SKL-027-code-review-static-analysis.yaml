@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-027
+  name: code-review-static-analysis-interpretation
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Review proposed code changes and static-analysis evidence for correctness, maintainability, security, policy alignment, and test impact.
+  inputs: [code diff, repository standards, test and static-analysis output]
+  outputs: [review findings, severity classification, evidence references, recommended next gate]
+  limitations: [does not merge code, does not waive security findings, does not approve its own change]
+  allowed_runtimes: [cursor, github, manus, openai]
+  tool_restrictions: [repository actions are limited to read, branch or pull-request draft scope]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-027-safe-diff.yaml, fixtures/skills/SKL-027-security-defect.yaml]
+    acceptance_criteria: [findings cite relevant evidence, severity is explicit, self-approval is blocked]
+    regression_threshold: No critical code finding is silently downgraded without evidence.
+  escalation:
+    triggers: [security-finding, protected-branch-action, missing-test-evidence]

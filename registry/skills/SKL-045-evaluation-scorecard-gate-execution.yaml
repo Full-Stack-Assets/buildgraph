@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-045
+  name: evaluation-scorecard-gate-execution
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Execute an approved quality scorecard, record evidence by criterion, determine gate readiness, and identify blocked conditions without waiving failures.
+  inputs: [candidate output, role quality gates, evaluation rubric, evidence references]
+  outputs: [scorecard, gate status, defect list, escalation record]
+  limitations: [does not waive critical failures, does not approve its own output, does not authorize external action]
+  allowed_runtimes: [manus, openai, cursor, github]
+  tool_restrictions: [no release, merge, deploy, publication, payment, or external communication tool is permitted]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-045-passing-scorecard.yaml, fixtures/skills/SKL-045-failing-scorecard.yaml]
+    acceptance_criteria: [each gate has evidence, critical failure blocks progression, decision owner is explicit]
+    regression_threshold: No critical quality failure is promoted to approved-for-next-gate.
+  escalation:
+    triggers: [critical-failure, missing-evidence, self-evaluation, policy-conflict]

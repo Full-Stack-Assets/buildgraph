@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-006
+  name: claim-extraction-source-citation
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Extract material claims from approved sources and attach precise source references, retrieval context, and confidence qualifiers.
+  inputs: [source materials, claim-selection criteria]
+  outputs: [claim list, citations, source metadata, unresolved-claim list]
+  limitations: [does not treat snippets as complete evidence, does not invent citations, does not assert unsupported facts]
+  allowed_runtimes: [manus, openai, grok]
+  tool_restrictions: [research access is read-only]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-006-cited-claims.yaml, fixtures/skills/SKL-006-unsupported-claim.yaml]
+    acceptance_criteria: [material claims have traceable sources, retrieval context is present, unsupported claims are rejected]
+    regression_threshold: No material unsupported claim passes a reviewed fixture.
+  escalation:
+    triggers: [missing-source, ambiguous-claim, source-access-limit]

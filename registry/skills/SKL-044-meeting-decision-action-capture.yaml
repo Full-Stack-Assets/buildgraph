@@ -1,0 +1,21 @@
+api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-044
+  name: meeting-decision-action-capture
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Capture approved meeting or decision context into structured decisions, action items, owners, deadlines, unresolved issues, and evidence references.
+  inputs: [approved meeting notes or transcript, decision context, participant information]
+  outputs: [decision record, action list, owner assignments, uncertainty and escalation record]
+  limitations: [does not invent consent, does not send communications, does not alter calendar or work ownership without approval]
+  allowed_runtimes: [manus, openai]
+  tool_restrictions: [communication and calendar access are draft-only]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-044-decision-record.yaml]
+    acceptance_criteria: [decisions and actions are separated, owners are explicit, ambiguous commitment is flagged]
+    regression_threshold: No inferred decision is recorded as a confirmed decision.
+  escalation:
+    triggers: [ambiguous-decision, missing-owner, sensitive-disclosure]
