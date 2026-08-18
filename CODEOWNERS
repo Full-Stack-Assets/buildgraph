@@ -1,0 +1,10 @@
+# Replace the placeholder owner before admitting external contributors.
+* @Full-Stack-Assets
+
+/schemas/ @Full-Stack-Assets
+/registry/ @Full-Stack-Assets
+/policies/ @Full-Stack-Assets
+/adapters/ @Full-Stack-Assets
+/compilers/ @Full-Stack-Assets
+/evals/ @Full-Stack-Assets
+/.github/ @Full-Stack-Assets

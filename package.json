@@ -1,0 +1,28 @@
+{
+  "name": "@full-stack-assets/buildgraph",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Declarative control plane for governed, runtime-independent agentic work.",
+  "license": "UNLICENSED",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "lint": "eslint . --max-warnings=0",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "validate": "npm run lint && npm run typecheck && npm test",
+    "validate:registry": "tsx scripts/validate-registry.ts"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.35.0",
+    "@types/node": "^22.15.0",
+    "eslint": "^9.35.0",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.43.0",
+    "vitest": "^3.2.4"
+  }
+}
