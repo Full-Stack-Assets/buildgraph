@@ -1,0 +1,36 @@
+api_version: buildgraph/v0.2
+kind: IntegrationSpec
+metadata:
+  id: INT-021
+  name: clickup-mission-control
+  version: 0.1.0
+  status: sandbox
+spec:
+  system: ClickUp Mission Control via Public API
+  owners:
+    system: Full-Stack-Assets
+    technical: Full-Stack-Assets
+    business_data: Full-Stack-Assets
+  approved_roles: [GKE-03, GKE-05, ESP-01, ESP-03]
+  environment: sandbox
+  permission_tier: I2
+  authentication:
+    method: delegated_user
+    credential_reference: runtime-secret/CLICKUP_API_TOKEN
+  data_classifications: [public, internal, confidential]
+  scopes:
+    - object: configured Mission Control tasks
+      operations: [read, draft_write, reversible_write]
+      field_constraints: [configured Mission Control lists only, idempotency key required for mutations, protected status transitions require approval record reference]
+  prohibited_actions: [delete tasks, create or delete workspace structures, edit workspace permissions, manage billing, change credentials, approve own consequential output]
+  human_confirmation:
+    required_for: [approval status transition, release status transition, completion status transition]
+    approval_record_reference: buildgraph/ApprovalRecord
+  logging:
+    audit_destination: buildgraph-evidence-ledger
+    retention: project-defined work metadata retention
+  monitoring:
+    alerts: [authentication-failure, authorization-failure, rate-limit-saturation, queue-overflow, duplicate-in-flight-idempotency-key, connector-failure]
+  failure_behavior:
+    fail_closed: true
+    escalation_contact: Full-Stack-Assets
