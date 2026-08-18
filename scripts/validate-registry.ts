@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 import { Ajv2020 } from "ajv/dist/2020.js";
+import { registerBuildGraphFormats } from "./ajv-formats.js";
 import { parse } from "yaml";
 
 type Manifest = {
@@ -88,6 +89,7 @@ function asTier(value: unknown): number | undefined {
 }
 
 const ajv = new Ajv2020({ allErrors: true, strict: true });
+registerBuildGraphFormats(ajv);
 
 for (const schemaPath of listFiles(schemaDirectory, (path) => path.endsWith(".schema.json"))) {
   ajv.addSchema(JSON.parse(readFileSync(schemaPath, "utf8")));

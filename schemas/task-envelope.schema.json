@@ -1,0 +1,123 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/task-envelope.schema.json",
+  "title": "BuildGraph TaskEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["api_version", "kind", "metadata", "spec"],
+  "properties": {
+    "api_version": {"const": "buildgraph/v0.1"},
+    "kind": {"const": "TaskEnvelope"},
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["task_id", "trace_id", "idempotency_key", "created_at"],
+      "properties": {
+        "task_id": {"$ref": "common.schema.json#/$defs/taskId"},
+        "trace_id": {"$ref": "common.schema.json#/$defs/traceId"},
+        "idempotency_key": {"type": "string", "minLength": 8, "maxLength": 256},
+        "created_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["project_id", "objective", "role_ref", "workflow_ref", "authority", "allowed_skills", "allowed_integrations", "input_refs", "output_contract", "runtime_route", "deadlines"],
+      "properties": {
+        "project_id": {"$ref": "common.schema.json#/$defs/projectId"},
+        "work_item_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["system", "id"],
+          "properties": {
+            "system": {"type": "string", "minLength": 1},
+            "id": {"type": "string", "minLength": 1}
+          }
+        },
+        "objective": {"type": "string", "minLength": 15},
+        "role_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "version"],
+          "properties": {
+            "id": {"$ref": "common.schema.json#/$defs/roleId"},
+            "version": {"$ref": "common.schema.json#/$defs/semanticVersion"}
+          }
+        },
+        "workflow_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "version"],
+          "properties": {
+            "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,127}$"},
+            "version": {"$ref": "common.schema.json#/$defs/semanticVersion"}
+          }
+        },
+        "authority": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["risk_tier", "maximum_integration_tier", "approval_policy_ref"],
+          "properties": {
+            "risk_tier": {"$ref": "common.schema.json#/$defs/riskTier"},
+            "maximum_integration_tier": {"$ref": "common.schema.json#/$defs/integrationTier"},
+            "approval_policy_ref": {"type": "string", "minLength": 1}
+          }
+        },
+        "allowed_skills": {"type": "array", "minItems": 1, "items": {"$ref": "common.schema.json#/$defs/skillId"}},
+        "allowed_integrations": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "scope_ref", "max_tier"],
+            "properties": {
+              "id": {"$ref": "common.schema.json#/$defs/integrationId"},
+              "scope_ref": {"type": "string", "minLength": 1},
+              "max_tier": {"$ref": "common.schema.json#/$defs/integrationTier"}
+            }
+          }
+        },
+        "input_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["artifact_id", "status"],
+            "properties": {
+              "artifact_id": {"$ref": "common.schema.json#/$defs/artifactId"},
+              "status": {"type": "string", "enum": ["approved", "provisional", "unverified"]}
+            }
+          }
+        },
+        "output_contract": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["required_artifacts", "result_schema_ref"],
+          "properties": {
+            "required_artifacts": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+            "result_schema_ref": {"type": "string", "minLength": 1}
+          }
+        },
+        "runtime_route": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["candidates", "selection_policy"],
+          "properties": {
+            "candidates": {"type": "array", "minItems": 1, "items": {"$ref": "common.schema.json#/$defs/runtimeId"}},
+            "selection_policy": {"type": "string", "minLength": 1}
+          }
+        },
+        "deadlines": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["hard_stop_at"],
+          "properties": {
+            "soft_due_at": {"type": "string", "format": "date-time"},
+            "hard_stop_at": {"type": "string", "format": "date-time"}
+          }
+        }
+      }
+    }
+  }
+}

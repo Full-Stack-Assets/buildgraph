@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/agent-passport.schema.json",
+  "title": "BuildGraph AgentPassport",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["api_version", "kind", "metadata", "spec"],
+  "properties": {
+    "api_version": {"const": "buildgraph/v0.1"},
+    "kind": {"const": "AgentPassport"},
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["agent_instance_id", "task_id", "trace_id", "issued_at", "expires_at"],
+      "properties": {
+        "agent_instance_id": {"type": "string", "pattern": "^agent_[A-Za-z0-9_-]{6,128}$"},
+        "task_id": {"$ref": "common.schema.json#/$defs/taskId"},
+        "trace_id": {"$ref": "common.schema.json#/$defs/traceId"},
+        "issued_at": {"type": "string", "format": "date-time"},
+        "expires_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role_ref", "runtime_id", "adapter_version", "allowed_skill_refs", "allowed_integration_scopes", "authority_ceiling", "risk_tier", "input_data_classes", "retention_rule", "revocation_ref", "nonce", "idempotency_key"],
+      "properties": {
+        "role_ref": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "version"],
+          "properties": {
+            "id": {"$ref": "common.schema.json#/$defs/roleId"},
+            "version": {"$ref": "common.schema.json#/$defs/semanticVersion"}
+          }
+        },
+        "runtime_id": {"$ref": "common.schema.json#/$defs/runtimeId"},
+        "adapter_version": {"$ref": "common.schema.json#/$defs/semanticVersion"},
+        "allowed_skill_refs": {"type": "array", "minItems": 1, "items": {"$ref": "common.schema.json#/$defs/skillId"}},
+        "allowed_integration_scopes": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["id", "scope_ref", "max_tier"],
+            "properties": {
+              "id": {"$ref": "common.schema.json#/$defs/integrationId"},
+              "scope_ref": {"type": "string", "minLength": 1},
+              "max_tier": {"$ref": "common.schema.json#/$defs/integrationTier"}
+            }
+          }
+        },
+        "authority_ceiling": {"$ref": "common.schema.json#/$defs/integrationTier"},
+        "risk_tier": {"$ref": "common.schema.json#/$defs/riskTier"},
+        "input_data_classes": {"type": "array", "minItems": 1, "items": {"$ref": "common.schema.json#/$defs/dataClassification"}},
+        "retention_rule": {"type": "string", "minLength": 1},
+        "approval_refs": {"type": "array", "items": {"$ref": "common.schema.json#/$defs/approvalId"}},
+        "revocation_ref": {"type": "string", "minLength": 1},
+        "nonce": {"type": "string", "minLength": 16, "maxLength": 256},
+        "idempotency_key": {"type": "string", "minLength": 8, "maxLength": 256}
+      }
+    }
+  }
+}

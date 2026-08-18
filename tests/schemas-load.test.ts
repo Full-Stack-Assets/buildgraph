@@ -1,6 +1,7 @@
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { resolve } from "node:path";
 import { Ajv2020 } from "ajv/dist/2020.js";
+import { registerBuildGraphFormats } from "../scripts/ajv-formats.js";
 import { describe, expect, it } from "vitest";
 
 const schemaDirectory = resolve(import.meta.dirname, "..", "schemas");
@@ -28,6 +29,7 @@ describe("canonical schemas", () => {
 
   it("compile under strict JSON Schema validation", () => {
     const ajv = new Ajv2020({ allErrors: true, strict: true });
+    registerBuildGraphFormats(ajv);
     const schemas = listSchemaFiles(schemaDirectory).map((schemaPath) =>
       JSON.parse(readFileSync(schemaPath, "utf8")) as Record<string, unknown>
     );

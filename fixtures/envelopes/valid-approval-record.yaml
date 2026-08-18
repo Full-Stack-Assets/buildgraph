@@ -1,0 +1,20 @@
+api_version: buildgraph/v0.1
+kind: ApprovalRecord
+metadata:
+  approval_id: approval_research001
+  task_id: task_research001
+  created_at: '2026-08-17T00:15:00Z'
+  status: prepared
+spec:
+  action_preview: Promote the evidence-backed research brief to the next internal review gate after source freshness review.
+  risk_tier: moderate
+  approver:
+    identity: Full-Stack-Assets
+    authority_basis: Portfolio governance owner
+  authority_scope:
+    maximum_integration_tier: I2
+    permitted_action: Approve internal workflow progression only.
+  conditions: [source freshness limitation reviewed, independent quality gate recorded]
+  expires_at: '2026-08-18T00:15:00Z'
+  evidence_refs: [evidence/citation-review-v1, evidence/source-freshness-review-v1]
+  execution_boundary: disabled_in_v0

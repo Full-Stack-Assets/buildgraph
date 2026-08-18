@@ -1,0 +1,39 @@
+api_version: buildgraph/v0.1
+kind: TaskEnvelope
+metadata:
+  task_id: task_research001
+  trace_id: trace_research001
+  idempotency_key: buildgraph-core:research001:GKE-06:v0.1.0
+  created_at: '2026-08-17T00:00:00Z'
+spec:
+  project_id: buildgraph-core
+  work_item_ref:
+    system: GitHub
+    id: issue-1
+  objective: Produce a cited architecture research brief using approved source material and explicit uncertainty statements.
+  role_ref:
+    id: GKE-06
+    version: 0.1.0
+  workflow_ref:
+    id: research-brief
+    version: 0.1.0
+  authority:
+    risk_tier: moderate
+    maximum_integration_tier: I1
+    approval_policy_ref: approval-policy
+  allowed_skills: [SKL-006, SKL-007, SKL-008, SKL-012, SKL-045]
+  allowed_integrations:
+    - id: INT-019
+      scope_ref: research/public-approved
+      max_tier: I1
+  input_refs:
+    - artifact_id: artifact_buildgraph.research-brief:input-v1
+      status: approved
+  output_contract:
+    required_artifacts: [cited-research-brief]
+    result_schema_ref: schemas/result-envelope.schema.json
+  runtime_route:
+    candidates: [manus, openai]
+    selection_policy: capability-router/v0.1
+  deadlines:
+    hard_stop_at: '2026-08-18T00:00:00Z'

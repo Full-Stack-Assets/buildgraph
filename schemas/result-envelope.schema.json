@@ -1,0 +1,103 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/result-envelope.schema.json",
+  "title": "BuildGraph ResultEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["api_version", "kind", "metadata", "spec"],
+  "properties": {
+    "api_version": {"const": "buildgraph/v0.2"},
+    "kind": {"const": "ResultEnvelope"},
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["task_id", "agent_instance_id", "trace_id", "role_id", "runtime_id", "created_at"],
+      "properties": {
+        "task_id": {"$ref": "common.schema.json#/$defs/taskId"},
+        "agent_instance_id": {"type": "string", "pattern": "^agent_[A-Za-z0-9_-]{6,128}$"},
+        "trace_id": {"$ref": "common.schema.json#/$defs/traceId"},
+        "role_id": {"$ref": "common.schema.json#/$defs/roleId"},
+        "runtime_id": {"$ref": "common.schema.json#/$defs/runtimeId"},
+        "created_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "execution_status", "outputs", "provenance", "quality_evidence", "risks_and_uncertainties", "required_human_decision", "next_handoff", "metrics"],
+      "properties": {
+        "status": {"$ref": "common.schema.json#/$defs/workStatus"},
+        "execution_status": {"$ref": "common.schema.json#/$defs/executionStatus"},
+        "outputs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["artifact_id", "type", "uri"],
+            "properties": {
+              "artifact_id": {"$ref": "common.schema.json#/$defs/artifactId"},
+              "type": {"type": "string", "minLength": 1},
+              "uri": {"type": "string", "format": "uri-reference"},
+              "summary": {"type": "string"}
+            }
+          }
+        },
+        "provenance": {"$ref": "common.schema.json#/$defs/provenance"},
+        "quality_evidence": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["gate_id", "status", "evidence_ref"],
+            "properties": {
+              "gate_id": {"type": "string", "minLength": 1},
+              "status": {"type": "string", "enum": ["passed", "failed", "not_applicable", "needs_review"]},
+              "evidence_ref": {"type": "string", "minLength": 1}
+            }
+          }
+        },
+        "risks_and_uncertainties": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["description", "severity", "mitigation_or_owner"],
+            "properties": {
+              "description": {"type": "string", "minLength": 1},
+              "severity": {"type": "string", "enum": ["low", "moderate", "high", "restricted"]},
+              "mitigation_or_owner": {"type": "string", "minLength": 1}
+            }
+          }
+        },
+        "required_human_decision": {
+          "type": ["object", "null"],
+          "additionalProperties": false,
+          "required": ["decision", "owner", "reason"],
+          "properties": {
+            "decision": {"type": "string", "minLength": 1},
+            "owner": {"$ref": "common.schema.json#/$defs/owner"},
+            "reason": {"type": "string", "minLength": 1}
+          }
+        },
+        "next_handoff": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["target_role_or_owner", "required_inputs"],
+          "properties": {
+            "target_role_or_owner": {"type": "string", "minLength": 1},
+            "required_inputs": {"type": "array", "items": {"type": "string", "minLength": 1}}
+          }
+        },
+        "metrics": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["latency_ms", "cost_unit"],
+          "properties": {
+            "latency_ms": {"type": "integer", "minimum": 0},
+            "cost_unit": {"type": "string", "minLength": 1}
+          }
+        }
+      }
+    }
+  }
+}

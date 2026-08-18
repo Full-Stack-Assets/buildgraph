@@ -1,0 +1,32 @@
+api_version: buildgraph/v0.1
+kind: TaskEnvelope
+metadata:
+  task_id: task_invalid001
+  trace_id: trace_invalid001
+  idempotency_key: invalid-task-envelope
+  created_at: '2026-08-17T00:00:00Z'
+spec:
+  project_id: buildgraph-core
+  role_ref:
+    id: GKE-06
+    version: 0.1.0
+  workflow_ref:
+    id: research-brief
+    version: 0.1.0
+  authority:
+    risk_tier: moderate
+    maximum_integration_tier: I1
+    approval_policy_ref: approval-policy
+  allowed_skills: [SKL-006]
+  allowed_integrations: []
+  input_refs:
+    - artifact_id: artifact_buildgraph.research-brief:input-v1
+      status: approved
+  output_contract:
+    required_artifacts: [cited-research-brief]
+    result_schema_ref: schemas/result-envelope.schema.json
+  runtime_route:
+    candidates: [manus]
+    selection_policy: capability-router/v0.1
+  deadlines:
+    hard_stop_at: '2026-08-18T00:00:00Z'
