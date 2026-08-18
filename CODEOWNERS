@@ -5,6 +5,7 @@
 /registry/ @Full-Stack-Assets
 /policies/ @Full-Stack-Assets
 /adapters/ @Full-Stack-Assets
-/compilers/ @Full-Stack-Assets
+/graph/ @Full-Stack-Assets
+/router/ @Full-Stack-Assets
 /evals/ @Full-Stack-Assets
 /.github/ @Full-Stack-Assets

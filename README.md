@@ -15,12 +15,13 @@ BuildGraph v0 implements the governed registry and validation foundation. It doe
 | `schemas/` | Canonical machine-readable contracts. |
 | `registry/` | Versioned role, skill, integration, policy, workflow, project, portfolio, and runtime manifests. |
 | `policies/` | Risk, authority, data-handling, and release controls. |
-| `adapters/` | Runtime capability declarations and projection/receipt adapters. |
-| `compilers/` | Canonical manifest projection logic. |
-| `evals/` | Role, skill, policy, and adapter evaluation suites. |
+| `adapters/` | Runtime capability declarations, projection/receipt adapters, and the ClickUp Mission Control write adapter. |
+| `graph/` | Deterministic canonical graph compiler, snapshot, and offline preflight. |
+| `router/` | Manifest-driven capability router that emits bounded TaskEnvelope and AgentPassport records. |
+| `evals/` | Role, skill, policy, and adapter evaluation suites. Currently a reserved tree; suites are planned in Unit 17-E. |
 | `fixtures/` | Valid and invalid manifest/test data. |
-| `tests/` | Registry and contract validation tests. |
-| `docs/` | Architecture, governance, and decision records. |
+| `tests/` | Registry, graph, router, adapter, and contract validation tests. |
+| `docs/` | Architecture, governance, decision records, and the current development plan. |
 
 ## Core invariants
 
@@ -41,7 +42,12 @@ BuildGraph v0 implements the governed registry and validation foundation. It doe
 5. Task, result, passport, and approval contracts.
 6. Controlled runtime adapter interfaces and receipt normalization.
 7. End-to-end validation.
-8. Unit 15-E deterministic canonical graph compiler, validation report, snapshot, and preflight reuse query.
+8. Capability router over canonical manifests.
+9. Sandbox ClickUp Mission Control Public API adapter.
+10. Unit 15-E deterministic canonical graph compiler, validation report, snapshot, and preflight reuse query.
+11. **Next:** Unit 16-E unified validation CLI and machine-readable error model.
+
+See `docs/FURTHER_DEVELOPMENT_PLAN.md` for the evaluation of remaining work and the serial plan during implementation. See `docs/adr/ADR-001-buildgraph-v0-scope.md` for the v0 authority boundary.
 
 ## Development
 
@@ -55,4 +61,4 @@ npm run typecheck
 npm run generate:graph
 ```
 
-See `docs/adr/ADR-001-buildgraph-v0-scope.md` for the v0 authority boundary.
+See `docs/IMPLEMENTATION_STATUS.md` for verified counts and `docs/adr/ADR-001-buildgraph-v0-scope.md` for the v0 authority boundary.

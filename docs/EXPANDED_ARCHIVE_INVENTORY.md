@@ -25,4 +25,6 @@ The archive’s implementation evidence explicitly rejects treating a static Gro
 
 ## Next safe closure target
 
-**Unit 15-E: Executable Canonical BuildGraph.** The implementation will compile the local canonical registry into deterministic entity and edge records, record source provenance, expose an offline pre-build similarity query, validate graph integrity, and write reproducible outputs. It will not invoke providers, use credentials, access the supplied database, start an API, activate a connector, or create an automation.
+**Historical note:** Unit 15-E is complete on `main`. The current serial target is **Unit 16-E: unified validation CLI and machine-readable error model**. See `docs/UNIT_15E_COMPLETION.md` and `docs/FURTHER_DEVELOPMENT_PLAN.md`.
+
+**Original 15-E target (retained):** compile the local canonical registry into deterministic entity and edge records, record source provenance, expose an offline pre-build similarity query, validate graph integrity, and write reproducible outputs. It will not invoke providers, use credentials, access the supplied database, start an API, activate a connector, or create an automation.
