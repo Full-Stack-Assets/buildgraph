@@ -122,6 +122,7 @@
       "if": {
         "properties": {
           "spec": {
+            "type": "object",
             "properties": {
               "permission_tier": {"const": "I4"}
             },
@@ -132,8 +133,14 @@
       "then": {
         "properties": {
           "spec": {
+            "type": "object",
             "properties": {
               "human_confirmation": {
+                "type": "object",
+                "properties": {
+                  "required_for": {},
+                  "approval_record_reference": {}
+                },
                 "required": ["required_for", "approval_record_reference"]
               }
             }

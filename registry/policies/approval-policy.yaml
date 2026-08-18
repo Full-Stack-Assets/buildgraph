@@ -1,0 +1,26 @@
+api_version: buildgraph/v0.2
+kind: PolicySpec
+metadata:
+  id: approval-policy
+  name: approval-policy
+  version: 0.1.0
+  status: approved
+  owner: Full-Stack-Assets
+spec:
+  purpose: Enforce named human authority and separation of duties for consequential actions and release-ready work.
+  scope:
+    applies_to: [role, task, artifact, approval, integration]
+  rules:
+    - id: creator-cannot-self-approve
+      effect: deny
+      condition: The same role instance creates and approves, releases, publishes, merges, deploys, pays, signs, certifies, or attests to a consequential artifact.
+      required_behavior: Reject the approval path and require an independent evaluator or accountable human owner.
+    - id: incomplete-evidence-blocks-release
+      effect: require_evidence
+      condition: A task requests RELEASE_READY without complete provenance, quality evidence, and required human decision fields.
+      required_behavior: Set work status to BLOCKED and preserve the missing-evidence record.
+  escalation:
+    owner: Full-Stack-Assets
+    triggers: [self-approval, missing-approval, missing-evidence, expired-approval]
+  validation:
+    fixtures: [fixtures/policies/approval-policy-valid.yaml, fixtures/policies/approval-policy-invalid.yaml]

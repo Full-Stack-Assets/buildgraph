@@ -1,0 +1,22 @@
+api_version: buildgraph/v0.2
+kind: PolicySpec
+metadata:
+  id: fixture-policy
+  name: fixture-policy
+  version: 0.1.0
+  status: approved
+  owner: Fixture Owner
+spec:
+  purpose: Validate that a complete policy manifest is accepted by the canonical BuildGraph registry validator.
+  scope:
+    applies_to: [task]
+  rules:
+    - id: deny-unapproved-effect
+      effect: deny
+      condition: A task requests an action beyond the assigned authority ceiling.
+      required_behavior: Block the request and record the policy violation.
+  escalation:
+    owner: Fixture Owner
+    triggers: [authority-overrun]
+  validation:
+    fixtures: [fixture-valid]

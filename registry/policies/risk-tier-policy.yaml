@@ -1,0 +1,26 @@
+api_version: buildgraph/v0.2
+kind: PolicySpec
+metadata:
+  id: risk-tier-policy
+  name: risk-tier-policy
+  version: 0.1.0
+  status: approved
+  owner: Full-Stack-Assets
+spec:
+  purpose: Classify task and role risk, cap authority, and enforce escalation when risk is uncertain or consequential.
+  scope:
+    applies_to: [role, workflow, task, integration]
+  rules:
+    - id: no-i3-or-i4-in-v0
+      effect: deny
+      condition: Requested integration tier is I3 or I4 during BuildGraph v0.
+      required_behavior: Block execution and create a policy escalation record.
+    - id: unknown-risk-is-high
+      effect: require_escalation
+      condition: Risk tier is missing, conflicting, or cannot be derived from the task context.
+      required_behavior: Treat the task as high risk and route to the policy owner.
+  escalation:
+    owner: Full-Stack-Assets
+    triggers: [unknown-risk, requested-i3, requested-i4, policy-conflict]
+  validation:
+    fixtures: [fixtures/policies/risk-tier-policy-valid.yaml, fixtures/policies/risk-tier-policy-invalid.yaml]

@@ -1,0 +1,26 @@
+api_version: buildgraph/v0.2
+kind: PolicySpec
+metadata:
+  id: data-handling-policy
+  name: data-handling-policy
+  version: 0.1.0
+  status: approved
+  owner: Full-Stack-Assets
+spec:
+  purpose: Enforce data minimization, classification-aware routing, and artifact retention controls for BuildGraph work.
+  scope:
+    applies_to: [role, integration, task, runtime, artifact]
+  rules:
+    - id: unrecognized-classification-blocks-task
+      effect: deny
+      condition: A task includes an unrecognized or missing data classification.
+      required_behavior: Block routing and request data classification from the accountable owner.
+    - id: restricted-data-requires-explicit-policy
+      effect: require_escalation
+      condition: A role or runtime requests restricted data without an explicit approved policy reference.
+      required_behavior: Do not provide the data and route an escalation to the data owner.
+  escalation:
+    owner: Full-Stack-Assets
+    triggers: [missing-classification, restricted-data, retention-conflict, sensitive-data-in-log]
+  validation:
+    fixtures: [fixtures/policies/data-handling-policy-valid.yaml, fixtures/policies/data-handling-policy-invalid.yaml]

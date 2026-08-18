@@ -1,0 +1,26 @@
+api_version: buildgraph/v0.2
+kind: PolicySpec
+metadata:
+  id: release-policy
+  name: release-policy
+  version: 0.1.0
+  status: approved
+  owner: Full-Stack-Assets
+spec:
+  purpose: Prevent unapproved publication, production release, financial action, and other external or irreversible effects.
+  scope:
+    applies_to: [workflow, task, integration, artifact, approval]
+  rules:
+    - id: v0-external-effects-denied
+      effect: deny
+      condition: A BuildGraph v0 task requests an external communication, public publication, protected-branch merge, production deployment, payment, signature, identity change, or destructive action.
+      required_behavior: Produce a human review packet only and do not execute the requested effect.
+    - id: release-ready-needs-independent-gate
+      effect: require_approval
+      condition: A candidate artifact requests release readiness.
+      required_behavior: Require an independent evaluator result and a named accountable human approval record before native execution is considered.
+  escalation:
+    owner: Full-Stack-Assets
+    triggers: [external-effect-requested, release-without-gate, irreversible-action, production-change]
+  validation:
+    fixtures: [fixtures/policies/release-policy-valid.yaml, fixtures/policies/release-policy-invalid.yaml]

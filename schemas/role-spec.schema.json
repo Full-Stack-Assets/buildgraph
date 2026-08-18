@@ -131,6 +131,7 @@
       "if": {
         "properties": {
           "spec": {
+            "type": "object",
             "properties": {
               "risk_tier": {"enum": ["high", "restricted"]}
             },
@@ -141,6 +142,7 @@
       "then": {
         "properties": {
           "spec": {
+            "type": "object",
             "properties": {
               "authority_ceiling": {"enum": ["I0", "I1", "I2"]}
             }

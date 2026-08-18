@@ -1,0 +1,36 @@
+api_version: buildgraph/v0.2
+kind: RoleSpec
+metadata:
+  id: GKE-99
+  name: invalid-role-without-owner
+  version: 0.1.0
+  status: pilot
+spec:
+  operating_class: control
+  primary_domain: governance-and-orchestration
+  risk_tier: moderate
+  authority_ceiling: I1
+  accountable_human_owner: ""
+  technical_owner: ""
+  mission: This invalid fixture intentionally omits required human ownership.
+  scope:
+    included: [task-routing]
+    excluded: [self-approval]
+  input_contract:
+    accepted_statuses: [PLANNED]
+    data_classifications: [internal]
+  skills:
+    - id: SKL-002
+  integrations: []
+  runtime_compatibility:
+    preferred: [manus]
+    allowed: []
+    prohibited: []
+  quality_gates:
+    - id: complete-handoff
+      criterion: Every routing result has an owner.
+      owner: ""
+  escalation:
+    triggers: [missing-owner]
+  observability:
+    required_events: [task-created]
