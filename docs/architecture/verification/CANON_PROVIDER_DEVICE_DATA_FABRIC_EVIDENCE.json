@@ -1,0 +1,108 @@
+{
+  "schema_version": "canon-evidence-bundle/1.0",
+  "work_order_id": "WO-2026-002",
+  "execution_run_id": "RUN-2026-002",
+  "generated_at": "2026-08-20T09:34:48Z",
+  "result": "PASS",
+  "verification": {
+    "eslint_warnings": 0,
+    "typecheck": "PASS",
+    "registry_manifests": 111,
+    "graph_entities": 111,
+    "graph_edges": 436,
+    "graph_conflicts": 0,
+    "graph_warnings": 0,
+    "vitest_files": 22,
+    "vitest_tests": 64
+  },
+  "aggregate_algorithm": "For each declared file set, sort repository-relative paths bytewise with LC_ALL=C, run sha256sum for every path, concatenate the resulting '<hex><two spaces><path>\\n' lines in that order, and SHA-256 hash that byte stream.",
+  "file_sets": [
+    {
+      "id": "server_adapter_and_runners",
+      "file_count": 16,
+      "paths": [
+        "adapters/data/authorization.ts",
+        "adapters/data/core.ts",
+        "adapters/data/cursor.ts",
+        "adapters/data/deployment.ts",
+        "adapters/data/http.ts",
+        "adapters/data/index.ts",
+        "adapters/data/json.ts",
+        "adapters/data/providers/cloudkit.ts",
+        "adapters/data/providers/copilot.ts",
+        "adapters/data/providers/gemini.ts",
+        "adapters/data/providers/grok.ts",
+        "adapters/data/retrieval-agent.ts",
+        "adapters/data/storage.ts",
+        "adapters/data/sync-engine.ts",
+        "scripts/canon-retrieval-agent.ts",
+        "scripts/canon-sync.ts"
+      ],
+      "aggregate_sha256": "5ce47388a2049568a896c669225452c898b6372e3d804164a57bbf39e59c9d04"
+    },
+    {
+      "id": "iphone_companion_bridge",
+      "file_count": 12,
+      "paths": [
+        "mobile/CanonPhoneBridge/CanonPhoneBridge.entitlements.example",
+        "mobile/CanonPhoneBridge/Package.swift",
+        "mobile/CanonPhoneBridge/README.md",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/Authority.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/BackgroundSyncScheduler.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/CloudKitSyncAdapter.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/LocalDocumentAdapter.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/Models.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/PhoneReceiptLedger.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/PhoneSyncCoordinator.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/SecurityScopedRootStore.swift",
+        "mobile/CanonPhoneBridge/Tests/CanonPhoneBridgeTests/AuthorityTests.swift"
+      ],
+      "aggregate_sha256": "97821e311cd04479799c60aa6caf7e5091283946aaee3364a61ece3083037b7a"
+    },
+    {
+      "id": "focused_conformance_tests",
+      "file_count": 5,
+      "paths": [
+        "tests/autonomous-retrieval-agent.test.ts",
+        "tests/continuous-sync.test.ts",
+        "tests/data-adapter-authorization.test.ts",
+        "tests/data-http.test.ts",
+        "tests/provider-data-adapters.test.ts"
+      ],
+      "aggregate_sha256": "8a8a3ce5a7253fabc7e6546d1c170585b8e91a7b71371931babb8ba38e4eb45e"
+    },
+    {
+      "id": "schemas_and_deployment_example",
+      "file_count": 3,
+      "paths": [
+        "config/canon-retrieval-jobs.example.json",
+        "schemas/autonomous-retrieval-jobs.schema.json",
+        "schemas/data-action-grant.schema.json"
+      ],
+      "aggregate_sha256": "9fb5763cdcba48bc2095e90ff86bd284d6e3e186fa908f323b158b207282086a"
+    }
+  ],
+  "document_artifacts": [
+    {
+      "path": "docs/architecture/DATA_ADAPTER_CONTRACT_V1.md",
+      "sha256": "7075d6634df11b287b863fffc03bd139457c7531bdfb144c36011190f82070f8"
+    },
+    {
+      "path": "docs/integrations/canon-provider-device-data-fabric.md",
+      "sha256": "90698b8248824c807aecaa8ec3a959ef602d0b3638f1336c9f940d6b9cf4cd90"
+    },
+    {
+      "path": "docs/architecture/preflight/CANON_PROVIDER_DEVICE_DATA_FABRIC_RESULT.json",
+      "sha256": "65ca0e634692026f30a277957fd09b7a61ad6e665ba4bff3e0bccecb477c1996"
+    },
+    {
+      "path": "docs/architecture/verification/CANON_PROVIDER_DEVICE_DATA_FABRIC_VERIFICATION_REPORT.md",
+      "sha256": "63d2eb481637732ebf3653d232bbe61ab1cabc3853547ca991f42dcef40cfc8a"
+    }
+  ],
+  "evidence_boundaries": [
+    "Provider transports are deterministic mocks, not live credential verification.",
+    "The iOS package is source-reviewed but remains DECLARED until Xcode, entitlement, CloudKit-container, and physical-device validation.",
+    "Writes and inference remain disabled by default and no live provider mutation occurred."
+  ]
+}
