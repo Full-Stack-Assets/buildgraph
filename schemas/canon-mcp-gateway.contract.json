@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "CANON MCP Gateway Contract",
+  "type": "object",
+  "required": ["operation", "source", "authority"],
+  "properties": {
+    "operation": {"type": "string", "enum": ["connections_list","connections_probe","source_list_changes","source_read","apple_grants_status","gemini_ask","workiq_fetch","workiq_ask"]},
+    "source": {"type": "string", "enum": ["gemini","workiq","icloud_drive","photos","contacts","reminders","calendar","iphone_files"]},
+    "authority": {"type": "string", "enum": ["read_metadata","read_bounded","read_inference"]},
+    "limit": {"type": "integer", "minimum": 1, "maximum": 100}
+  },
+  "additionalProperties": false
+}
