@@ -1,0 +1,25 @@
+{
+  "kind": "write",
+  "adapterId": "grok",
+  "request": {
+    "operation": "create",
+    "destination": "collection:collection_REPLACE_ME",
+    "name": "approved-document.txt",
+    "mimeType": "text/plain",
+    "metadata": {"dataClassification": "internal"},
+    "expectedVersion": null,
+    "idempotencyKey": "replace-with-one-action-idempotency-key",
+    "approvalRef": null
+  },
+  "payloadFile": "outbox/approved-document.txt",
+  "grant": {
+    "grantId": "replace-with-issued-grant-id",
+    "adapterId": "grok",
+    "operations": ["create"],
+    "resourcePrefixes": ["collection:collection_REPLACE_ME"],
+    "maximumBytes": 1048576,
+    "issuedAt": "2099-01-01T00:00:00.000Z",
+    "expiresAt": "2099-01-01T00:15:00.000Z",
+    "approvalRef": null
+  }
+}
