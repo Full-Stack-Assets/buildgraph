@@ -1,0 +1,18 @@
+api_version: buildgraph/v1
+kind: EvidenceSpec
+metadata:
+  id: EVD-005
+  name: Canon Provider and Device Data Fabric Completion Evidence
+  version: 1.0.0
+  status: active
+  owner: DIV-10
+spec:
+  state: TESTED
+  claim: The checksum-bound v1.1 adapters, operational commands, fail-closed idempotency, durable storage, continuous and autonomous retrieval, private CloudKit bridge, explicit iPhone authority, schemas, registry, graph, and deterministic tests pass; live provider and Apple device verification remain explicitly pending.
+  capability_ids: [CAP-001, CAP-003, CAP-008, CAP-010]
+  artifact_ids: [ART-012, ART-013, ART-014, ART-015, ART-016]
+  execution_run_id: RUN-2026-003
+  source_uri: docs/architecture/verification/CANON_PROVIDER_DEVICE_DATA_FABRIC_COMPLETION_REPORT.md
+  collected_at: 2026-08-20T11:07:06Z
+  checksum_sha256: "d5339fcfe01b9425af13fcd978b31fd1492ec7f2fd9853f3d2c152a30ac28b90"
+  collector: Canon deterministic repository validation suite
