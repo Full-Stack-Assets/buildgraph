@@ -163,7 +163,7 @@ export class SupabaseCanonSink implements CanonSink {
     const objectPath = contentHash ? `${contentHash.slice(0, 2)}/${contentHash}` : null;
     if (objectPath && result.bytes) {
       try {
-        await this.#client.storage(objectPath, { method: "POST", headers: { "content-type": item.mimeType, "x-upsert": "false" }, body: result.bytes });
+        await this.#client.storage(objectPath, { method: "POST", headers: { "content-type": item.mimeType, "x-upsert": "false" }, body: result.bytes as unknown as BodyInit });
       } catch (error) {
         if (!(error instanceof SupabaseAdapterError && (error.status === 400 || error.status === 409))) throw error;
         const existing = await this.#client.storage(objectPath);
@@ -234,7 +234,7 @@ export class SupabaseInferenceEvidenceStore implements InferenceEvidenceStore {
     if (bytes.byteLength > this.#maximumBytes) throw new Error("autonomous inference evidence exceeds the configured byte limit");
     const hash = sha256Hex(bytes);
     const objectPath = `inference/${evidence.jobId}/${evidence.runId}.json`;
-    await this.#client.storage(objectPath, { method: "POST", headers: { "content-type": "application/json", "x-upsert": "false" }, body: bytes }).catch(async (error: unknown) => {
+    await this.#client.storage(objectPath, { method: "POST", headers: { "content-type": "application/json", "x-upsert": "false" }, body: bytes as unknown as BodyInit }).catch(async (error: unknown) => {
       if (!(error instanceof SupabaseAdapterError && (error.status === 400 || error.status === 409))) throw error;
       const existing = await this.#client.storage(objectPath);
       if (existing.byteLength !== bytes.byteLength || !timingSafeEqual(existing, bytes)) throw new Error("inference evidence object differs from incoming bytes");
