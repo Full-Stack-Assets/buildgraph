@@ -1,4 +1,4 @@
-name: Gemini credential canary
+name: CANON gateway canary
 
 on:
   push:
@@ -26,7 +26,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run typecheck
-      - run: npm test -- --run tests/canon-mcp-gateway-policy.test.ts tests/canon-mcp-gateway-gemini.test.ts
+      - run: npm test -- --run tests/canon-mcp-gateway-policy.test.ts tests/canon-mcp-gateway-gemini.test.ts tests/canon-mcp-gateway-workiq.test.ts
       - name: Verify Gemini credential with one metadata result
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
