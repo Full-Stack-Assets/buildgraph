@@ -1,0 +1,26 @@
+{
+  "id": "work-item-canon-provider-device-completion-2026-08-20",
+  "name": "Canon Provider and Device Data Fabric Completion Hardening",
+  "description": "Complete the existing Canon provider/device subsystem with deployment-safe action commands, durable idempotency and leases, strict provider resource allowlists, bounded cursors and payloads, typed CloudKit phone instructions, explicit iPhone upload grants, per-root device checkpoints, and expanded conformance evidence.",
+  "purpose": "Extend the existing provider/device data fabric to the maximum locally verifiable implementation state while retaining fail-closed authority, provenance, continuous retrieval, and honest live-provider and physical-device evidence boundaries.",
+  "projectType": "INFRASTRUCTURE",
+  "entity_type": "Project",
+  "capabilities": ["SOFTWARE_BUILD", "MCP_INTEGRATION", "KNOWLEDGE_RETRIEVAL", "DATA_SYNCHRONIZATION", "PROVENANCE_TRACKING", "APPROVAL_ROUTING"],
+  "technologies": ["TypeScript", "JSON Schema", "REST APIs", "CloudKit", "Swift", "BackgroundTasks", "GitHub Copilot SDK"],
+  "targetUsers": ["Human Authority", "Agent Operating Company runtimes", "Canon knowledge workflows", "iPhone companion application owners"],
+  "features": [
+    "Provider-neutral data adapter contract",
+    "Grok Files and Collections adapter",
+    "Gemini Files and File Search adapter",
+    "GitHub Copilot SDK session adapter",
+    "Private CloudKit custom-zone adapter",
+    "User-selected iPhone storage bridge",
+    "Schema-validated read, write, inference, and phone-instruction commands",
+    "Durable process leases and fail-closed idempotency records",
+    "Incremental continuous sync and autonomous retrieval",
+    "Content hashing, deduplication, checkpoints, dead letters, and receipts",
+    "Explicit device upload grants and per-root CloudKit cursors",
+    "Deterministic completion evidence"
+  ],
+  "justification": "The canonical project canon-provider-device-data-fabric already owns these capabilities and provider/device boundaries. This work must extend that project in place and must not create a parallel adapter stack or control plane."
+}
