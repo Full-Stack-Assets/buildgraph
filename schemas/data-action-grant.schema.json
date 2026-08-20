@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/data-action-grant.schema.json",
+  "title": "Canon Data Adapter Action Grant",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["grantId", "adapterId", "operations", "resourcePrefixes", "maximumBytes", "issuedAt", "expiresAt", "approvalRef"],
+  "properties": {
+    "grantId": {"type": "string", "minLength": 3, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "adapterId": {"type": "string", "enum": ["grok", "gemini", "copilot", "icloud", "iphone-local"]},
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "enum": ["create", "update", "inference"]}
+    },
+    "resourcePrefixes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1, "maxLength": 1024}
+    },
+    "maximumBytes": {"type": "integer", "minimum": 0, "maximum": 67108864},
+    "issuedAt": {"type": "string", "format": "date-time"},
+    "expiresAt": {"type": "string", "format": "date-time"},
+    "approvalRef": {"type": ["string", "null"], "minLength": 1, "maxLength": 256}
+  }
+}

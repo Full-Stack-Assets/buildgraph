@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/data-adapter-command.schema.json",
+  "title": "Canon Data Adapter Command",
+  "oneOf": [
+    {"$ref": "#/$defs/writeCommand"},
+    {"$ref": "#/$defs/inferCommand"},
+    {"$ref": "#/$defs/phoneInstructionCommand"}
+  ],
+  "$defs": {
+    "adapterId": {"type": "string", "enum": ["grok", "gemini", "copilot", "icloud"]},
+    "identifier": {"type": "string", "minLength": 3, "maxLength": 256, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "payloadFile": {"type": "string", "minLength": 1, "maxLength": 4096},
+    "writeRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["operation", "destination", "name", "mimeType", "metadata", "expectedVersion", "idempotencyKey", "approvalRef"],
+      "properties": {
+        "operation": {"type": "string", "enum": ["create", "update"]},
+        "destination": {"type": "string", "minLength": 1, "maxLength": 1024},
+        "name": {"type": "string", "minLength": 1, "maxLength": 1024},
+        "mimeType": {"type": "string", "minLength": 1, "maxLength": 255, "pattern": "^[^\\s/]+/[^\\s/]+$"},
+        "metadata": {"type": "object", "maxProperties": 100, "additionalProperties": true},
+        "expectedVersion": {"type": ["string", "null"], "minLength": 1, "maxLength": 1024},
+        "idempotencyKey": {"$ref": "#/$defs/identifier"},
+        "approvalRef": {"type": ["string", "null"], "minLength": 1, "maxLength": 256}
+      }
+    },
+    "inferenceRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["prompt", "systemInstruction", "resourceRefs", "idempotencyKey", "approvalRef", "metadata"],
+      "properties": {
+        "prompt": {"type": "string", "minLength": 1, "maxLength": 1048576},
+        "systemInstruction": {"type": ["string", "null"], "maxLength": 65536},
+        "resourceRefs": {"type": "array", "minItems": 1, "maxItems": 100, "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 1024}},
+        "idempotencyKey": {"$ref": "#/$defs/identifier"},
+        "approvalRef": {"type": ["string", "null"], "minLength": 1, "maxLength": 256},
+        "metadata": {"type": "object", "maxProperties": 100, "additionalProperties": true}
+      }
+    },
+    "writeCommand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "adapterId", "request", "payloadFile", "grant"],
+      "properties": {
+        "kind": {"const": "write"},
+        "adapterId": {"$ref": "#/$defs/adapterId"},
+        "request": {"$ref": "#/$defs/writeRequest"},
+        "payloadFile": {"$ref": "#/$defs/payloadFile"},
+        "grant": {"$ref": "data-action-grant.schema.json"}
+      }
+    },
+    "inferCommand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "adapterId", "request", "grant"],
+      "properties": {
+        "kind": {"const": "infer"},
+        "adapterId": {"type": "string", "enum": ["grok", "gemini", "copilot"]},
+        "request": {"$ref": "#/$defs/inferenceRequest"},
+        "grant": {"$ref": "data-action-grant.schema.json"}
+      }
+    },
+    "phoneInstruction": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["instructionId", "localOperation", "rootGrantId", "actionGrantId", "relativePath", "name", "mimeType", "expectedLocalSha256", "expiresAt", "idempotencyKey", "approvalRef"],
+      "properties": {
+        "instructionId": {"type": "string", "minLength": 1, "maxLength": 180, "pattern": "^[A-Za-z0-9._:-]+$"},
+        "localOperation": {"type": "string", "enum": ["create", "update"]},
+        "rootGrantId": {"type": "string", "format": "uuid"},
+        "actionGrantId": {"type": "string", "format": "uuid"},
+        "relativePath": {"type": "string", "minLength": 1, "maxLength": 4096},
+        "name": {"type": "string", "minLength": 1, "maxLength": 1024},
+        "mimeType": {"type": "string", "minLength": 1, "maxLength": 255, "pattern": "^[^\\s/]+/[^\\s/]+$"},
+        "expectedLocalSha256": {"type": ["string", "null"], "pattern": "^[a-f0-9]{64}$"},
+        "expiresAt": {"type": "string", "format": "date-time"},
+        "idempotencyKey": {"$ref": "#/$defs/identifier"},
+        "approvalRef": {"type": ["string", "null"], "minLength": 1, "maxLength": 256}
+      }
+    },
+    "phoneInstructionCommand": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "adapterId", "input", "payloadFile", "grant"],
+      "properties": {
+        "kind": {"const": "phone-instruction"},
+        "adapterId": {"const": "icloud"},
+        "input": {"$ref": "#/$defs/phoneInstruction"},
+        "payloadFile": {"$ref": "#/$defs/payloadFile"},
+        "grant": {"$ref": "data-action-grant.schema.json"}
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+api_version: buildgraph/v0.2
+kind: IntegrationSpec
+metadata:
+  id: INT-024
+  name: github-copilot-sessions
+  version: 1.1.0
+  status: sandbox
+spec:
+  system: GitHub Copilot SDK and CLI persisted sessions
+  owners:
+    system: Full-Stack-Assets
+    technical: Full-Stack-Assets
+    business_data: Full-Stack-Assets
+  approved_roles: [GKE-05, GKE-06, ESP-01]
+  environment: sandbox
+  permission_tier: I2
+  authentication:
+    method: delegated_user
+    credential_reference: copilot-cli/deployment-user-session
+  data_classifications: [public, internal, confidential]
+  scopes:
+    - object: SDK-visible Copilot sessions and events
+      operations: [read, draft_write]
+      field_constraints: [mode empty, exactly one explicit session inference resource, bounded event export and cursor, tools and permission requests denied, action grant and fail-closed idempotency required]
+  prohibited_actions: [IDE database scraping, web conversation scraping, built-in tool execution, custom tool execution, repository mutation, shell execution, credential management]
+  human_confirmation:
+    required_for: [tool enablement, repository binding, credential expansion, production activation]
+    approval_record_reference: buildgraph/ApprovalRecord
+  logging:
+    audit_destination: canon-data-adapter-evidence-ledger
+    retention: project-defined session metadata, hash, and receipt retention
+  monitoring:
+    alerts: [authentication-failure, authorization-failure, tool-attempt, event-size-limit, session-store-failure, connector-failure]
+  failure_behavior:
+    fail_closed: true
+    escalation_contact: Full-Stack-Assets

@@ -1,0 +1,45 @@
+{
+  "decision": "CREATE_NEW",
+  "justification": "Create a new governed subsystem entity inside the existing Canon repository because no canonical entity contains provider/device read-write adapters, continuous data synchronization, or an iOS security-scoped bridge. Reuse the existing adapter, policy, evidence, project, and graph infrastructure rather than creating a second control plane.",
+  "evidence": [
+    "graph:e3c861253ee08d95ddbae0198882162082660aaccb46129c54376eba782ff8fe",
+    "graph-schema:buildgraph/1.0",
+    "project:buildgraph-core",
+    "registry/projects/buildgraph-core.yaml"
+  ],
+  "payload_hash": "faf923ead06b2a2edca9096d85aa8d458b9fb5601b249ddddf576749c9377edb",
+  "matches": [
+    {
+      "id": "project:buildgraph-core",
+      "canonical_name": "BuildGraph Core",
+      "type": "Project",
+      "score": 0.0302,
+      "similarity": {"purpose": 0.0213, "capabilities": 0.087, "technology": 0, "features": 0, "overall": 0.0302},
+      "source_uri": "registry/projects/buildgraph-core.yaml"
+    }
+  ],
+  "closest_projects": [
+    {
+      "id": "project:buildgraph-core",
+      "canonical_name": "BuildGraph Core",
+      "type": "Project",
+      "score": 0.0302,
+      "similarity": {"purpose": 0.0213, "capabilities": 0.087, "technology": 0, "features": 0, "overall": 0.0302},
+      "source_uri": "registry/projects/buildgraph-core.yaml"
+    }
+  ],
+  "similarity": {"purpose": 0.0213, "capabilities": 0.087, "technology": 0, "features": 0, "overall": 0.0302},
+  "overlap": ["purpose", "capabilities"],
+  "gaps": ["technology", "features"],
+  "reusable_assets": [
+    "registry/projects/buildgraph-core.yaml",
+    "docs/architecture/RUNTIME_ADAPTER_CONTRACT_V1.md",
+    "adapters/core.ts",
+    "policies/approval/APPROVAL_POLICY.md",
+    "policies/data-handling/DATA_HANDLING_POLICY.md",
+    "registry/runtimes/grok.yaml",
+    "registry/runtimes/gemini.yaml"
+  ],
+  "waste_risk": {"score": 3, "level": "low"},
+  "create_new_requires_justification": true
+}

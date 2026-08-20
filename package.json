@@ -6,7 +6,7 @@
   "license": "UNLICENSED",
   "type": "module",
   "engines": {
-    "node": ">=22"
+    "node": ">=22.12.0"
   },
   "scripts": {
     "build": "tsc -p tsconfig.json",
@@ -19,11 +19,30 @@
     "generate:graph": "node --import tsx scripts/generate-graph.ts",
     "validate:graph": "node --import tsx scripts/generate-graph.ts",
     "preflight": "node --import tsx scripts/preflight.ts",
-    "clickup:verify": "node --import tsx scripts/clickup-verify.ts"
+    "clickup:verify": "node --import tsx scripts/clickup-verify.ts",
+    "adapters:health": "node --import tsx scripts/canon-adapters.ts health",
+    "adapters:capabilities": "node --import tsx scripts/canon-adapters.ts capabilities",
+    "adapter:write": "node --import tsx scripts/canon-adapters.ts write",
+    "adapter:infer": "node --import tsx scripts/canon-adapters.ts infer",
+    "iphone:instruction": "node --import tsx scripts/canon-adapters.ts phone-instruction",
+    "sync:once": "node --import tsx scripts/canon-sync.ts --once",
+    "sync:daemon": "node --import tsx scripts/canon-sync.ts",
+    "retrieve:once": "node --import tsx scripts/canon-retrieval-agent.ts --once",
+    "retrieve:daemon": "node --import tsx scripts/canon-retrieval-agent.ts",
+    "serverless:sync": "CANON_STORAGE_BACKEND=supabase node --import tsx scripts/canon-sync.ts --once",
+    "serverless:retrieve": "CANON_STORAGE_BACKEND=supabase node --import tsx scripts/canon-retrieval-agent.ts --once"
   },
   "dependencies": {
     "ajv": "^8.17.1",
     "yaml": "^2.8.1"
+  },
+  "peerDependencies": {
+    "@github/copilot-sdk": "^1.0.11"
+  },
+  "peerDependenciesMeta": {
+    "@github/copilot-sdk": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@eslint/js": "^9.35.0",

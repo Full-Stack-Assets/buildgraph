@@ -1,0 +1,97 @@
+name: Canon ephemeral provider sync
+
+on:
+  schedule:
+    # Five-minute minimum is supported; 15 minutes is a safer starting cadence.
+    - cron: "7,22,37,52 * * * *"
+  workflow_dispatch:
+    inputs:
+      run_retrieval:
+        description: "Run the separately granted autonomous retrieval jobs"
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: canon-ephemeral-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CANON_STORAGE_BACKEND: supabase
+      CANON_SYNC_ADAPTERS: grok,gemini,copilot
+      CANON_SYNC_MAX_PAGES: 100
+      CANON_SYNC_INTERVAL_MS: 300000
+      CANON_SYNC_LEASE_TTL_MS: 600000
+      CANON_SINK_MAX_ITEM_BYTES: 67108864
+      CANON_ENABLE_WRITES: "false"
+      CANON_ENABLE_INFERENCE: "false"
+      GITHUB_TOKEN: ${{ github.token }}
+      XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+      XAI_MANAGEMENT_API_KEY: ${{ secrets.XAI_MANAGEMENT_API_KEY }}
+      XAI_COLLECTION_IDS: ${{ vars.XAI_COLLECTION_IDS }}
+      XAI_MODEL: ${{ vars.XAI_MODEL }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GEMINI_FILE_SEARCH_STORES: ${{ vars.GEMINI_FILE_SEARCH_STORES }}
+      GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SUPABASE_STORAGE_BUCKET: canon-objects
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save @github/copilot-sdk@^1.0.11
+      - run: npm run sync:once
+      - name: Upload run output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: canon-sync-${{ github.run_id }}
+          path: |
+            .runtime/**
+            sync-output/**
+          if-no-files-found: ignore
+          retention-days: 14
+
+  retrieval:
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_retrieval == true }}
+    needs: sync
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      CANON_STORAGE_BACKEND: supabase
+      CANON_SYNC_ADAPTERS: grok,gemini,copilot
+      CANON_RETRIEVAL_JOBS_FILE: config/canon-retrieval-jobs.json
+      CANON_ENABLE_WRITES: "false"
+      CANON_ENABLE_INFERENCE: "true"
+      CANON_REQUIRE_INFERENCE_APPROVAL: "true"
+      GITHUB_TOKEN: ${{ github.token }}
+      XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SUPABASE_STORAGE_BUCKET: canon-objects
+      CANON_RETRIEVAL_JOBS_JSON: ${{ secrets.CANON_RETRIEVAL_JOBS_JSON }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm install --no-save @github/copilot-sdk@^1.0.11
+      - name: Materialize short-lived retrieval grants
+        run: |
+          test -n "$CANON_RETRIEVAL_JOBS_JSON"
+          printf '%s' "$CANON_RETRIEVAL_JOBS_JSON" > config/canon-retrieval-jobs.json
+      - run: npm run retrieve:once

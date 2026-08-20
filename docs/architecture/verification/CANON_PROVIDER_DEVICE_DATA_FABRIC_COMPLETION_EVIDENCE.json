@@ -1,0 +1,137 @@
+{
+  "schema_version": "canon-evidence-bundle/1.1",
+  "work_order_id": "WO-2026-003",
+  "execution_run_id": "RUN-2026-003",
+  "generated_at": "2026-08-20T11:07:06Z",
+  "result": "PASS",
+  "verification": {
+    "preflight_decision": "EXTEND_EXISTING",
+    "eslint_warnings": 0,
+    "typecheck": "PASS",
+    "build": "PASS",
+    "registry_manifests": 119,
+    "graph_entities": 119,
+    "graph_edges": 471,
+    "graph_conflicts": 0,
+    "graph_warnings": 0,
+    "vitest_files": 26,
+    "vitest_tests": 89,
+    "swift_xcode_local": "NOT_RUN_TOOLCHAIN_UNAVAILABLE",
+    "live_provider_canaries": "NOT_RUN_USER_CREDENTIALS_AND_APPROVAL_REQUIRED",
+    "physical_iphone_canaries": "NOT_RUN_USER_DEVICE_AND_ENTITLEMENT_REQUIRED"
+  },
+  "aggregate_algorithm": "For each declared file set, sort repository-relative paths bytewise with LC_ALL=C, run sha256sum for every path, concatenate the resulting '<hex><two spaces><path>\\n' lines in that order, and SHA-256 hash that byte stream.",
+  "file_sets": [
+    {
+      "id": "server_adapters_and_runners",
+      "file_count": 19,
+      "paths": [
+        "adapters/data/authorization.ts",
+        "adapters/data/core.ts",
+        "adapters/data/cursor.ts",
+        "adapters/data/deployment.ts",
+        "adapters/data/file-store.ts",
+        "adapters/data/http.ts",
+        "adapters/data/index.ts",
+        "adapters/data/json.ts",
+        "adapters/data/providers/cloudkit.ts",
+        "adapters/data/providers/copilot.ts",
+        "adapters/data/providers/gemini.ts",
+        "adapters/data/providers/grok.ts",
+        "adapters/data/retrieval-agent.ts",
+        "adapters/data/storage.ts",
+        "adapters/data/sync-engine.ts",
+        "scripts/ajv-formats.ts",
+        "scripts/canon-adapters.ts",
+        "scripts/canon-retrieval-agent.ts",
+        "scripts/canon-sync.ts"
+      ],
+      "aggregate_sha256": "060a4e164d5cd3e40d5803c52d6ac50b0799a6cbd6df56836e73ab27d671b2ac"
+    },
+    {
+      "id": "iphone_companion_bridge",
+      "file_count": 13,
+      "paths": [
+        "mobile/CanonPhoneBridge/CanonPhoneBridge.entitlements.example",
+        "mobile/CanonPhoneBridge/Package.swift",
+        "mobile/CanonPhoneBridge/README.md",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/Authority.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/BackgroundSyncScheduler.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/CloudKitSyncAdapter.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/LocalDocumentAdapter.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/Models.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/PhoneActionGrantJSON.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/PhoneReceiptLedger.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/PhoneSyncCoordinator.swift",
+        "mobile/CanonPhoneBridge/Sources/CanonPhoneBridge/SecurityScopedRootStore.swift",
+        "mobile/CanonPhoneBridge/Tests/CanonPhoneBridgeTests/AuthorityTests.swift"
+      ],
+      "aggregate_sha256": "95a1690309891a89134b12f88013d94af39fa99a36e523e2091081b4079f282e"
+    },
+    {
+      "id": "schemas_examples_and_deployment",
+      "file_count": 13,
+      "paths": [
+        ".env.example",
+        ".github/workflows/ci.yml",
+        "config/canon-inference-command.example.json",
+        "config/canon-phone-action-grant.example.json",
+        "config/canon-phone-instruction.example.json",
+        "config/canon-retrieval-jobs.example.json",
+        "config/canon-write-command.example.json",
+        "package-lock.json",
+        "package.json",
+        "schemas/autonomous-retrieval-jobs.schema.json",
+        "schemas/data-action-grant.schema.json",
+        "schemas/data-adapter-command.schema.json",
+        "schemas/phone-action-grant.schema.json"
+      ],
+      "aggregate_sha256": "050d2e7b33f69625358473a4effe1138342560a56209b1b288ffa921f7c4fca7"
+    },
+    {
+      "id": "adapter_conformance_tests",
+      "file_count": 9,
+      "paths": [
+        "tests/autonomous-retrieval-agent.test.ts",
+        "tests/continuous-sync.test.ts",
+        "tests/data-adapter-authorization.test.ts",
+        "tests/data-adapter-command-schema.test.ts",
+        "tests/data-deployment.test.ts",
+        "tests/data-file-store.test.ts",
+        "tests/data-http.test.ts",
+        "tests/data-storage.test.ts",
+        "tests/provider-data-adapters.test.ts"
+      ],
+      "aggregate_sha256": "c7364fa573239e6debfbcbc5e14fbd385d11120a495bae1a69a5be1c56b07fcd"
+    }
+  ],
+  "document_artifacts": [
+    {
+      "path": "docs/architecture/DATA_ADAPTER_CONTRACT_V1_1.md",
+      "sha256": "cad7e7d6b36d7d8c77c341cbd714301578f3afd371513f60e56e62f2a2815942"
+    },
+    {
+      "path": "docs/architecture/preflight/CANON_PROVIDER_DEVICE_DATA_FABRIC_COMPLETION_REQUEST.json",
+      "sha256": "9ca6f419242289afabf593f61767d8feedb6f7a82aea971b28e1189436c0c33a"
+    },
+    {
+      "path": "docs/architecture/preflight/CANON_PROVIDER_DEVICE_DATA_FABRIC_COMPLETION_RESULT.json",
+      "sha256": "41f7ad0b1aeb88bf900e33b7e6a4492a8fdc5b2d9299e75df04063cb874f56c2"
+    },
+    {
+      "path": "docs/architecture/verification/CANON_PROVIDER_DEVICE_DATA_FABRIC_COMPLETION_REPORT.md",
+      "sha256": "d5339fcfe01b9425af13fcd978b31fd1492ec7f2fd9853f3d2c152a30ac28b90"
+    },
+    {
+      "path": "docs/integrations/canon-provider-device-data-fabric-v1.1.md",
+      "sha256": "0c310013efcd76d5b11d1606c68cdd59144ad90bbcff6a7bb2167b8975c87105"
+    }
+  ],
+  "evidence_boundaries": [
+    "Provider transports are deterministic simulations, not live credential verification.",
+    "The iOS package is source-reviewed and has a macOS CI gate, but Swift/Xcode did not run in this Linux workspace.",
+    "Apple signing, entitlements, CloudKit schema promotion, selected-directory access, and physical-device validation require the user.",
+    "Writes and inference remain disabled by default, and no live provider mutation or inference occurred.",
+    "The prior RUN-2026-002 evidence bundle is preserved as historical evidence and is not rewritten."
+  ]
+}

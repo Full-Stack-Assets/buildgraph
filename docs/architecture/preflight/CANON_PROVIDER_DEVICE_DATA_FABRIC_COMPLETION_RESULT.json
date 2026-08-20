@@ -1,0 +1,58 @@
+{
+  "decision": "EXTEND_EXISTING",
+  "justification": "Extend project:canon-provider-device-data-fabric because the proposal overlaps the existing canonical graph while introducing material gaps in technology, features.",
+  "evidence": [
+    "graph:c43eb8e4566777213b4201623520a97e457ed4c1a13a48edaddbf43a85d5a223",
+    "graph-schema:buildgraph/1.0",
+    "project:canon-provider-device-data-fabric",
+    "registry/projects/canon-provider-device-data-fabric.yaml",
+    "project:buildgraph-core",
+    "registry/projects/buildgraph-core.yaml"
+  ],
+  "payload_hash": "dfb33f15cee04ebc54c22aa8dd64fb47301d705ca5173599a20c9e351375288c",
+  "matches": [
+    {
+      "id": "project:canon-provider-device-data-fabric",
+      "canonical_name": "Canon Provider and Device Data Fabric",
+      "type": "Project",
+      "score": 0.2043,
+      "similarity": {"purpose": 0.2571, "capabilities": 0.25, "technology": 0, "features": 0, "overall": 0.2043},
+      "source_uri": "registry/projects/canon-provider-device-data-fabric.yaml"
+    },
+    {
+      "id": "project:buildgraph-core",
+      "canonical_name": "BuildGraph Core",
+      "type": "Project",
+      "score": 0.0174,
+      "similarity": {"purpose": 0, "capabilities": 0.087, "technology": 0, "features": 0, "overall": 0.0174},
+      "source_uri": "registry/projects/buildgraph-core.yaml"
+    }
+  ],
+  "closest_projects": [
+    {
+      "id": "project:canon-provider-device-data-fabric",
+      "canonical_name": "Canon Provider and Device Data Fabric",
+      "type": "Project",
+      "score": 0.2043,
+      "similarity": {"purpose": 0.2571, "capabilities": 0.25, "technology": 0, "features": 0, "overall": 0.2043},
+      "source_uri": "registry/projects/canon-provider-device-data-fabric.yaml"
+    },
+    {
+      "id": "project:buildgraph-core",
+      "canonical_name": "BuildGraph Core",
+      "type": "Project",
+      "score": 0.0174,
+      "similarity": {"purpose": 0, "capabilities": 0.087, "technology": 0, "features": 0, "overall": 0.0174},
+      "source_uri": "registry/projects/buildgraph-core.yaml"
+    }
+  ],
+  "similarity": {"purpose": 0.2571, "capabilities": 0.25, "technology": 0, "features": 0, "overall": 0.2043},
+  "overlap": ["purpose", "capabilities"],
+  "gaps": ["technology", "features"],
+  "reusable_assets": [
+    "registry/projects/canon-provider-device-data-fabric.yaml",
+    "registry/projects/buildgraph-core.yaml"
+  ],
+  "waste_risk": {"score": 50, "level": "moderate"},
+  "create_new_requires_justification": false
+}

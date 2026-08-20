@@ -1,0 +1,29 @@
+api_version: buildgraph/v1
+kind: WorkOrderSpec
+metadata:
+  id: WO-2026-003
+  name: Canon Provider and Device Data Fabric Completion
+  version: 1.0.0
+  status: completed
+  owner: Full-Stack-Assets
+spec:
+  project_id: canon-provider-device-data-fabric
+  factory_id: FAC-001
+  required_capability_ids: [CAP-001, CAP-003, CAP-008, CAP-010]
+  agent_definition_ids: [AGD-001]
+  policy_ids: [approval-policy, data-handling-policy, risk-tier-policy, release-policy]
+  autonomy_ceiling: A2
+  integration_ceiling: I2
+  status: COMPLETED
+  acceptance_criteria:
+    - Every server mutation and inference has an executable schema-validated command, independent kill switch, scoped grant, durable lease, fail-closed idempotency state, and receipt path.
+    - Grok Collections and Gemini File Search resources are deployment-allowlisted and validated before any upload; provider long-running imports are polled to a terminal state.
+    - Continuous retrieval validates provider pages, bounds cursors and content, ingests tombstones and oversized metadata safely, and never advances a failed page.
+    - Copilot SDK sessions deny tools and permissions, bound event exports, use replay-safe cursors, and require an explicit session inference resource.
+    - CloudKit uses a private custom zone, delegated web authentication, typed phone instructions, bounded Apple asset hosts, and conflict-aware record writes.
+    - The iPhone bridge requires explicit upload authority, independently checkpoints each selected root, bounds assets and documents, verifies hashes, and publishes replay-safe receipts.
+    - Node build, lint, schemas, deterministic tests, registry, graph, evidence integrity, and packaging pass; Apple-only and live-provider gates remain explicitly unverified.
+  evidence_requirements:
+    - Completion preflight returns EXTEND_EXISTING for the canonical provider/device project.
+    - Current source, mobile, schema, test, and operator surfaces are checksum-bound in a new evidence bundle without rewriting the prior run.
+    - Live credentials, CloudKit schema promotion, Apple signing, directory selection, and physical-device canaries remain named user-interaction gates.

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/phone-action-grant.schema.json",
+  "title": "Canon iPhone Action Grant",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["grantID", "rootGrantID", "operations", "relativePathPrefixes", "maximumBytes", "issuedAt", "expiresAt", "approvalReference"],
+  "properties": {
+    "grantID": {"type": "string", "format": "uuid"},
+    "rootGrantID": {"type": "string", "format": "uuid"},
+    "operations": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "string", "enum": ["upload", "create", "update"]}
+    },
+    "relativePathPrefixes": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 100,
+      "uniqueItems": true,
+      "items": {"type": "string", "minLength": 1, "maxLength": 4096}
+    },
+    "maximumBytes": {"type": "integer", "minimum": 0, "maximum": 15728640},
+    "issuedAt": {"type": "string", "format": "date-time"},
+    "expiresAt": {"type": "string", "format": "date-time"},
+    "approvalReference": {"type": ["string", "null"], "minLength": 1, "maxLength": 256}
+  }
+}

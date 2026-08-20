@@ -1,0 +1,26 @@
+{
+  "id": "work-item-aoc-multicloud-runtime-device-adapters-2026-08-20",
+  "name": "AOC Provider and Personal Data Adapter Layer",
+  "description": "Extend the canonical Agent Operating Company runtime and integration layer with governed Grok, Gemini, Copilot, iCloud, and local iPhone adapters supporting bounded read, draft/write, continuous synchronization, provenance, health probes, checkpoints, and normalized receipts.",
+  "purpose": "Provide a portable, evidence-backed ingestion and action boundary that continuously retrieves authorized documents and data into Canon while preserving provider limits, mobile sandbox constraints, least privilege, human approval gates, and reversible writes.",
+  "projectType": "INFRASTRUCTURE",
+  "entity_type": "Project",
+  "capabilities": ["SOFTWARE_BUILD", "MCP_INTEGRATION", "KNOWLEDGE_RETRIEVAL", "DATA_SYNCHRONIZATION", "PROVENANCE_TRACKING", "APPROVAL_ROUTING"],
+  "technologies": ["TypeScript", "JSON Schema", "REST APIs", "CloudKit", "iOS FileProvider", "BackgroundTasks", "GitHub APIs"],
+  "targetUsers": ["Human Authority", "Agent Operating Company runtimes", "Canon knowledge workflows"],
+  "features": [
+    "Provider-neutral data adapter contract",
+    "Grok API adapter",
+    "Gemini API adapter",
+    "GitHub Copilot-compatible repository adapter",
+    "iCloud CloudKit and user-selected Files bridge",
+    "Local iPhone app-container and document-picker bridge",
+    "Read and governed write operations",
+    "Incremental continuous sync",
+    "Content hashing and deduplication",
+    "Checkpoints, retries, dead-letter records, and receipts",
+    "Capability and health probes",
+    "Fail-closed authority enforcement"
+  ],
+  "justification": "The existing Canon repository already contains the canonical runtime-adapter contract, task/passport controls, registry schemas, and declarative Grok/Gemini profiles. This work should extend those assets with live data adapters and mobile bridge contracts rather than create a new control plane."
+}

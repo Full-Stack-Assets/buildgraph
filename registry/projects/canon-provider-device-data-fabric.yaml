@@ -1,0 +1,41 @@
+api_version: buildgraph/v0.2
+kind: ProjectSpec
+metadata:
+  id: canon-provider-device-data-fabric
+  name: Canon Provider and Device Data Fabric
+  version: 1.1.0
+  status: active
+  owner: Full-Stack-Assets
+spec:
+  portfolio_id: full-stack-assets
+  purpose: Implement governed provider and iPhone data adapters, continuous evidence retrieval, bounded writes, and autonomous retrieval under Canon authority.
+  domain: engineering-and-platform
+  capability_ids: [CAP-001, CAP-003, CAP-008, CAP-010]
+  factory_ids: [FAC-001]
+  project_specific_role_ids: []
+  canonical_role_ids: [ESP-01, GKE-05, GKE-06]
+  policy_ids: [risk-tier-policy, approval-policy, data-handling-policy, release-policy]
+  runtime_preferences: [codex, local, grok, gemini, github]
+  repositories: [https://github.com/Full-Stack-Assets/buildgraph]
+  evidence_requirements:
+    - Preflight decision and create-new justification exist before the subsystem is registered.
+    - Read, write, cursor, authority, autonomous-inference, and failure paths pass deterministic conformance tests.
+    - Operator commands persist fail-closed action idempotency and require schema-validated payloads and grants.
+    - Live credentials and external writes remain deployment-disabled until a named owner records canary evidence and independent acceptance.
+    - iPhone access remains limited to app storage or a user-selected security-scoped directory.
+  systems_of_record:
+    - system: Canon registry and evidence store
+      purpose: Canonical adapter contracts, deployment scope, receipts, normalized records, and evidence state.
+      authority: canonical
+    - system: Git repository
+      purpose: Source, schema, tests, iOS package, and validation provenance.
+      authority: canonical
+    - system: Provider APIs and CloudKit
+      purpose: External source resources and provider-native versions referenced by Canon receipts.
+      authority: reference
+  authority:
+    maximum_integration_tier: I2
+    approval_policy_ref: approval-policy
+  data_handling:
+    permitted_classifications: [public, internal, confidential]
+    retention_policy_ref: data-handling-policy
