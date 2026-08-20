@@ -1,6 +1,14 @@
 name: Gemini credential canary
 
 on:
+  push:
+    branches:
+      - feat/canon-mcp-gateway-recovery
+    paths:
+      - ".github/workflows/gemini-canary.yml"
+      - "scripts/gemini-canary.ts"
+      - "adapters/canon-mcp-gateway/**"
+      - "tests/canon-mcp-gateway-policy.test.ts"
   workflow_dispatch:
 
 permissions:
