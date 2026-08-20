@@ -1,0 +1,27 @@
+api_version: buildgraph/v1
+kind: WorkOrderSpec
+metadata:
+  id: WO-2026-002
+  name: Canon Provider and Device Data Fabric Implementation
+  version: 1.0.0
+  status: completed
+  owner: Full-Stack-Assets
+spec:
+  project_id: canon-provider-device-data-fabric
+  factory_id: FAC-001
+  required_capability_ids: [CAP-001, CAP-003, CAP-008, CAP-010]
+  agent_definition_ids: [AGD-001]
+  policy_ids: [approval-policy, data-handling-policy, risk-tier-policy, release-policy]
+  autonomy_ceiling: A2
+  integration_ceiling: I2
+  status: COMPLETED
+  acceptance_criteria:
+    - Grok, Gemini, Copilot, CloudKit, and scoped iPhone adapters expose bounded read and governed write contracts with explicit provider limitations.
+    - Continuous retrieval persists opaque checkpoints, content hashes, provenance, receipts, and dead letters without advancing a failed page.
+    - Autonomous AI retrieval requires an expiring inference grant, respects cadence, denies unapproved tools, and emits hashed evidence.
+    - Writes and inference are deployment-disabled by default; update, scope, approval, size, idempotency, and conflict controls fail closed.
+    - Registry, graph, schema, tests, typecheck, and lint pass with a reproducible verification report.
+  evidence_requirements:
+    - Offline preflight records the reuse comparison and justified new subsystem entity.
+    - Mocked provider conformance tests cover read, write, inference, authority, and failure behavior without live credentials.
+    - iOS implementation is explicitly separated from live Xcode, entitlement, CloudKit-container, and physical-device verification.
