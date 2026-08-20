@@ -9,7 +9,7 @@
     "id": {"type": "string", "pattern": "^edge:[a-f0-9]{20,64}$"},
     "source": {"type": "string", "minLength": 3},
     "target": {"type": "string", "minLength": 3},
-    "type": {"type": "string", "pattern": "^[a-z][a-z0-9_]*$"},
+    "type": {"$ref": "relationship-type.schema.json"},
     "provenance": {
       "type": "object",
       "additionalProperties": false,

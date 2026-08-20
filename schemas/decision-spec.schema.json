@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/decision-spec.schema.json",
+  "title": "BuildGraph DecisionSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "api_version",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "api_version": {
+      "const": "buildgraph/v1"
+    },
+    "kind": {
+      "const": "DecisionSpec"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "version",
+        "status",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/decisionId"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 3
+        },
+        "version": {
+          "$ref": "common.schema.json#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/canonicalStatus"
+        },
+        "owner": {
+          "$ref": "common.schema.json#/$defs/owner"
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project_id",
+        "title",
+        "current_version",
+        "proposed_change",
+        "reason",
+        "alternatives",
+        "affected_entities",
+        "migration",
+        "backward_compatibility",
+        "approval",
+        "policy_ids"
+      ],
+      "properties": {
+        "project_id": {
+          "$ref": "common.schema.json#/$defs/projectId"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 5
+        },
+        "current_version": {
+          "$ref": "common.schema.json#/$defs/semanticVersion"
+        },
+        "proposed_change": {
+          "type": "string",
+          "minLength": 10
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 10
+        },
+        "alternatives": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "affected_entities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "migration": {
+          "type": "string",
+          "minLength": 5
+        },
+        "backward_compatibility": {
+          "type": "string",
+          "minLength": 5
+        },
+        "approval": {
+          "type": "string",
+          "minLength": 3
+        },
+        "policy_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

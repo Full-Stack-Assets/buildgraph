@@ -1,0 +1,21 @@
+api_version: buildgraph/v1
+kind: DivisionSpec
+metadata:
+  id: DIV-06
+  name: Creative Media Production
+  version: 1.0.0
+  status: canonical
+  owner: Human Principal
+spec:
+  organization_id: ORG-001
+  purpose: Produce governed visual, audio, video, narrative, and brand media from approved briefs and source assets.
+  operating_classes: [creation, evaluation, delivery_operations]
+  functional_domains: [creative-media-and-brand]
+  autonomy_ceiling: A2
+  integration_ceiling: I1
+  role_definition_ids: []
+  capability_ids: [CAP-011]
+  product_ids: []
+  evidence_requirements:
+    - Source provenance is retained for consequential outputs.
+    - Quality gates and approval boundaries are recorded before external or irreversible action.

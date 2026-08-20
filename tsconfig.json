@@ -10,6 +10,6 @@
     "noEmit": true,
     "types": ["node"]
   },
-  "include": ["scripts/**/*.ts", "tests/**/*.ts", "adapters/**/*.ts"],
+  "include": ["scripts/**/*.ts", "tests/**/*.ts", "adapters/**/*.ts", "graph/**/*.ts", "router/**/*.ts"],
   "exclude": ["node_modules", "dist"]
 }

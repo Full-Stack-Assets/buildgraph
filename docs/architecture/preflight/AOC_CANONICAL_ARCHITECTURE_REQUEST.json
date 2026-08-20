@@ -1,0 +1,23 @@
+{
+  "name": "Agent Operating Company Canonical Architecture",
+  "purpose": "Extend BuildGraph Core with a canonical organization ontology, capability registry, runtime adapter contract, governed architecture manifests, versioned change control, and existing-library reconciliation.",
+  "entity_type": "Project",
+  "capabilities": [
+    "AGENT_DESIGN",
+    "REPOSITORY_REVIEW",
+    "MCP_INTEGRATION"
+  ],
+  "technologies": [
+    "BuildGraph",
+    "JSON Schema",
+    "YAML"
+  ],
+  "features": [
+    "Organization",
+    "Division",
+    "Capability",
+    "RuntimeAdapter",
+    "ArchitectureDecisionRecord"
+  ],
+  "justification": "The canonical layer closes first-class ontology, portability, evidence, and change-control gaps inside the existing BuildGraph repository."
+}

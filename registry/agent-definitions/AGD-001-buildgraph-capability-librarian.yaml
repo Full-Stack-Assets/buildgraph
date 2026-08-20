@@ -1,0 +1,18 @@
+api_version: buildgraph/v1
+kind: AgentDefinitionSpec
+metadata:
+  id: AGD-001
+  name: BuildGraph Capability Librarian
+  version: 1.0.0
+  status: canonical
+  owner: DIV-04
+spec:
+  purpose: Maintain canonical definitions, resolve reusable capabilities, run preflight, and prevent unversioned ontology drift.
+  role_definition_ids: [GKE-05]
+  skill_ids: [SKL-002, SKL-009, SKL-010, SKL-012, SKL-013, SKL-045]
+  capability_ids: [CAP-009, CAP-010]
+  tool_ids: [TOL-001, TOL-002, TOL-003]
+  autonomy_ceiling: A2
+  integration_ceiling: I2
+  portable: true
+  policies: [approval-policy, data-handling-policy, risk-tier-policy, release-policy]

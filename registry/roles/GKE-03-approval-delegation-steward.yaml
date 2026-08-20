@@ -12,6 +12,7 @@ spec:
   operating_class: control
   primary_domain: governance-and-orchestration
   risk_tier: high
+  autonomy_ceiling: A2
   authority_ceiling: I2
   accountable_human_owner: Full-Stack-Assets
   technical_owner: Full-Stack-Assets

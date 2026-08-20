@@ -1,0 +1,21 @@
+api_version: buildgraph/v1
+kind: DivisionSpec
+metadata:
+  id: DIV-10
+  name: Independent Verification, Security & Governance
+  version: 1.0.0
+  status: canonical
+  owner: Human Principal
+spec:
+  organization_id: ORG-001
+  purpose: Independently test claims, repositories, deployments, controls, security posture, and acceptance evidence.
+  operating_classes: [control, analysis, evaluation]
+  functional_domains: [governance-and-orchestration, engineering-and-platform, finance-risk-and-legal]
+  autonomy_ceiling: A2
+  integration_ceiling: I1
+  role_definition_ids: [GKE-04, ESP-03]
+  capability_ids: [CAP-002, CAP-003]
+  product_ids: []
+  evidence_requirements:
+    - Source provenance is retained for consequential outputs.
+    - Quality gates and approval boundaries are recorded before external or irreversible action.

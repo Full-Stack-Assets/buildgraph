@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ProviderSpec
+metadata:
+  id: PRV-002
+  name: GitHub
+  version: 1.0.0
+  status: active
+  owner: Full-Stack-Assets
+spec:
+  purpose: Supply version-controlled repository, review, CI, and evidence services through scoped integrations.
+  runtime_ids: [github]
+  tool_ids: [TOL-001]
+  authentication_model: Repository-scoped application or user authorization with protected-branch enforcement.
+  known_constraints:
+    - Merge, protected branch, secret, and production actions remain outside default agent authority.

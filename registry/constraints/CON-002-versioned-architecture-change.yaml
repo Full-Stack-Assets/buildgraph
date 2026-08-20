@@ -1,0 +1,20 @@
+api_version: buildgraph/v1
+kind: ConstraintSpec
+metadata:
+  id: CON-002
+  name: Versioned Architecture Change Control
+  version: 1.0.0
+  status: canonical
+  owner: DIV-10
+spec:
+  statement: No conversation, runtime, agent, or project may redefine canonical ontology or division boundaries without an approved versioned architecture decision record and migration.
+  scope: [architecture, ontology, relationship-vocabulary, division-boundaries, evidence-states, authority-model]
+  enforcement: human_approval
+  severity: blocking
+  policy_ids: [approval-policy, release-policy]
+  organization_ids: [ORG-001]
+  division_ids: [DIV-01, DIV-10]
+  product_ids: [PRD-001]
+  project_ids: [buildgraph-core]
+  agent_definition_ids: [AGD-001]
+  runtime_ids: [openai, cursor, manus, github, gemini, grok, claude, codex, local]

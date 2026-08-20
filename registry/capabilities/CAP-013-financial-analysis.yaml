@@ -1,0 +1,48 @@
+api_version: buildgraph/v1
+kind: CapabilitySpec
+metadata:
+  id: CAP-013
+  name: financial-analysis
+  version: 1.0.0
+  status: canonical
+  owner: DIV-09
+spec:
+  code: FINANCIAL_ANALYSIS
+  purpose: Analyze governed financial records, variances, scenarios, and reconciliation evidence without transaction authority.
+  home_division_id: DIV-09
+  operating_classes: [analysis, evaluation]
+  functional_domains: [finance-risk-and-legal]
+  provider_role_ids: []
+  implementing_skill_ids: [SKL-012, SKL-015]
+  required_tool_ids: [TOL-002, TOL-003]
+  runtime_support:
+    - runtime_id: openai
+      state: DECLARED
+      evidence_refs: [registry/runtimes/openai.yaml]
+    - runtime_id: cursor
+      state: DECLARED
+      evidence_refs: [registry/runtimes/cursor.yaml]
+    - runtime_id: manus
+      state: DECLARED
+      evidence_refs: [registry/runtimes/manus.yaml]
+    - runtime_id: github
+      state: DECLARED
+      evidence_refs: [registry/runtimes/github.yaml]
+    - runtime_id: gemini
+      state: DECLARED
+      evidence_refs: [registry/runtimes/gemini.yaml]
+    - runtime_id: grok
+      state: DECLARED
+      evidence_refs: [registry/runtimes/grok.yaml]
+    - runtime_id: claude
+      state: DECLARED
+      evidence_refs: [registry/runtimes/claude.yaml]
+    - runtime_id: codex
+      state: DECLARED
+      evidence_refs: [registry/runtimes/codex.yaml]
+    - runtime_id: local
+      state: DECLARED
+      evidence_refs: [registry/runtimes/local.yaml]
+  evidence_requirements:
+    - A declared implementation identifies its role, skill, tool, runtime, and policy bindings.
+    - TESTED or VERIFIED status cites reproducible execution evidence.

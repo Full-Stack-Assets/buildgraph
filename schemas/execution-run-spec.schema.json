@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/execution-run-spec.schema.json",
+  "title": "BuildGraph ExecutionRunSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "api_version",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "api_version": {
+      "const": "buildgraph/v1"
+    },
+    "kind": {
+      "const": "ExecutionRunSpec"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "version",
+        "status",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/executionRunId"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 3
+        },
+        "version": {
+          "$ref": "common.schema.json#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/canonicalStatus"
+        },
+        "owner": {
+          "$ref": "common.schema.json#/$defs/owner"
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "work_order_id",
+        "agent_instance_id",
+        "runtime_id",
+        "status",
+        "started_at",
+        "completed_at",
+        "artifact_ids",
+        "evidence_ids",
+        "trace_id"
+      ],
+      "properties": {
+        "work_order_id": {
+          "$ref": "common.schema.json#/$defs/workOrderId"
+        },
+        "agent_instance_id": {
+          "$ref": "common.schema.json#/$defs/agentInstanceId"
+        },
+        "runtime_id": {
+          "$ref": "common.schema.json#/$defs/runtimeId"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/executionStatus"
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completed_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "artifact_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/architectureArtifactId"
+          }
+        },
+        "evidence_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/evidenceId"
+          }
+        },
+        "trace_id": {
+          "$ref": "common.schema.json#/$defs/traceId"
+        }
+      }
+    }
+  }
+}

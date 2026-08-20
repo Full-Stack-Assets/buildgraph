@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/work-order-spec.schema.json",
+  "title": "BuildGraph WorkOrderSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "api_version",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "api_version": {
+      "const": "buildgraph/v1"
+    },
+    "kind": {
+      "const": "WorkOrderSpec"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "version",
+        "status",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/workOrderId"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 3
+        },
+        "version": {
+          "$ref": "common.schema.json#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/canonicalStatus"
+        },
+        "owner": {
+          "$ref": "common.schema.json#/$defs/owner"
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project_id",
+        "factory_id",
+        "required_capability_ids",
+        "agent_definition_ids",
+        "policy_ids",
+        "autonomy_ceiling",
+        "integration_ceiling",
+        "status",
+        "acceptance_criteria",
+        "evidence_requirements"
+      ],
+      "properties": {
+        "project_id": {
+          "$ref": "common.schema.json#/$defs/projectId"
+        },
+        "factory_id": {
+          "$ref": "common.schema.json#/$defs/factoryId"
+        },
+        "required_capability_ids": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/capabilityId"
+          }
+        },
+        "agent_definition_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "common.schema.json#/$defs/agentDefinitionId"
+          }
+        },
+        "policy_ids": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "autonomy_ceiling": {
+          "$ref": "common.schema.json#/$defs/autonomyTier"
+        },
+        "integration_ceiling": {
+          "$ref": "common.schema.json#/$defs/integrationTier"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/workStatus"
+        },
+        "acceptance_criteria": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "evidence_requirements": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  }
+}

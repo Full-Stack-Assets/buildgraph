@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ProviderSpec
+metadata:
+  id: PRV-003
+  name: BuildGraph Core
+  version: 1.0.0
+  status: canonical
+  owner: Full-Stack-Assets
+spec:
+  purpose: Supply the deterministic graph, local preflight, evidence registry, and portable tool contracts used by every runtime.
+  runtime_ids: [local]
+  tool_ids: [TOL-002, TOL-003]
+  authentication_model: Local canonical registry access; external transports use separately scoped adapter credentials.
+  known_constraints:
+    - BuildGraph records authority and evidence but does not grant external permissions by itself.

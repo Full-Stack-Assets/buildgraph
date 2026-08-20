@@ -1,0 +1,21 @@
+api_version: buildgraph/v1
+kind: DivisionSpec
+metadata:
+  id: DIV-07
+  name: Release, Distribution & Compliance
+  version: 1.0.0
+  status: canonical
+  owner: Human Principal
+spec:
+  organization_id: ORG-001
+  purpose: Package, validate, clear, distribute, and retain approved releases and compliance evidence.
+  operating_classes: [control, evaluation, delivery_operations]
+  functional_domains: [creative-media-and-brand, finance-risk-and-legal, revenue-and-customer]
+  autonomy_ceiling: A2
+  integration_ceiling: I2
+  role_definition_ids: []
+  capability_ids: [CAP-007, CAP-012]
+  product_ids: []
+  evidence_requirements:
+    - Source provenance is retained for consequential outputs.
+    - Quality gates and approval boundaries are recorded before external or irreversible action.

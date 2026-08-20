@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ToolSpec
+metadata:
+  id: TOL-003
+  name: BuildGraph Evidence Store
+  version: 1.0.0
+  status: canonical
+  owner: Full-Stack-Assets
+spec:
+  purpose: Store immutable evidence references, checksums, verification state, provenance, and artifact lineage.
+  provider_id: PRV-003
+  integration_id: INT-005
+  capability_codes: [DATA_ANALYSIS, MEDIA_GENERATION, RELEASE_PACKAGING, FINANCIAL_ANALYSIS]
+  maximum_permission_tier: I2
+  portable: true

@@ -1,0 +1,21 @@
+api_version: buildgraph/v1
+kind: DivisionSpec
+metadata:
+  id: DIV-01
+  name: Command & Orchestration
+  version: 1.0.0
+  status: canonical
+  owner: Human Principal
+spec:
+  organization_id: ORG-001
+  purpose: Coordinate company work, portfolio priorities, approval routing, exceptions, and cross-division orchestration.
+  operating_classes: [control]
+  functional_domains: [governance-and-orchestration]
+  autonomy_ceiling: A3
+  integration_ceiling: I2
+  role_definition_ids: [GKE-03]
+  capability_ids: []
+  product_ids: []
+  evidence_requirements:
+    - Source provenance is retained for consequential outputs.
+    - Quality gates and approval boundaries are recorded before external or irreversible action.

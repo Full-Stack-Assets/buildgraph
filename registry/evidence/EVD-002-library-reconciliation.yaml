@@ -1,0 +1,18 @@
+api_version: buildgraph/v1
+kind: EvidenceSpec
+metadata:
+  id: EVD-002
+  name: Existing Library Reconciliation Evidence
+  version: 1.0.0
+  status: verified
+  owner: DIV-02
+spec:
+  state: VERIFIED
+  claim: The authoritative source catalogs contain 123 roles, 45 skills, and 20 integrations, while five duplicate source documents are byte-identical.
+  capability_ids: [CAP-009]
+  artifact_ids: [ART-003]
+  execution_run_id: RUN-2026-001
+  source_uri: docs/architecture/EXISTING_LIBRARY_RECONCILIATION_MATRIX.csv
+  collected_at: 2026-08-18T16:30:00Z
+  checksum_sha256: 61f68c1d40036cf8c7921de43ea4aceff52985a96cffba60d295d3bd29ce9107
+  collector: BuildGraph library reconciliation pass

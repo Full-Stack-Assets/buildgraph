@@ -1,0 +1,67 @@
+{
+  "engine_mode": "offline_authoritative",
+  "decision": "EXTEND_EXISTING",
+  "justification": "Extend project:buildgraph-core because the proposal overlaps the existing canonical graph while introducing material gaps in capabilities, technology, features.",
+  "evidence": [
+    "graph:e9e9d83600ca4920a56a11e2c568c5fc0c6d368e9f149537e8959bf8b1e9ccab",
+    "graph-schema:buildgraph/1.0",
+    "project:buildgraph-core",
+    "registry/projects/buildgraph-core.yaml"
+  ],
+  "payload_hash": "cb31e48752ede701f810d9f5f1809f02d31b5bcbbf10d49865767d83142957db",
+  "matches": [
+    {
+      "id": "project:buildgraph-core",
+      "canonical_name": "BuildGraph Core",
+      "type": "Project",
+      "score": 0.1273,
+      "similarity": {
+        "purpose": 0.2121,
+        "capabilities": 0,
+        "technology": 0,
+        "features": 0,
+        "overall": 0.1273
+      },
+      "source_uri": "registry/projects/buildgraph-core.yaml"
+    }
+  ],
+  "closest_projects": [
+    {
+      "id": "project:buildgraph-core",
+      "canonical_name": "BuildGraph Core",
+      "type": "Project",
+      "score": 0.1273,
+      "similarity": {
+        "purpose": 0.2121,
+        "capabilities": 0,
+        "technology": 0,
+        "features": 0,
+        "overall": 0.1273
+      },
+      "source_uri": "registry/projects/buildgraph-core.yaml"
+    }
+  ],
+  "similarity": {
+    "purpose": 0.2121,
+    "capabilities": 0,
+    "technology": 0,
+    "features": 0,
+    "overall": 0.1273
+  },
+  "overlap": [
+    "purpose"
+  ],
+  "gaps": [
+    "capabilities",
+    "technology",
+    "features"
+  ],
+  "reusable_assets": [
+    "registry/projects/buildgraph-core.yaml"
+  ],
+  "waste_risk": {
+    "score": 50,
+    "level": "moderate"
+  },
+  "create_new_requires_justification": false
+}

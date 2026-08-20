@@ -1,0 +1,21 @@
+api_version: buildgraph/v1
+kind: DivisionSpec
+metadata:
+  id: DIV-03
+  name: Product & Software Engineering
+  version: 1.0.0
+  status: canonical
+  owner: Human Principal
+spec:
+  organization_id: ORG-001
+  purpose: Design and deliver products, software systems, repositories, tests, and release-ready engineering artifacts.
+  operating_classes: [creation, evaluation, delivery_operations]
+  functional_domains: [product-and-design, engineering-and-platform]
+  autonomy_ceiling: A3
+  integration_ceiling: I2
+  role_definition_ids: [ESP-01]
+  capability_ids: [CAP-001]
+  product_ids: []
+  evidence_requirements:
+    - Source provenance is retained for consequential outputs.
+    - Quality gates and approval boundaries are recorded before external or irreversible action.

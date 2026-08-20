@@ -1,0 +1,20 @@
+api_version: buildgraph/v1
+kind: ConstraintSpec
+metadata:
+  id: CON-001
+  name: Provider-Neutral Canonical Definitions
+  version: 1.0.0
+  status: canonical
+  owner: DIV-10
+spec:
+  statement: Canonical roles, skills, capabilities, workflows, factories, policies, and agent definitions must not depend on one model provider or runtime.
+  scope: [definitions, schemas, registries, workflows, factories, policies]
+  enforcement: validator
+  severity: blocking
+  policy_ids: [approval-policy, release-policy]
+  organization_ids: [ORG-001]
+  division_ids: [DIV-04, DIV-10]
+  product_ids: [PRD-001]
+  project_ids: [buildgraph-core]
+  agent_definition_ids: [AGD-001]
+  runtime_ids: [openai, cursor, manus, github, gemini, grok, claude, codex, local]
