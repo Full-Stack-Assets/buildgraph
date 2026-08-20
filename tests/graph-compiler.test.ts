@@ -51,6 +51,11 @@ describe("Unit 15-E canonical graph compiler", () => {
 
       expect(preflight.decision).toBe("REUSE_EXISTING");
       expect(preflight.matches[0]?.id).toBe(role?.id);
+      expect(preflight.justification).toContain("exact canonical match");
+      expect(preflight.evidence).toContain(`graph:${graph.content_hash}`);
+      expect(preflight.payload_hash).toMatch(/^[a-f0-9]{64}$/);
+      expect(preflight.similarity).toEqual({ purpose: 1, capabilities: 0, technology: 0, features: 0, overall: 1 });
+      expect(preflight.waste_risk.score).toBe(100);
       expect(existsSync(paths.graph)).toBe(true);
       expect(existsSync(paths.entities)).toBe(true);
       expect(existsSync(paths.edges)).toBe(true);
@@ -59,5 +64,31 @@ describe("Unit 15-E canonical graph compiler", () => {
     } finally {
       rmSync(outputRoot, { recursive: true, force: true });
     }
+  });
+
+  it("uses the deterministic local graph as the authoritative architecture preflight engine", () => {
+    const graph = compileGraph(registryRoot);
+    const preflight = preflightGraph(graph, {
+      name: "Agent Operating Company Canonical Architecture",
+      purpose: "Extend BuildGraph Core with a canonical organization ontology, capability registry, runtime adapter contract, and governed architecture manifests.",
+      entity_type: "Project",
+      capabilities: ["AGENT_DESIGN", "REPOSITORY_REVIEW", "MCP_INTEGRATION"],
+      technologies: ["BuildGraph", "JSON Schema", "YAML"],
+      features: ["Organization", "Division", "Capability", "RuntimeAdapter", "ArchitectureDecisionRecord"]
+    });
+
+    expect(preflight.decision).toBe("EXTEND_EXISTING");
+    expect(preflight.justification.length).toBeGreaterThan(20);
+    expect(preflight.evidence).toContain(`graph:${graph.content_hash}`);
+    expect(preflight.closest_projects[0]?.id).toBe("project:buildgraph-core");
+    expect(preflight.similarity).toEqual({
+      purpose: expect.any(Number),
+      capabilities: expect.any(Number),
+      technology: expect.any(Number),
+      features: expect.any(Number),
+      overall: expect.any(Number)
+    });
+    expect(preflight.waste_risk).toEqual({ score: expect.any(Number), level: expect.stringMatching(/^(low|moderate|high)$/) });
+    expect(preflight.create_new_requires_justification).toBe(false);
   });
 });

@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://buildgraph.local/schemas/tool-spec.schema.json",
+  "title": "BuildGraph ToolSpec",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "api_version",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "api_version": {
+      "const": "buildgraph/v1"
+    },
+    "kind": {
+      "const": "ToolSpec"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "name",
+        "version",
+        "status",
+        "owner"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "common.schema.json#/$defs/toolId"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 3
+        },
+        "version": {
+          "$ref": "common.schema.json#/$defs/semanticVersion"
+        },
+        "status": {
+          "$ref": "common.schema.json#/$defs/canonicalStatus"
+        },
+        "owner": {
+          "$ref": "common.schema.json#/$defs/owner"
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "purpose",
+        "provider_id",
+        "integration_id",
+        "capability_codes",
+        "maximum_permission_tier",
+        "portable"
+      ],
+      "properties": {
+        "purpose": {
+          "type": "string",
+          "minLength": 15
+        },
+        "provider_id": {
+          "$ref": "common.schema.json#/$defs/providerId"
+        },
+        "integration_id": {
+          "anyOf": [
+            {
+              "$ref": "common.schema.json#/$defs/integrationId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "capability_codes": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Z][A-Z0-9_]{2,63}$"
+          }
+        },
+        "maximum_permission_tier": {
+          "$ref": "common.schema.json#/$defs/integrationTier"
+        },
+        "portable": {
+          "type": "boolean"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,20 @@
+api_version: buildgraph/v1
+kind: FactorySpec
+metadata:
+  id: FAC-001
+  name: Software Delivery Factory
+  version: 1.0.0
+  status: active
+  owner: DIV-03
+spec:
+  purpose: Turn approved software work orders into tested, reviewed, evidence-backed repository deliverables.
+  operating_class: delivery_operations
+  workflow_ids: []
+  role_definition_ids: [ESP-01, ESP-03]
+  capability_ids: [CAP-001, CAP-002, CAP-003, CAP-009, CAP-010]
+  input_contract:
+    - Approved work order with bounded scope, acceptance criteria, authority ceilings, and source references.
+    - Passing BuildGraph preflight decision and reusable-asset evidence.
+  output_contract:
+    - Version-controlled implementation with tests and validation receipts.
+    - Independent review findings, evidence records, and explicit unresolved risks.

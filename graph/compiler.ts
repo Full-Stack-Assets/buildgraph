@@ -2,8 +2,9 @@ import { createHash } from "node:crypto";
 import { mkdirSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { relative, resolve } from "node:path";
 import { parse } from "yaml";
+import { isCompatibleRelationship } from "./ontology.js";
 
-const SCHEMA_VERSION = "buildgraph/15-e.1";
+const SCHEMA_VERSION = "buildgraph/1.0";
 const DETERMINISTIC_TIME = "1970-01-01T00:00:00Z";
 
 export type Provenance = {
@@ -71,6 +72,48 @@ export type GraphValidationReport = {
   counts: BuildGraph["summary"];
 };
 
+export type PreflightRequest = {
+  name: string;
+  purpose?: string;
+  entity_type?: string;
+  capabilities?: string[];
+  technologies?: string[];
+  features?: string[];
+  justification?: string;
+};
+
+export type PreflightSimilarity = {
+  purpose: number;
+  capabilities: number;
+  technology: number;
+  features: number;
+  overall: number;
+};
+
+export type PreflightMatch = {
+  id: string;
+  canonical_name: string;
+  type: string;
+  score: number;
+  similarity: PreflightSimilarity;
+  source_uri: string;
+};
+
+export type PreflightResult = {
+  decision: "REUSE_EXISTING" | "EXTEND_EXISTING" | "CREATE_NEW";
+  justification: string;
+  evidence: string[];
+  payload_hash: string;
+  matches: PreflightMatch[];
+  closest_projects: PreflightMatch[];
+  similarity: PreflightSimilarity;
+  overlap: string[];
+  gaps: string[];
+  reusable_assets: string[];
+  waste_risk: { score: number; level: "low" | "moderate" | "high" };
+  create_new_requires_justification: boolean;
+};
+
 type Manifest = {
   api_version?: string;
   kind?: string;
@@ -78,7 +121,7 @@ type Manifest = {
   spec?: Record<string, unknown>;
 };
 
-const typeByKind: Record<string, string> = {
+export const typeByKind: Record<string, string> = {
   PortfolioSpec: "Portfolio",
   ProjectSpec: "Project",
   RoleSpec: "Role",
@@ -86,15 +129,151 @@ const typeByKind: Record<string, string> = {
   IntegrationSpec: "Integration",
   PolicySpec: "Policy",
   WorkflowSpec: "Workflow",
-  RuntimeAdapter: "Runtime"
+  RuntimeAdapter: "Runtime",
+  OrganizationSpec: "Organization",
+  DivisionSpec: "Division",
+  ProductSpec: "Product",
+  CapabilitySpec: "Capability",
+  AgentDefinitionSpec: "AgentDefinition",
+  AgentInstanceSpec: "AgentInstance",
+  FactorySpec: "Factory",
+  WorkOrderSpec: "WorkOrder",
+  ExecutionRunSpec: "ExecutionRun",
+  ToolSpec: "Tool",
+  ProviderSpec: "Provider",
+  EvidenceSpec: "Evidence",
+  VerificationSpec: "Verification",
+  ArtifactSpec: "Artifact",
+  DecisionSpec: "Decision",
+  ConstraintSpec: "Constraint"
 };
 
-const referenceTypeByKind: Record<string, Record<string, string>> = {
-  PortfolioSpec: { project_ids: "Project", default_policy_refs: "Policy" },
-  ProjectSpec: { portfolio_id: "Portfolio", approval_policy_ref: "Policy" },
-  RoleSpec: { skills: "Skill", integrations: "Integration" },
-  IntegrationSpec: { approved_roles: "Role" },
-  WorkflowSpec: { roles: "Role", skills: "Skill", integrations: "Integration", policies: "Policy" }
+type ReferenceRule = {
+  path: string;
+  targetType: string;
+  relationship: string;
+  shape?: "strings" | "objects" | "single";
+  reverse?: boolean;
+};
+
+const referenceRulesByKind: Record<string, ReferenceRule[]> = {
+  PortfolioSpec: [
+    { path: "project_ids", targetType: "Project", relationship: "contains" },
+    { path: "default_policy_refs", targetType: "Policy", relationship: "governed_by" }
+  ],
+  ProjectSpec: [
+    { path: "portfolio_id", targetType: "Portfolio", relationship: "belongs_to", shape: "single" },
+    { path: "authority.approval_policy_ref", targetType: "Policy", relationship: "governed_by", shape: "single" },
+    { path: "capability_ids", targetType: "Capability", relationship: "uses" },
+    { path: "factory_ids", targetType: "Factory", relationship: "uses" },
+    { path: "canonical_role_ids", targetType: "Role", relationship: "uses" },
+    { path: "project_specific_role_ids", targetType: "Role", relationship: "uses" },
+    { path: "policy_ids", targetType: "Policy", relationship: "governed_by" },
+    { path: "runtime_preferences", targetType: "Runtime", relationship: "uses" }
+  ],
+  RoleSpec: [
+    { path: "skills", targetType: "Skill", relationship: "requires", shape: "objects" },
+    { path: "integrations", targetType: "Integration", relationship: "uses", shape: "objects" },
+    { path: "capability_ids", targetType: "Capability", relationship: "provides" }
+  ],
+  IntegrationSpec: [{ path: "approved_roles", targetType: "Role", relationship: "authorizes" }],
+  WorkflowSpec: [
+    { path: "roles", targetType: "Role", relationship: "uses" },
+    { path: "skills", targetType: "Skill", relationship: "requires" },
+    { path: "capability_ids", targetType: "Capability", relationship: "requires" },
+    { path: "integrations", targetType: "Integration", relationship: "uses" },
+    { path: "policies", targetType: "Policy", relationship: "governed_by" }
+  ],
+  RuntimeAdapter: [
+    { path: "contract.supported_agent_definition_ids", targetType: "AgentDefinition", relationship: "supports" }
+  ],
+  OrganizationSpec: [
+    { path: "division_ids", targetType: "Division", relationship: "contains" },
+    { path: "product_ids", targetType: "Product", relationship: "owns" }
+  ],
+  DivisionSpec: [
+    { path: "organization_id", targetType: "Organization", relationship: "belongs_to", shape: "single" },
+    { path: "role_definition_ids", targetType: "Role", relationship: "owns" },
+    { path: "capability_ids", targetType: "Capability", relationship: "owns" },
+    { path: "product_ids", targetType: "Product", relationship: "owns" }
+  ],
+  ProductSpec: [
+    { path: "organization_id", targetType: "Organization", relationship: "belongs_to", shape: "single" },
+    { path: "home_division_id", targetType: "Division", relationship: "belongs_to", shape: "single" },
+    { path: "capability_ids", targetType: "Capability", relationship: "uses" },
+    { path: "project_ids", targetType: "Project", relationship: "contains" }
+  ],
+  CapabilitySpec: [
+    { path: "home_division_id", targetType: "Division", relationship: "belongs_to", shape: "single" },
+    { path: "provider_role_ids", targetType: "Role", relationship: "provides", reverse: true },
+    { path: "implementing_skill_ids", targetType: "Skill", relationship: "implements", reverse: true },
+    { path: "required_tool_ids", targetType: "Tool", relationship: "uses" }
+  ],
+  AgentDefinitionSpec: [
+    { path: "role_definition_ids", targetType: "Role", relationship: "instantiates" },
+    { path: "skill_ids", targetType: "Skill", relationship: "uses" },
+    { path: "capability_ids", targetType: "Capability", relationship: "provides" },
+    { path: "tool_ids", targetType: "Tool", relationship: "uses" }
+  ],
+  AgentInstanceSpec: [
+    { path: "agent_definition_id", targetType: "AgentDefinition", relationship: "instantiates", shape: "single" },
+    { path: "runtime_id", targetType: "Runtime", relationship: "uses", shape: "single" },
+    { path: "tool_ids", targetType: "Tool", relationship: "uses" },
+    { path: "integration_ids", targetType: "Integration", relationship: "uses" }
+  ],
+  FactorySpec: [
+    { path: "workflow_ids", targetType: "Workflow", relationship: "uses" },
+    { path: "role_definition_ids", targetType: "Role", relationship: "uses" },
+    { path: "capability_ids", targetType: "Capability", relationship: "requires" }
+  ],
+  WorkOrderSpec: [
+    { path: "project_id", targetType: "Project", relationship: "belongs_to", shape: "single" },
+    { path: "factory_id", targetType: "Factory", relationship: "uses", shape: "single" },
+    { path: "agent_definition_ids", targetType: "AgentDefinition", relationship: "uses" },
+    { path: "required_capability_ids", targetType: "Capability", relationship: "requires" },
+    { path: "policy_ids", targetType: "Policy", relationship: "governed_by" }
+  ],
+  ExecutionRunSpec: [
+    { path: "work_order_id", targetType: "WorkOrder", relationship: "executes", shape: "single" },
+    { path: "agent_instance_id", targetType: "AgentInstance", relationship: "uses", shape: "single" },
+    { path: "runtime_id", targetType: "Runtime", relationship: "uses", shape: "single" },
+    { path: "artifact_ids", targetType: "Artifact", relationship: "produces" },
+    { path: "evidence_ids", targetType: "Evidence", relationship: "produces" }
+  ],
+  ToolSpec: [
+    { path: "provider_id", targetType: "Provider", relationship: "supplied_by", shape: "single" },
+    { path: "integration_id", targetType: "Integration", relationship: "uses", shape: "single" }
+  ],
+  ProviderSpec: [
+    { path: "runtime_ids", targetType: "Runtime", relationship: "supports" },
+    { path: "tool_ids", targetType: "Tool", relationship: "provides" }
+  ],
+  EvidenceSpec: [
+    { path: "capability_ids", targetType: "Capability", relationship: "validates" },
+    { path: "artifact_ids", targetType: "Artifact", relationship: "validates" },
+    { path: "execution_run_id", targetType: "ExecutionRun", relationship: "belongs_to", shape: "single" }
+  ],
+  VerificationSpec: [
+    { path: "evidence_ids", targetType: "Evidence", relationship: "validates" },
+    { path: "artifact_ids", targetType: "Artifact", relationship: "validates" },
+    { path: "capability_ids", targetType: "Capability", relationship: "validates" }
+  ],
+  ArtifactSpec: [
+    { path: "execution_run_id", targetType: "ExecutionRun", relationship: "belongs_to", shape: "single" }
+  ],
+  DecisionSpec: [
+    { path: "project_id", targetType: "Project", relationship: "belongs_to", shape: "single" },
+    { path: "policy_ids", targetType: "Policy", relationship: "governed_by" }
+  ],
+  ConstraintSpec: [
+    { path: "policy_ids", targetType: "Policy", relationship: "governed_by" },
+    { path: "organization_ids", targetType: "Organization", relationship: "governs" },
+    { path: "division_ids", targetType: "Division", relationship: "governs" },
+    { path: "product_ids", targetType: "Product", relationship: "governs" },
+    { path: "project_ids", targetType: "Project", relationship: "governs" },
+    { path: "agent_definition_ids", targetType: "AgentDefinition", relationship: "governs" },
+    { path: "runtime_ids", targetType: "Runtime", relationship: "governs" }
+  ]
 };
 
 function stableJson(value: unknown): string {
@@ -166,6 +345,30 @@ function makeEntity(kind: string, manifest: Manifest, path: string, registryRoot
   const digest = sha256(readFileSync(path));
   const status = manifest.metadata?.status ?? "unknown";
   const owner = manifest.metadata?.owner;
+  const spec = manifest.spec ?? {};
+  const capabilities = [
+    ...asStringArray(spec.capability_ids),
+    ...asStringArray(spec.required_capability_ids),
+    ...asStringArray(spec.provided_capability_ids),
+    ...(typeof spec.code === "string" ? [spec.code] : [])
+  ];
+  const technologies = [
+    ...asStringArray(spec.technologies),
+    ...asStringArray(spec.runtime_preferences),
+    ...asStringArray(spec.supported_tools)
+  ];
+  const features = [
+    kind,
+    type,
+    ...asStringArray(spec.features),
+    ...asStringArray(spec.entity_types)
+  ];
+  const purpose =
+    typeof spec.purpose === "string"
+      ? spec.purpose
+      : typeof spec.mission === "string"
+        ? spec.mission
+        : manifest.metadata?.name ?? sourceId;
 
   return {
     id: graphId(type, sourceId),
@@ -185,7 +388,11 @@ function makeEntity(kind: string, manifest: Manifest, path: string, registryRoot
       canonical_manifest_id: sourceId,
       owner: owner ?? null,
       manifest_sha256: digest,
-      declared_state: "canonical_manifest"
+      declared_state: "canonical_manifest",
+      purpose,
+      capabilities: [...new Set(capabilities)].sort(),
+      technologies: [...new Set(technologies)].sort(),
+      features: [...new Set(features)].sort()
     }
   };
 }
@@ -208,6 +415,14 @@ function asObjectIdArray(value: unknown): string[] {
   });
 }
 
+function valueAtPath(value: Record<string, unknown>, path: string): unknown {
+  return path.split(".").reduce<unknown>((current, segment) => {
+    return typeof current === "object" && current !== null
+      ? (current as Record<string, unknown>)[segment]
+      : undefined;
+  }, value);
+}
+
 function edgeId(source: string, target: string, type: string, uri: string): string {
   return `edge:${sha256(`${source}|${type}|${target}|${uri}`).slice(0, 20)}`;
 }
@@ -224,23 +439,26 @@ function makeEdge(source: string, target: string, type: string, uri: string): Gr
 
 function createReferenceEdges(kind: string, entity: GraphEntity, manifest: Manifest): GraphEdge[] {
   const spec = manifest.spec ?? {};
-  const mapping = referenceTypeByKind[kind] ?? {};
+  const rules = referenceRulesByKind[kind] ?? [];
   const edges: GraphEdge[] = [];
 
-  for (const [field, targetType] of Object.entries(mapping)) {
-    const raw = spec[field];
-    const sourceUriValue = entity.source_uri;
-    const referenceIds = field === "skills" || field === "integrations" ? asObjectIdArray(raw) : asStringArray(raw);
-
-    if (field === "portfolio_id" || field === "approval_policy_ref") {
-      if (typeof raw === "string") {
-        referenceIds.push(raw);
-      }
-    }
-
+  for (const rule of rules) {
+    const raw = valueAtPath(spec, rule.path);
+    const referenceIds =
+      rule.shape === "single"
+        ? typeof raw === "string"
+          ? [raw]
+          : []
+        : rule.shape === "objects"
+          ? asObjectIdArray(raw)
+          : asStringArray(raw);
     for (const referenceId of referenceIds) {
-      const relation = field === "approved_roles" ? "authorizes" : field === "skills" ? "requires" : field === "integrations" ? "uses" : field === "project_ids" ? "contains" : field === "portfolio_id" ? "belongs_to" : field === "default_policy_refs" || field === "approval_policy_ref" || field === "policies" ? "governed_by" : "references";
-      edges.push(makeEdge(entity.id, graphId(targetType, referenceId), relation, sourceUriValue));
+      const referencedEntityId = graphId(rule.targetType, referenceId);
+      edges.push(
+        rule.reverse
+          ? makeEdge(referencedEntityId, entity.id, rule.relationship, entity.source_uri)
+          : makeEdge(entity.id, referencedEntityId, rule.relationship, entity.source_uri)
+      );
     }
   }
 
@@ -303,6 +521,9 @@ export function compileGraph(registryRoot: string): BuildGraph {
   }
 
   for (const edge of edges) {
+    if (!entityById.has(edge.source)) {
+      entityById.set(edge.source, makePlaceholder(edge.source, edge.provenance.source_uri, edge.id));
+    }
     if (!entityById.has(edge.target)) {
       entityById.set(edge.target, makePlaceholder(edge.target, edge.provenance.source_uri, edge.id));
     }
@@ -341,6 +562,7 @@ export function validateGraph(graph: BuildGraph): GraphValidationReport {
   const errors: GraphIssue[] = [];
   const warnings: GraphIssue[] = [];
   const entityIds = new Set<string>();
+  const entitiesById = new Map<string, GraphEntity>();
   const edgeIds = new Set<string>();
   const requiredEntityFields: Array<keyof GraphEntity> = ["id", "canonical_name", "type", "version", "status", "source", "source_uri", "created_at", "updated_at", "provenance", "confidence", "tags", "metadata"];
 
@@ -353,6 +575,7 @@ export function validateGraph(graph: BuildGraph): GraphValidationReport {
       errors.push({ code: "DUPLICATE_ENTITY_ID", severity: "error", object_id: entity.id, message: "Entity ID appears more than once.", blocking: true });
     }
     entityIds.add(entity.id);
+    entitiesById.set(entity.id, entity);
     if (entity.metadata.unresolved_reference === true) {
       warnings.push({ code: "UNRESOLVED_REFERENCE", severity: "warning", object_id: entity.id, message: "Graph contains an explicit unresolved placeholder.", blocking: false });
     }
@@ -368,6 +591,24 @@ export function validateGraph(graph: BuildGraph): GraphValidationReport {
     }
     if (!entityIds.has(edge.target)) {
       errors.push({ code: "DANGLING_EDGE_TARGET", severity: "error", object_id: edge.id, field: "target", message: `Edge target ${edge.target} is not a graph entity.`, blocking: true });
+    }
+    const sourceEntity = entitiesById.get(edge.source);
+    const targetEntity = entitiesById.get(edge.target);
+    if (
+      sourceEntity &&
+      targetEntity &&
+      sourceEntity.metadata.placeholder !== true &&
+      targetEntity.metadata.placeholder !== true &&
+      !isCompatibleRelationship(sourceEntity.type, edge.type, targetEntity.type)
+    ) {
+      errors.push({
+        code: "INVALID_RELATIONSHIP_COMPATIBILITY",
+        severity: "error",
+        object_id: edge.id,
+        field: "type",
+        message: `${sourceEntity.type} ${edge.type} ${targetEntity.type} is not allowed by the canonical relationship vocabulary.`,
+        blocking: true
+      });
     }
   }
 
@@ -389,37 +630,149 @@ export function validateGraph(graph: BuildGraph): GraphValidationReport {
   };
 }
 
-export function preflightGraph(graph: BuildGraph, query: string, entityType?: string): {
-  decision: "REUSE_EXISTING" | "EXTEND_EXISTING" | "CREATE_NEW";
-  matches: Array<{ id: string; canonical_name: string; type: string; score: number }>;
-  create_new_requires_justification: boolean;
-} {
-  const normalizedQuery = query.trim().toLocaleLowerCase();
-  const candidates = graph.entities.filter((entity) => !entityType || entity.type === entityType);
-  const exact = candidates.filter((entity) => entity.canonical_name.toLocaleLowerCase() === normalizedQuery);
+const STOP_WORDS = new Set([
+  "a", "an", "and", "as", "at", "be", "by", "for", "from", "in", "into", "of", "on", "or", "the", "to", "with"
+]);
 
-  if (exact.length > 0) {
-    return {
-      decision: "REUSE_EXISTING",
-      matches: exact.map((entity) => ({ id: entity.id, canonical_name: entity.canonical_name, type: entity.type, score: 1 })),
-      create_new_requires_justification: false
-    };
+function tokens(value: unknown): Set<string> {
+  const text = Array.isArray(value) ? value.join(" ") : typeof value === "string" ? value : "";
+  const expanded = text.replace(/([a-z0-9])([A-Z])/g, "$1 $2").toLocaleLowerCase();
+  return new Set(
+    (expanded.match(/[a-z0-9]+/g) ?? [])
+      .map((token) => (token.length > 3 && token.endsWith("s") ? token.slice(0, -1) : token))
+      .filter((token) => token.length > 1 && !STOP_WORDS.has(token))
+  );
+}
+
+function similarity(left: Set<string>, right: Set<string>): number {
+  if (left.size === 0 || right.size === 0) {
+    return 0;
   }
+  const intersection = [...left].filter((token) => right.has(token)).length;
+  const union = new Set([...left, ...right]).size;
+  return Number((intersection / union).toFixed(4));
+}
 
-  const queryTokens = new Set(normalizedQuery.match(/[a-z0-9]+/g) ?? []);
-  const matches = candidates
-    .map((entity) => {
-      const entityTokens = new Set(entity.canonical_name.toLocaleLowerCase().match(/[a-z0-9]+/g) ?? []);
-      const intersection = [...queryTokens].filter((token) => entityTokens.has(token)).length;
-      const union = new Set([...queryTokens, ...entityTokens]).size;
-      return { id: entity.id, canonical_name: entity.canonical_name, type: entity.type, score: union === 0 ? 0 : Number((intersection / union).toFixed(4)) };
-    })
+function stringMetadata(entity: GraphEntity, field: string): string[] {
+  const value = entity.metadata[field];
+  return Array.isArray(value) ? value.filter((item): item is string => typeof item === "string") : [];
+}
+
+function expandedCapabilities(graph: BuildGraph, entity: GraphEntity): string[] {
+  const values = new Set(stringMetadata(entity, "capabilities"));
+  const entitiesById = new Map(graph.entities.map((candidate) => [candidate.id, candidate]));
+  for (const edge of graph.edges) {
+    if (edge.source !== entity.id || !["uses", "provides", "requires", "owns"].includes(edge.type)) continue;
+    const target = entitiesById.get(edge.target);
+    if (target?.type !== "Capability") continue;
+    values.add(String(target.metadata.canonical_manifest_id ?? target.canonical_name));
+    for (const code of stringMetadata(target, "capabilities")) values.add(code);
+  }
+  return [...values];
+}
+
+function scoreEntity(graph: BuildGraph, entity: GraphEntity, request: PreflightRequest): PreflightMatch {
+  const purposeScore = similarity(
+    tokens([request.name, request.purpose ?? ""]),
+    tokens([entity.canonical_name, typeof entity.metadata.purpose === "string" ? entity.metadata.purpose : ""])
+  );
+  const capabilityScore = similarity(tokens(request.capabilities ?? []), tokens(expandedCapabilities(graph, entity)));
+  const technologyScore = similarity(tokens(request.technologies ?? []), tokens(stringMetadata(entity, "technologies")));
+  const featureScore = similarity(tokens(request.features ?? []), tokens(stringMetadata(entity, "features")));
+  const exact = entity.canonical_name.toLocaleLowerCase() === request.name.trim().toLocaleLowerCase();
+  const overall = exact
+    ? 1
+    : Number((purposeScore * 0.6 + capabilityScore * 0.2 + technologyScore * 0.1 + featureScore * 0.1).toFixed(4));
+  return {
+    id: entity.id,
+    canonical_name: entity.canonical_name,
+    type: entity.type,
+    score: overall,
+    similarity: {
+      purpose: exact ? 1 : purposeScore,
+      capabilities: capabilityScore,
+      technology: technologyScore,
+      features: featureScore,
+      overall
+    },
+    source_uri: entity.source_uri
+  };
+}
+
+function rankEntities(graph: BuildGraph, request: PreflightRequest, entityType?: string): PreflightMatch[] {
+  return graph.entities
+    .filter((entity) => entity.status !== "unresolved" && (!entityType || entity.type === entityType))
+    .map((entity) => scoreEntity(graph, entity, request))
     .filter((match) => match.score > 0)
     .sort((left, right) => right.score - left.score || left.id.localeCompare(right.id))
     .slice(0, 10);
+}
 
-  const decision = matches[0] && matches[0].score >= 0.5 ? "EXTEND_EXISTING" : "CREATE_NEW";
-  return { decision, matches, create_new_requires_justification: decision === "CREATE_NEW" };
+function riskFor(decision: PreflightResult["decision"], topScore: number): PreflightResult["waste_risk"] {
+  const score =
+    decision === "REUSE_EXISTING"
+      ? 100
+      : decision === "EXTEND_EXISTING"
+        ? Math.max(50, Math.round(topScore * 100))
+        : Math.round(topScore * 100);
+  return { score, level: score >= 75 ? "high" : score >= 35 ? "moderate" : "low" };
+}
+
+export function preflightGraph(graph: BuildGraph, query: string | PreflightRequest, entityType?: string): PreflightResult {
+  const request: PreflightRequest =
+    typeof query === "string" ? { name: query, entity_type: entityType } : structuredClone(query);
+  const requestedType = entityType ?? request.entity_type;
+  const matches = rankEntities(graph, request, requestedType);
+  const closestProjects = rankEntities(graph, request, "Project");
+  const exact = matches.find(
+    (match) => match.canonical_name.toLocaleLowerCase() === request.name.trim().toLocaleLowerCase()
+  );
+  const top = exact ?? matches[0];
+  const decision: PreflightResult["decision"] = exact
+    ? "REUSE_EXISTING"
+    : top && top.score >= 0.1
+      ? "EXTEND_EXISTING"
+      : "CREATE_NEW";
+  const similarityResult = top?.similarity ?? {
+    purpose: 0,
+    capabilities: 0,
+    technology: 0,
+    features: 0,
+    overall: 0
+  };
+  const overlap = ([
+    similarityResult.purpose > 0 ? "purpose" : null,
+    similarityResult.capabilities > 0 ? "capabilities" : null,
+    similarityResult.technology > 0 ? "technology" : null,
+    similarityResult.features > 0 ? "features" : null
+  ].filter(Boolean) as string[]);
+  const gaps = ["purpose", "capabilities", "technology", "features"].filter((dimension) => !overlap.includes(dimension));
+  const evidence = [
+    `graph:${graph.content_hash}`,
+    `graph-schema:${graph.schema_version}`,
+    ...matches.slice(0, 3).flatMap((match) => [match.id, match.source_uri])
+  ];
+  const justification =
+    decision === "REUSE_EXISTING"
+      ? `Reuse ${exact?.id ?? "the existing entity"} because the deterministic graph contains an exact canonical match.`
+      : decision === "EXTEND_EXISTING"
+        ? `Extend ${top?.id ?? "the closest BuildGraph entity"} because the proposal overlaps the existing canonical graph while introducing material gaps in ${gaps.join(", ") || "implementation detail"}.`
+        : "Create a new entity only after recording why no sufficiently similar canonical entity can be reused or extended.";
+
+  return {
+    decision,
+    justification,
+    evidence: [...new Set(evidence)],
+    payload_hash: sha256(stableJson(request)),
+    matches,
+    closest_projects: closestProjects,
+    similarity: similarityResult,
+    overlap,
+    gaps,
+    reusable_assets: matches.slice(0, 5).map((match) => match.source_uri),
+    waste_risk: riskFor(decision, top?.score ?? 0),
+    create_new_requires_justification: decision === "CREATE_NEW"
+  };
 }
 
 export function writeGraphOutputs(graph: BuildGraph, report: GraphValidationReport, outputRoot: string): Record<string, string> {

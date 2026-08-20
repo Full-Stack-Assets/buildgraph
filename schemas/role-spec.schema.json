@@ -31,11 +31,12 @@
     "spec": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["operating_class", "primary_domain", "risk_tier", "authority_ceiling", "accountable_human_owner", "technical_owner", "mission", "scope", "input_contract", "skills", "integrations", "runtime_compatibility", "quality_gates", "escalation", "observability"],
+      "required": ["operating_class", "primary_domain", "risk_tier", "autonomy_ceiling", "authority_ceiling", "accountable_human_owner", "technical_owner", "mission", "scope", "input_contract", "skills", "integrations", "runtime_compatibility", "quality_gates", "escalation", "observability"],
       "properties": {
         "operating_class": {"$ref": "common.schema.json#/$defs/operatingClass"},
         "primary_domain": {"type": "string", "minLength": 1},
         "risk_tier": {"$ref": "common.schema.json#/$defs/riskTier"},
+        "autonomy_ceiling": {"$ref": "common.schema.json#/$defs/autonomyTier"},
         "authority_ceiling": {"$ref": "common.schema.json#/$defs/integrationTier"},
         "accountable_human_owner": {"$ref": "common.schema.json#/$defs/owner"},
         "technical_owner": {"$ref": "common.schema.json#/$defs/owner"},

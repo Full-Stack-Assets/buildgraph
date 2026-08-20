@@ -27,7 +27,23 @@ const schemaByKind: Record<string, string> = {
   IntegrationSpec: "integration-spec.schema.json",
   PolicySpec: "policy-spec.schema.json",
   WorkflowSpec: "workflow-spec.schema.json",
-  RuntimeAdapter: "runtime-adapter.schema.json"
+  RuntimeAdapter: "runtime-adapter.schema.json",
+  OrganizationSpec: "organization-spec.schema.json",
+  DivisionSpec: "division-spec.schema.json",
+  ProductSpec: "product-spec.schema.json",
+  CapabilitySpec: "capability-spec.schema.json",
+  AgentDefinitionSpec: "agent-definition-spec.schema.json",
+  AgentInstanceSpec: "agent-instance-spec.schema.json",
+  FactorySpec: "factory-spec.schema.json",
+  WorkOrderSpec: "work-order-spec.schema.json",
+  ExecutionRunSpec: "execution-run-spec.schema.json",
+  ToolSpec: "tool-spec.schema.json",
+  ProviderSpec: "provider-spec.schema.json",
+  EvidenceSpec: "evidence-spec.schema.json",
+  VerificationSpec: "verification-spec.schema.json",
+  ArtifactSpec: "artifact-spec.schema.json",
+  DecisionSpec: "decision-spec.schema.json",
+  ConstraintSpec: "constraint-spec.schema.json"
 };
 
 const tierScore: Record<string, number> = { I0: 0, I1: 1, I2: 2, I3: 3, I4: 4 };
@@ -86,6 +102,138 @@ function asReferenceIds(value: unknown): string[] {
 
 function asTier(value: unknown): number | undefined {
   return typeof value === "string" ? tierScore[value] : undefined;
+}
+
+type CrossReferenceRule = {
+  path: string;
+  targetKind: string;
+  shape?: "single" | "strings" | "objects";
+  objectKey?: string;
+};
+
+const crossReferenceRules: Record<string, CrossReferenceRule[]> = {
+  ProjectSpec: [
+    { path: "capability_ids", targetKind: "CapabilitySpec" },
+    { path: "factory_ids", targetKind: "FactorySpec" },
+    { path: "canonical_role_ids", targetKind: "RoleSpec" },
+    { path: "project_specific_role_ids", targetKind: "RoleSpec" },
+    { path: "policy_ids", targetKind: "PolicySpec" },
+    { path: "runtime_preferences", targetKind: "RuntimeAdapter" }
+  ],
+  RuntimeAdapter: [
+    { path: "contract.supported_tools", targetKind: "ToolSpec" },
+    { path: "contract.supported_agent_definition_ids", targetKind: "AgentDefinitionSpec" }
+  ],
+  OrganizationSpec: [
+    { path: "division_ids", targetKind: "DivisionSpec" },
+    { path: "product_ids", targetKind: "ProductSpec" }
+  ],
+  DivisionSpec: [
+    { path: "organization_id", targetKind: "OrganizationSpec", shape: "single" },
+    { path: "role_definition_ids", targetKind: "RoleSpec" },
+    { path: "capability_ids", targetKind: "CapabilitySpec" },
+    { path: "product_ids", targetKind: "ProductSpec" }
+  ],
+  ProductSpec: [
+    { path: "organization_id", targetKind: "OrganizationSpec", shape: "single" },
+    { path: "home_division_id", targetKind: "DivisionSpec", shape: "single" },
+    { path: "capability_ids", targetKind: "CapabilitySpec" },
+    { path: "project_ids", targetKind: "ProjectSpec" }
+  ],
+  CapabilitySpec: [
+    { path: "home_division_id", targetKind: "DivisionSpec", shape: "single" },
+    { path: "provider_role_ids", targetKind: "RoleSpec" },
+    { path: "implementing_skill_ids", targetKind: "SkillSpec" },
+    { path: "required_tool_ids", targetKind: "ToolSpec" },
+    { path: "runtime_support", targetKind: "RuntimeAdapter", shape: "objects", objectKey: "runtime_id" }
+  ],
+  AgentDefinitionSpec: [
+    { path: "role_definition_ids", targetKind: "RoleSpec" },
+    { path: "skill_ids", targetKind: "SkillSpec" },
+    { path: "capability_ids", targetKind: "CapabilitySpec" },
+    { path: "tool_ids", targetKind: "ToolSpec" },
+    { path: "policies", targetKind: "PolicySpec" }
+  ],
+  AgentInstanceSpec: [
+    { path: "agent_definition_id", targetKind: "AgentDefinitionSpec", shape: "single" },
+    { path: "runtime_id", targetKind: "RuntimeAdapter", shape: "single" },
+    { path: "tool_ids", targetKind: "ToolSpec" },
+    { path: "integration_ids", targetKind: "IntegrationSpec" }
+  ],
+  FactorySpec: [
+    { path: "workflow_ids", targetKind: "WorkflowSpec" },
+    { path: "role_definition_ids", targetKind: "RoleSpec" },
+    { path: "capability_ids", targetKind: "CapabilitySpec" }
+  ],
+  WorkOrderSpec: [
+    { path: "project_id", targetKind: "ProjectSpec", shape: "single" },
+    { path: "factory_id", targetKind: "FactorySpec", shape: "single" },
+    { path: "required_capability_ids", targetKind: "CapabilitySpec" },
+    { path: "agent_definition_ids", targetKind: "AgentDefinitionSpec" },
+    { path: "policy_ids", targetKind: "PolicySpec" }
+  ],
+  ExecutionRunSpec: [
+    { path: "work_order_id", targetKind: "WorkOrderSpec", shape: "single" },
+    { path: "agent_instance_id", targetKind: "AgentInstanceSpec", shape: "single" },
+    { path: "runtime_id", targetKind: "RuntimeAdapter", shape: "single" },
+    { path: "artifact_ids", targetKind: "ArtifactSpec" },
+    { path: "evidence_ids", targetKind: "EvidenceSpec" }
+  ],
+  ToolSpec: [
+    { path: "provider_id", targetKind: "ProviderSpec", shape: "single" },
+    { path: "integration_id", targetKind: "IntegrationSpec", shape: "single" }
+  ],
+  ProviderSpec: [
+    { path: "runtime_ids", targetKind: "RuntimeAdapter" },
+    { path: "tool_ids", targetKind: "ToolSpec" }
+  ],
+  EvidenceSpec: [
+    { path: "capability_ids", targetKind: "CapabilitySpec" },
+    { path: "artifact_ids", targetKind: "ArtifactSpec" },
+    { path: "execution_run_id", targetKind: "ExecutionRunSpec", shape: "single" }
+  ],
+  VerificationSpec: [
+    { path: "evidence_ids", targetKind: "EvidenceSpec" },
+    { path: "artifact_ids", targetKind: "ArtifactSpec" },
+    { path: "capability_ids", targetKind: "CapabilitySpec" }
+  ],
+  ArtifactSpec: [{ path: "execution_run_id", targetKind: "ExecutionRunSpec", shape: "single" }],
+  DecisionSpec: [
+    { path: "project_id", targetKind: "ProjectSpec", shape: "single" },
+    { path: "policy_ids", targetKind: "PolicySpec" }
+  ],
+  ConstraintSpec: [
+    { path: "policy_ids", targetKind: "PolicySpec" },
+    { path: "organization_ids", targetKind: "OrganizationSpec" },
+    { path: "division_ids", targetKind: "DivisionSpec" },
+    { path: "product_ids", targetKind: "ProductSpec" },
+    { path: "project_ids", targetKind: "ProjectSpec" },
+    { path: "agent_definition_ids", targetKind: "AgentDefinitionSpec" },
+    { path: "runtime_ids", targetKind: "RuntimeAdapter" }
+  ]
+};
+
+function valueAtPath(value: Record<string, unknown>, path: string): unknown {
+  return path.split(".").reduce<unknown>((current, segment) => {
+    return typeof current === "object" && current !== null
+      ? (current as Record<string, unknown>)[segment]
+      : undefined;
+  }, value);
+}
+
+function referenceValues(raw: unknown, rule: CrossReferenceRule): string[] {
+  if (rule.shape === "single") {
+    return typeof raw === "string" ? [raw] : [];
+  }
+  if (rule.shape === "objects") {
+    if (!Array.isArray(raw)) return [];
+    const key = rule.objectKey ?? "id";
+    return raw.flatMap((item) => {
+      const value = typeof item === "object" && item !== null ? (item as Record<string, unknown>)[key] : undefined;
+      return typeof value === "string" ? [value] : [];
+    });
+  }
+  return asStringArray(raw);
 }
 
 const ajv = new Ajv2020({ allErrors: true, strict: true });
@@ -149,6 +297,26 @@ for (const entry of loaded) {
 
 function hasManifest(kind: string, id: string): boolean {
   return manifestsByKind.get(kind)?.has(id) ?? false;
+}
+
+for (const entry of loaded) {
+  const kind = entry.manifest.kind;
+  if (!kind) continue;
+  for (const rule of crossReferenceRules[kind] ?? []) {
+    const raw = valueAtPath(entry.manifest.spec ?? {}, rule.path);
+    for (const referenceId of referenceValues(raw, rule)) {
+      if (!hasManifest(rule.targetKind, referenceId)) {
+        errors.push(`${entry.path}: ${kind} references missing ${rule.targetKind} ${referenceId} at ${rule.path}`);
+      }
+    }
+  }
+  if (kind === "RuntimeAdapter") {
+    const runtimeId = entry.manifest.metadata?.id;
+    const contractRuntimeId = valueAtPath(entry.manifest.spec ?? {}, "contract.runtime_id");
+    if (runtimeId !== contractRuntimeId) {
+      errors.push(`${entry.path}: RuntimeAdapter metadata.id must equal spec.contract.runtime_id`);
+    }
+  }
 }
 
 for (const entry of loaded) {

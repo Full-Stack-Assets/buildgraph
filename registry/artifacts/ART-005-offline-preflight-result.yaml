@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ArtifactSpec
+metadata:
+  id: ART-005
+  name: AOC Offline Preflight Result
+  version: 1.0.0
+  status: verified
+  owner: DIV-10
+spec:
+  artifact_type: preflight-result
+  uri: docs/architecture/preflight/AOC_CANONICAL_ARCHITECTURE_RESULT.json
+  media_type: application/json
+  checksum_sha256: 7b198b63b1b388e749369eafc9eb86afb02fbdad162baa6b82297ac72dd7f238
+  execution_run_id: RUN-2026-001
+  evidence_state: VERIFIED

@@ -1,0 +1,24 @@
+api_version: buildgraph/v1
+kind: WorkOrderSpec
+metadata:
+  id: WO-2026-001
+  name: AOC Canonical Architecture v1 Implementation
+  version: 1.0.0
+  status: completed
+  owner: Full-Stack-Assets
+spec:
+  project_id: buildgraph-core
+  factory_id: FAC-001
+  required_capability_ids: [CAP-002, CAP-003, CAP-009, CAP-010]
+  agent_definition_ids: [AGD-001]
+  policy_ids: [approval-policy, data-handling-policy, risk-tier-policy, release-policy]
+  autonomy_ceiling: A2
+  integration_ceiling: I2
+  status: COMPLETED
+  acceptance_criteria:
+    - Canonical architecture, ontology, ten division manifests, capability registry, reconciliation matrix, and runtime contract exist in BuildGraph.
+    - The deterministic graph compiles with no validation errors and controlled relationship compatibility passes.
+    - Tests, registry validation, typecheck, and lint pass with reproducible evidence.
+  evidence_requirements:
+    - Offline preflight records EXTEND_EXISTING against BuildGraph Core before canonical entities are added.
+    - Final generated graph, test results, checksums, and independent verification are recorded.

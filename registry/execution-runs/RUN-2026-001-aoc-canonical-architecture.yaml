@@ -1,0 +1,18 @@
+api_version: buildgraph/v1
+kind: ExecutionRunSpec
+metadata:
+  id: RUN-2026-001
+  name: AOC Canonical Architecture v1 Build Run
+  version: 1.0.0
+  status: completed
+  owner: Full-Stack-Assets
+spec:
+  work_order_id: WO-2026-001
+  agent_instance_id: AGI-001
+  runtime_id: local
+  status: SUCCEEDED
+  started_at: 2026-08-18T16:00:00Z
+  completed_at: 2026-08-18T17:30:00Z
+  artifact_ids: [ART-001, ART-002, ART-003, ART-004, ART-005, ART-006]
+  evidence_ids: [EVD-001, EVD-002, EVD-003]
+  trace_id: trace_aoc_v1_20260818

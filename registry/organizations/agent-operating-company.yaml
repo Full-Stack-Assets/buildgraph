@@ -1,0 +1,16 @@
+api_version: buildgraph/v1
+kind: OrganizationSpec
+metadata:
+  id: ORG-001
+  name: Agent Operating Company
+  version: 1.0.0
+  status: canonical
+  owner: Human Principal
+spec:
+  purpose: Govern a portable, capability-centered agent operating company under explicit human authority.
+  human_authority: Human Principal
+  division_ids: [DIV-01, DIV-02, DIV-03, DIV-04, DIV-05, DIV-06, DIV-07, DIV-08, DIV-09, DIV-10]
+  product_ids: [PRD-001]
+  buildgraph_boundary: BuildGraph Core is the canonical memory, ontology, provenance, evidence, policy, and change-control layer.
+  skill_os_boundary: Agentic Skill OS resolves capabilities and composes roles, skills, workflows, factories, pods, and runtime adapters for execution.
+  change_mode: VERSIONED_ONLY

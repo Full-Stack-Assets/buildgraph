@@ -15,10 +15,11 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "validate": "npm run lint && npm run typecheck && npm run validate:registry && npm run validate:graph && npm test",
-    "validate:registry": "tsx scripts/validate-registry.ts",
-    "generate:graph": "tsx scripts/generate-graph.ts",
-    "validate:graph": "tsx scripts/generate-graph.ts",
-    "clickup:verify": "tsx scripts/clickup-verify.ts"
+    "validate:registry": "node --import tsx scripts/validate-registry.ts",
+    "generate:graph": "node --import tsx scripts/generate-graph.ts",
+    "validate:graph": "node --import tsx scripts/generate-graph.ts",
+    "preflight": "node --import tsx scripts/preflight.ts",
+    "clickup:verify": "node --import tsx scripts/clickup-verify.ts"
   },
   "dependencies": {
     "ajv": "^8.17.1",

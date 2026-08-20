@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ArtifactSpec
+metadata:
+  id: ART-002
+  name: AOC Ontology v1
+  version: 1.0.0
+  status: canonical
+  owner: DIV-04
+spec:
+  artifact_type: machine-readable-ontology
+  uri: docs/architecture/AOC_ONTOLOGY_V1.json
+  media_type: application/json
+  checksum_sha256: ff55ffea7137b34f5f08bc8aff442c02e8b959506f52ce1b4438d7febd25abef
+  execution_run_id: RUN-2026-001
+  evidence_state: TESTED

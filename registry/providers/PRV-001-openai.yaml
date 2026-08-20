@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ProviderSpec
+metadata:
+  id: PRV-001
+  name: OpenAI
+  version: 1.0.0
+  status: active
+  owner: Full-Stack-Assets
+spec:
+  purpose: Supply model and agent runtimes through environment-specific adapters while canonical definitions remain provider neutral.
+  runtime_ids: [openai, codex]
+  tool_ids: []
+  authentication_model: Environment-scoped provider credentials referenced only by deployment configuration.
+  known_constraints:
+    - Model, context, and tool availability vary by deployment and must not be encoded into canonical definitions.

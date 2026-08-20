@@ -1,0 +1,21 @@
+api_version: buildgraph/v1
+kind: DivisionSpec
+metadata:
+  id: DIV-05
+  name: Data, Analytics & Operational Intelligence
+  version: 1.0.0
+  status: canonical
+  owner: Human Principal
+spec:
+  organization_id: ORG-001
+  purpose: Transform governed data into reproducible analysis, diagnostics, forecasts, and operational intelligence.
+  operating_classes: [knowledge, analysis, evaluation]
+  functional_domains: [data-analytics-and-ai, operations-and-supply-chain]
+  autonomy_ceiling: A2
+  integration_ceiling: I2
+  role_definition_ids: []
+  capability_ids: [CAP-008]
+  product_ids: []
+  evidence_requirements:
+    - Source provenance is retained for consequential outputs.
+    - Quality gates and approval boundaries are recorded before external or irreversible action.

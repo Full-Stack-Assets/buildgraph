@@ -1,0 +1,17 @@
+api_version: buildgraph/v1
+kind: AgentInstanceSpec
+metadata:
+  id: AGI-001
+  name: BuildGraph Capability Librarian Reference Instance
+  version: 1.0.0
+  status: active
+  owner: DIV-04
+spec:
+  agent_definition_id: AGD-001
+  runtime_id: local
+  model_id: deployment-unbound
+  environment: reference
+  tool_ids: [TOL-001, TOL-002, TOL-003]
+  integration_ids: [INT-001, INT-005, INT-007]
+  credential_reference_policy: references_only_no_secret_material
+  evidence_state: DECLARED

@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ToolSpec
+metadata:
+  id: TOL-002
+  name: MCP Runtime Interface
+  version: 1.0.0
+  status: canonical
+  owner: Full-Stack-Assets
+spec:
+  purpose: Bind typed, permissioned external capabilities to runtime adapters through a portable tool contract.
+  provider_id: PRV-003
+  integration_id: null
+  capability_codes: [SOFTWARE_BUILD, DEPLOYMENT_VERIFICATION, MARKET_RESEARCH, OPPORTUNITY_DISCOVERY, CLIENT_CONVERSION, CONTRACT_ANALYSIS, DATA_ANALYSIS, AGENT_DESIGN, MCP_INTEGRATION, MEDIA_GENERATION, FINANCIAL_ANALYSIS]
+  maximum_permission_tier: I2
+  portable: true

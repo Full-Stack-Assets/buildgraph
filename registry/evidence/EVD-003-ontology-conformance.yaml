@@ -1,0 +1,18 @@
+api_version: buildgraph/v1
+kind: EvidenceSpec
+metadata:
+  id: EVD-003
+  name: AOC Ontology Conformance Evidence
+  version: 1.0.0
+  status: verified
+  owner: DIV-10
+spec:
+  state: TESTED
+  claim: The AOC ontology, entity schemas, relationship rules, division manifests, capability registry, and runtime profiles passed the automated conformance suite.
+  capability_ids: [CAP-002, CAP-003, CAP-009, CAP-010]
+  artifact_ids: [ART-001, ART-002, ART-004, ART-006]
+  execution_run_id: RUN-2026-001
+  source_uri: docs/architecture/verification/AOC_V1_VERIFICATION_REPORT.md
+  collected_at: 2026-08-18T17:30:00Z
+  checksum_sha256: 869b87c821fdb074203d353d26e2605dd9f4b41d9dce67f1f62d49a056719741
+  collector: BuildGraph automated conformance suite

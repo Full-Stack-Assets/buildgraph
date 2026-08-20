@@ -7,6 +7,28 @@ metadata:
   status: pilot
   owner: Full-Stack-Assets
 spec:
+  contract:
+    runtime_id: openai
+    supported_models: [provider-configured-openai-model]
+    supported_tools: [TOL-002, TOL-003]
+    supports_mcp: true
+    supports_files: true
+    supports_repo_context: false
+    supports_persistent_memory: false
+    supports_scheduled_execution: true
+    supports_background_execution: true
+    supports_structured_output: true
+    permission_model: Task passport plus runtime-native confirmation and scoped tool bindings.
+    context_limits:
+      mode: model_dependent
+      max_context_tokens: null
+      notes: The deployment selects a supported model and records its effective context ceiling.
+    artifact_support: [documents, structured-data, code, images]
+    authentication_model: Environment-scoped provider credentials and user-authorized connectors.
+    known_constraints:
+      - Model, connector, and background capabilities vary by deployment.
+    evidence_state: TESTED
+    supported_agent_definition_ids: [AGD-001]
   input:
     supported_artifact_types: [documents, structured-task-context, code-context]
     structured_input: true

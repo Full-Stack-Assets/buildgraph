@@ -1,0 +1,18 @@
+api_version: buildgraph/v1
+kind: EvidenceSpec
+metadata:
+  id: EVD-001
+  name: Offline Preflight Extension Evidence
+  version: 1.0.0
+  status: verified
+  owner: DIV-10
+spec:
+  state: VERIFIED
+  claim: The deterministic pre-extension graph returned EXTEND_EXISTING for BuildGraph Core with a stable payload hash and similarity evidence.
+  capability_ids: [CAP-009, CAP-010]
+  artifact_ids: [ART-005]
+  execution_run_id: RUN-2026-001
+  source_uri: docs/architecture/preflight/AOC_CANONICAL_ARCHITECTURE_RESULT.json
+  collected_at: 2026-08-18T16:00:00Z
+  checksum_sha256: 7b198b63b1b388e749369eafc9eb86afb02fbdad162baa6b82297ac72dd7f238
+  collector: BuildGraph deterministic offline preflight

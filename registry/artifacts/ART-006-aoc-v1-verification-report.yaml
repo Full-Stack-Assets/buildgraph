@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ArtifactSpec
+metadata:
+  id: ART-006
+  name: AOC v1 Verification Report
+  version: 1.0.0
+  status: verified
+  owner: DIV-10
+spec:
+  artifact_type: verification-report
+  uri: docs/architecture/verification/AOC_V1_VERIFICATION_REPORT.md
+  media_type: text/markdown
+  checksum_sha256: 869b87c821fdb074203d353d26e2605dd9f4b41d9dce67f1f62d49a056719741
+  execution_run_id: RUN-2026-001
+  evidence_state: TESTED

@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ToolSpec
+metadata:
+  id: TOL-001
+  name: GitHub Repository Interface
+  version: 1.0.0
+  status: active
+  owner: Full-Stack-Assets
+spec:
+  purpose: Read repositories, create bounded changes, execute checks, and publish reviewable branch or pull-request artifacts.
+  provider_id: PRV-002
+  integration_id: INT-007
+  capability_codes: [SOFTWARE_BUILD, REPOSITORY_REVIEW, DEPLOYMENT_VERIFICATION, AGENT_DESIGN, MCP_INTEGRATION, RELEASE_PACKAGING]
+  maximum_permission_tier: I2
+  portable: false

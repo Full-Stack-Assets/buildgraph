@@ -1,0 +1,21 @@
+api_version: buildgraph/v1
+kind: DivisionSpec
+metadata:
+  id: DIV-04
+  name: Automation & Agent Engineering
+  version: 1.0.0
+  status: canonical
+  owner: Human Principal
+spec:
+  organization_id: ORG-001
+  purpose: Design portable agents, skills, factories, workflows, integrations, and runtime-neutral automation systems.
+  operating_classes: [creation, analysis, delivery_operations]
+  functional_domains: [engineering-and-platform, data-analytics-and-ai, governance-and-orchestration]
+  autonomy_ceiling: A3
+  integration_ceiling: I2
+  role_definition_ids: []
+  capability_ids: [CAP-009, CAP-010]
+  product_ids: [PRD-001]
+  evidence_requirements:
+    - Source provenance is retained for consequential outputs.
+    - Quality gates and approval boundaries are recorded before external or irreversible action.

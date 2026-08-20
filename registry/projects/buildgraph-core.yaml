@@ -10,6 +10,17 @@ spec:
   portfolio_id: full-stack-assets
   purpose: Implement and validate the private BuildGraph v0 registry, governance contracts, policy packs, and controlled runtime adapter interfaces.
   domain: governance-and-orchestration
+  capability_ids: [CAP-002, CAP-003, CAP-009, CAP-010]
+  factory_ids: [FAC-001]
+  project_specific_role_ids: []
+  canonical_role_ids: [ESP-01, ESP-03, GKE-03, GKE-04, GKE-05, GKE-06]
+  policy_ids: [risk-tier-policy, approval-policy, data-handling-policy, release-policy]
+  runtime_preferences: [codex, cursor, openai, local]
+  repositories: [https://github.com/Full-Stack-Assets/buildgraph]
+  evidence_requirements:
+    - Preflight decision and payload hash exist before new canonical entities are created.
+    - Registry, graph, tests, typecheck, and lint pass before release.
+    - Generated artifacts have checksums and independent verification records.
   systems_of_record:
     - system: GitHub
       purpose: Source code, schema, policy, manifest, and CI provenance.

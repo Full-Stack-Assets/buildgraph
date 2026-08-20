@@ -7,6 +7,28 @@ metadata:
   status: pilot
   owner: Full-Stack-Assets
 spec:
+  contract:
+    runtime_id: manus
+    supported_models: [provider-managed-model]
+    supported_tools: [TOL-002, TOL-003]
+    supports_mcp: false
+    supports_files: true
+    supports_repo_context: false
+    supports_persistent_memory: false
+    supports_scheduled_execution: true
+    supports_background_execution: true
+    supports_structured_output: true
+    permission_model: Task passport projected into provider-managed tools and approval checkpoints.
+    context_limits:
+      mode: provider_defined
+      max_context_tokens: null
+      notes: Effective model and context limits are provider managed and recorded per execution.
+    artifact_support: [documents, structured-data, files]
+    authentication_model: Provider-managed workspace identity with task-scoped external authorizations.
+    known_constraints:
+      - MCP and repository semantics require an explicit adapter rather than provider assumptions.
+    evidence_state: TESTED
+    supported_agent_definition_ids: [AGD-001]
   input:
     supported_artifact_types: [documents, repositories, structured-task-context]
     structured_input: true

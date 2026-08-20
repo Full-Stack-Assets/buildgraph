@@ -7,6 +7,28 @@ metadata:
   status: pilot
   owner: Full-Stack-Assets
 spec:
+  contract:
+    runtime_id: cursor
+    supported_models: [workspace-configured-model]
+    supported_tools: [TOL-001, TOL-002, TOL-003]
+    supports_mcp: true
+    supports_files: true
+    supports_repo_context: true
+    supports_persistent_memory: false
+    supports_scheduled_execution: false
+    supports_background_execution: false
+    supports_structured_output: true
+    permission_model: Repository workspace rules plus explicit tool and terminal approval boundaries.
+    context_limits:
+      mode: model_dependent
+      max_context_tokens: null
+      notes: Context and model limits are resolved from the active Cursor deployment.
+    artifact_support: [code, documents, structured-data, repository-diffs]
+    authentication_model: User workspace identity with separately scoped repository and MCP credentials.
+    known_constraints:
+      - Persistent, scheduled, and unattended execution require an external orchestrator.
+    evidence_state: TESTED
+    supported_agent_definition_ids: [AGD-001]
   input:
     supported_artifact_types: [repositories, code-diffs, test-output, structured-task-context]
     structured_input: true
