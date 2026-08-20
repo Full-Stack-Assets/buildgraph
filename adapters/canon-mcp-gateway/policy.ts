@@ -1,4 +1,4 @@
-import type { Authority, GatewayRequest, Operation, Source } from "./contracts";
+import type { Authority, GatewayRequest, Operation, Source } from "./contracts.js";
 
 const allowed: Record<Operation, { sources: Source[]; authorities: Authority[] }> = {
   connections_list: { sources: ["gemini","workiq","icloud_drive","photos","contacts","reminders","calendar","iphone_files"], authorities: ["read_metadata"] },
