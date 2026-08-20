@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ArtifactSpec
+metadata:
+  id: ART-013
+  name: Canon Provider and iPhone Data Fabric Guide v1.1
+  version: 1.1.0
+  status: active
+  owner: DIV-04
+spec:
+  artifact_type: integration-guide
+  uri: docs/integrations/canon-provider-device-data-fabric-v1.1.md
+  media_type: text/markdown
+  checksum_sha256: "0c310013efcd76d5b11d1606c68cdd59144ad90bbcff6a7bb2167b8975c87105"
+  execution_run_id: RUN-2026-003
+  evidence_state: TESTED
