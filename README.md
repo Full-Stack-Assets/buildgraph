@@ -25,9 +25,10 @@ BuildGraph v0 implements the governed registry and validation foundation. It doe
 | `schemas/` | Canonical machine-readable contracts. |
 | `registry/` | Versioned canonical manifests, including organization, divisions, capabilities, agents, work, evidence, and runtimes. |
 | `policies/` | Risk, authority, data-handling, and release controls. |
-| `adapters/` | Runtime capability declarations and projection/receipt adapters. |
-| `compilers/` | Canonical manifest projection logic. |
-| `evals/` | Role, skill, policy, and adapter evaluation suites. |
+| `adapters/` | Runtime capability declarations, projection/receipt adapters, and the ClickUp Mission Control write adapter. |
+| `graph/` | Deterministic canonical graph compiler, snapshot, and offline preflight. |
+| `router/` | Manifest-driven capability router that emits bounded TaskEnvelope and AgentPassport records. |
+| `evals/` | Role, skill, policy, and adapter evaluation suites. Currently a reserved tree; suites are planned in Unit 17-E. |
 | `fixtures/` | Valid and invalid manifest/test data. |
 | `tests/` | Registry and contract validation tests. |
 | `docs/` | Architecture, governance, and decision records. |

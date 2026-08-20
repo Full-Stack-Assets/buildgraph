@@ -1,6 +1,8 @@
 # Executable Closure Assessment
 
-## Verified current state
+**Historical note:** This assessment described the frontier *before* Unit 15-E. The graph compiler, snapshot, validation report, and offline preflight are now implemented; see `docs/UNIT_15E_COMPLETION.md` and `docs/FURTHER_DEVELOPMENT_PLAN.md`. The next serial closure unit is **Unit 16-E**.
+
+## Verified current state (original assessment)
 
 The local BuildGraph repository provides a governed, versioned manifest registry; strict JSON Schema contracts; cross-reference and authority-tier validation; policy packs; task, passport, approval, and result contracts; controlled runtime projection adapters; a deterministic capability router; and a passing test suite. It does **not** yet generate a canonical entity-and-edge graph, reproducible graph snapshot, graph validation report, or offline pre-build similarity result from the local registry.
 
@@ -8,7 +10,7 @@ The supplied Unit 15-E archive contains a Python reference generator, tests, exp
 
 ## Verified frontier
 
-**The next executable closure unit is Unit 15-E, implemented natively in the current TypeScript repository.** It will compile the existing canonical registry into an offline, deterministic graph projection. This extends the registry rather than replacing it.
+**Historical frontier:** Unit 15-E, implemented natively in the current TypeScript repository. That increment compiled the existing canonical registry into an offline, deterministic graph projection. It extended the registry rather than replacing it. The live next unit is 16-E.
 
 | Required closure capability | Current repository | Unit 15-E increment |
 |---|---|---|
@@ -28,4 +30,4 @@ The compiler will preserve current BuildGraph identifiers as canonical. Archive-
 
 ## Dependency after completion
 
-After a graph compiler, graph schema, deterministic exports, validation report, and preflight query are passing in CI, the next closure gate is **Unit 16-E: unified validation CLI and machine-readable error model**. Runtime execution, credential brokerage, API/UI, event fabric, federation, and autonomous enterprise units remain downstream.
+The graph compiler, schema, deterministic exports, validation report, and preflight query now exist on `main`. CI does not yet run registry or graph validation; that is part of **Unit 16-E**. Runtime execution, credential brokerage, API/UI, event fabric, federation, and autonomous enterprise units remain downstream. See `docs/FURTHER_DEVELOPMENT_PLAN.md`.

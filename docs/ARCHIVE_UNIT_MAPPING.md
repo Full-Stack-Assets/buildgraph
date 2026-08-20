@@ -5,11 +5,11 @@
 | Archive unit | Supplied artifact | BuildGraph disposition | Implementation state |
 |---:|---|---|---|
 | 1 | Grok Operations inventory | Preserve as user-supplied external-runtime inventory; do not treat reported active status as a verified BuildGraph execution state | Recorded in `ARCHIVE_RECONCILIATION_NOTES.md` |
-| 2 | Universal Grok roles and skills | Convert compatible records into canonical `RoleSpec` and `SkillSpec` with lineage; preserve Grok IDs and action-level semantics | Pending import after router foundation |
+| 2 | Universal Grok roles and skills | Convert compatible records into canonical `RoleSpec` and `SkillSpec` with lineage; preserve Grok IDs and action-level semantics | Pending import after Unit 17-E evaluation fixtures; do not add a Grok adapter |
 | 3 | Integration Registry | Map each source connection to `IntegrationSpec`; retain exact object/field constraints and fail-closed behavior; do not provision credentials or change any connection | Inventory mapping pending |
 | 4 | Runtime Adapters | The BuildGraph controlled adapter contract is richer than the archive stub. Manus, OpenAI, Cursor, and GitHub adapters are implemented; Grok and Claude remain declared runtime IDs pending verified adapter implementation | Partial implementation complete |
 | 5 | Task Envelope and Agent Passport | BuildGraph canonical schemas supersede the archive drafts, with explicit task/trace binding, authority ceiling, idempotency, expiry, and result normalization | Complete |
-| 6 | Capability Router | Implement a deterministic, manifest-driven selector that returns a proposed runtime route and requires a valid TaskEnvelope and AgentPassport before projection | Next compatible unit |
+| 6 | Capability Router | Implement a deterministic, manifest-driven selector that returns a proposed runtime route and requires a valid TaskEnvelope and AgentPassport before projection | Complete on `main`; see `router/capability-router.ts` |
 | 7 | Google Sheets Control Plane | Represent the reported control plane as a governed external system inventory and kill-switch policy input; do not write to the Sheet or rely on unverified operational state | Deferred integration binding |
 | 8 | Event Fabric | Requires router and verified connection contracts; no webhook or scheduled automation is activated | Deferred |
 | 9 | Policy and Credential Broker | Requires brokered short-lived credentials and real connector binding; current policy and passport layers are preparation only | Deferred |
@@ -32,4 +32,6 @@
 
 ## Next implementation boundary
 
-The router will operate only against canonical BuildGraph records. It will produce a recommendation and a bounded task/passport validation request. It will not invoke an external runtime, make a network call, alter a kill switch, create a scheduled job, write to the reported Google Sheet, or execute an action.
+The capability router is implemented on `main` and remains bounded: it consumes canonical records and emits a route or `BLOCKED` decision with a TaskEnvelope and AgentPassport. It does not invoke an external runtime, alter a kill switch, create a scheduled job, write to the reported Google Sheet, or execute an action.
+
+Current frontier: **Unit 16-E unified validation CLI**, then evaluation-fixture closure and ClickUp envelope binding. See `docs/FURTHER_DEVELOPMENT_PLAN.md`. Event fabric, credential broker, durable workflow execution, reputation, competition, and autonomous domain loops remain downstream.

@@ -34,4 +34,4 @@ The compiler operates only on local version-controlled registry files. It does n
 
 ## Next closure dependency
 
-The next serial closure unit is **Unit 16-E: Unified Validation CLI and Machine-Readable Error Model**. It will consolidate manifest, graph, task, passport, workflow, and security validation into an offline command interface before any provider, workflow, credential-broker, API, UI, or event-fabric implementation is considered.
+The next serial closure unit is **Unit 16-E: Unified Validation CLI and Machine-Readable Error Model**. It will consolidate manifest, graph, task, passport, workflow, and security validation into an offline command interface before any provider, workflow, credential-broker, API, UI, or event-fabric implementation is considered. The sequenced plan for 16-E and later units is `docs/FURTHER_DEVELOPMENT_PLAN.md`.
