@@ -1,0 +1,27 @@
+"api_version: buildgraph/v0.2
+kind: SkillSpec
+metadata:
+  id: SKL-046
+  name: product-visual-reference-sourcing
+  version: 0.1.0
+  status: pilot
+  owner: Full-Stack-Assets
+spec:
+  purpose: Discover and verify named-product visual references from official, established retailer, or credible archive landing pages and preserve defensible URL provenance and match confidence.
+  inputs: [inventory item identity, sourcing classification, exact search query, Google Images discovery link, optional official or canonical identity anchor]
+  outputs: [selected visual reference landing URL, optional direct image URL, match class, reference status, review notes]
+  limitations: [does not treat search results or thumbnails as evidence, does not invent exact matches, does not automate generic or unbranded placeholders, does not grant image usage rights]
+  allowed_runtimes: [openai, cursor, github]
+  tool_restrictions: [research is read-only unless the user authorizes an inventory update, image download publication and redistribution remain separately governed]
+  resources:
+    instructions: https://github.com/Full-Stack-Assets/Canon/blob/main/skills/source-product-visual-references/SKILL.md
+    scripts: [https://github.com/Full-Stack-Assets/Canon/blob/main/skills/source-product-visual-references/scripts/validate_reference_record.py]
+    references: [https://github.com/Full-Stack-Assets/Canon/blob/main/skills/source-product-visual-references/references/output-contract.md]
+  evaluation:
+    fixtures: [fixtures/skills/SKL-046-official-exact.yaml, fixtures/skills/SKL-046-invalid-search-result.yaml]
+    acceptance_criteria: [selected reference is an inspected landing page, exact classes have identity evidence, direct image URL is optional and stable, unresolved or generic items are not promoted to verified]
+    regression_threshold: No search-result URL, unsupported exact class, or generic placeholder passes as a verified reference.
+  escalation:
+    triggers: [conflicting-identifiers, unresolved-colorway, source-access-limit, unstable-direct-image-url, unclear-image-rights]
+
+"

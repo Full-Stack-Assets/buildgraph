@@ -1,0 +1,19 @@
+"fixture_id: SKL-046-official-exact
+input:
+  Item ID: OUT-001-ITEM-02
+  Sourcing Classification: Exact Model
+  Brand: Example Brand
+  Model / Product Family: Named Model
+  Color: Blue
+  Google Images: https://www.google.com/search?tbm=isch&q=example+brand+named+model+blue
+candidate:
+  Selected Visual Reference URL: https://brand.example/products/named-model-blue
+  Direct Image URL: https://images.brand.example/named-model-blue-front.jpg
+  Match Class: official_exact
+  Reference Status: Verified
+  Review Notes: Official product page confirms model name, style code, and blue colorway; direct image is a reference pointer only.
+expected:
+  gate: pass
+  reasons: [landing page was inspected, official identity evidence supports the exact class]
+
+"
