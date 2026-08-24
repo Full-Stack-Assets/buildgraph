@@ -104,6 +104,7 @@ export function buildDataAdapterFromEnvironment(adapterId: ServerAdapterId, env:
   }
   if (adapterId === "copilot") {
     return new CopilotDataAdapter({
+      baseDirectory: scopedDirectory(env.COPILOT_BASE_DIRECTORY, "COPILOT_BASE_DIRECTORY"),
       workingDirectory: scopedDirectory(env.COPILOT_WORKING_DIRECTORY, "COPILOT_WORKING_DIRECTORY"),
       model: env.COPILOT_MODEL,
       maximumEventBytes: optionalInteger(env, "COPILOT_MAX_EVENT_BYTES", 1, 64 * 1024 * 1024),

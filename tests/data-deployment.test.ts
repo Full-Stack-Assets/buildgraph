@@ -21,6 +21,9 @@ describe("data adapter deployment loader", () => {
     expect(() => buildDataAdapterFromEnvironment("copilot", {
       COPILOT_WORKING_DIRECTORY: "/"
     })).toThrow("cannot be a filesystem root");
+    expect(() => buildDataAdapterFromEnvironment("copilot", {
+      COPILOT_BASE_DIRECTORY: "relative/session-directory"
+    })).toThrow("must be an absolute path");
   });
 
   it("rejects CloudKit database modes that cannot provide the custom-zone cursor contract", () => {
