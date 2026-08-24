@@ -1,4 +1,4 @@
-"fixture_id: SKL-046-invalid-search-result
+fixture_id: SKL-046-invalid-search-result
 input:
   Item ID: OUT-001-ITEM-02
   Sourcing Classification: Exact Model
@@ -13,4 +13,3 @@ candidate:
 expected:
   gate: fail
   reasons: [search results are discovery only, direct image URL is unstable, exact match is unsupported]
-"

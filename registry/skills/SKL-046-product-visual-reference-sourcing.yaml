@@ -1,4 +1,4 @@
-"api_version: buildgraph/v0.2
+api_version: buildgraph/v0.2
 kind: SkillSpec
 metadata:
   id: SKL-046
@@ -24,4 +24,3 @@ spec:
   escalation:
     triggers: [conflicting-identifiers, unresolved-colorway, source-access-limit, unstable-direct-image-url, unclear-image-rights]
 
-"

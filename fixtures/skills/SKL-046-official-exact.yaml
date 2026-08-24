@@ -1,4 +1,4 @@
-"fixture_id: SKL-046-official-exact
+fixture_id: SKL-046-official-exact
 input:
   Item ID: OUT-001-ITEM-02
   Sourcing Classification: Exact Model
@@ -16,4 +16,3 @@ expected:
   gate: pass
   reasons: [landing page was inspected, official identity evidence supports the exact class]
 
-"
