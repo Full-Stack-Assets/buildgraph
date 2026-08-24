@@ -13,18 +13,15 @@ const workflow = parse(readFileSync(
 };
 
 describe("Canon ephemeral workflow", () => {
-  it("grants and explicitly binds the short-lived Copilot request token", () => {
+  it("runs only the credentialed Gemini adapter in the ephemeral profile", () => {
     expect(workflow.on?.push).toEqual({
       branches: ["main"],
       paths: [".github/workflows/canon-ephemeral-sync.yml"]
     });
-    expect(workflow.permissions).toEqual({
-      contents: "read",
-      "copilot-requests": "write"
-    });
-    expect(workflow.jobs?.sync?.env?.COPILOT_GITHUB_TOKEN).toBe("${{ github.token }}");
-    expect(workflow.jobs?.sync?.env?.COPILOT_BASE_DIRECTORY).toBe("${{ runner.temp }}/canon-copilot");
-    expect(workflow.jobs?.retrieval?.env?.COPILOT_GITHUB_TOKEN).toBe("${{ github.token }}");
-    expect(workflow.jobs?.retrieval?.env?.COPILOT_BASE_DIRECTORY).toBe("${{ runner.temp }}/canon-copilot");
+    expect(workflow.permissions).toEqual({ contents: "read" });
+    expect(workflow.jobs?.sync?.env?.CANON_SYNC_ADAPTERS).toBe("gemini");
+    expect(workflow.jobs?.retrieval?.env?.CANON_SYNC_ADAPTERS).toBe("gemini");
+    expect(workflow.jobs?.sync?.env?.COPILOT_GITHUB_TOKEN).toBeUndefined();
+    expect(workflow.jobs?.retrieval?.env?.COPILOT_GITHUB_TOKEN).toBeUndefined();
   });
 });
