@@ -25,7 +25,7 @@ jobs:
     timeout-minutes: 10
     env:
       CANON_STORAGE_BACKEND: supabase
-      CANON_SYNC_ADAPTERS: grok,gemini,copilot
+      CANON_SYNC_ADAPTERS: gemini,copilot
       CANON_SYNC_MAX_PAGES: 100
       CANON_SYNC_INTERVAL_MS: 300000
       CANON_SYNC_LEASE_TTL_MS: 600000
@@ -33,10 +33,6 @@ jobs:
       CANON_ENABLE_WRITES: "false"
       CANON_ENABLE_INFERENCE: "false"
       GITHUB_TOKEN: ${{ github.token }}
-      XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
-      XAI_MANAGEMENT_API_KEY: ${{ secrets.XAI_MANAGEMENT_API_KEY }}
-      XAI_COLLECTION_IDS: ${{ vars.XAI_COLLECTION_IDS }}
-      XAI_MODEL: ${{ vars.XAI_MODEL }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       GEMINI_FILE_SEARCH_STORES: ${{ vars.GEMINI_FILE_SEARCH_STORES }}
       GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
@@ -70,13 +66,12 @@ jobs:
     timeout-minutes: 10
     env:
       CANON_STORAGE_BACKEND: supabase
-      CANON_SYNC_ADAPTERS: grok,gemini,copilot
+      CANON_SYNC_ADAPTERS: gemini,copilot
       CANON_RETRIEVAL_JOBS_FILE: config/canon-retrieval-jobs.json
       CANON_ENABLE_WRITES: "false"
       CANON_ENABLE_INFERENCE: "true"
       CANON_REQUIRE_INFERENCE_APPROVAL: "true"
       GITHUB_TOKEN: ${{ github.token }}
-      XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
