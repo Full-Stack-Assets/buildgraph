@@ -7,12 +7,17 @@ const workflow = parse(readFileSync(
   resolve(import.meta.dirname, "../.github/workflows/canon-ephemeral-sync.yml"),
   "utf8"
 )) as {
+  on?: { push?: { branches?: string[]; paths?: string[] } };
   permissions?: Record<string, string>;
   jobs?: Record<string, { env?: Record<string, string> }>;
 };
 
 describe("Canon ephemeral workflow", () => {
   it("grants and explicitly binds the short-lived Copilot request token", () => {
+    expect(workflow.on?.push).toEqual({
+      branches: ["main"],
+      paths: [".github/workflows/canon-ephemeral-sync.yml"]
+    });
     expect(workflow.permissions).toEqual({
       contents: "read",
       "copilot-requests": "write"
