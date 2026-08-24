@@ -1,6 +1,9 @@
 name: Canon ephemeral provider sync
 
 on:
+  push:
+    branches: [main]
+    paths: [.github/workflows/canon-ephemeral-sync.yml]
   schedule:
     # Five-minute minimum is supported; 15 minutes is a safer starting cadence.
     - cron: "7,22,37,52 * * * *"
