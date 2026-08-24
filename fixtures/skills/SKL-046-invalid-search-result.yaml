@@ -1,0 +1,15 @@
+fixture_id: SKL-046-invalid-search-result
+input:
+  Item ID: OUT-001-ITEM-02
+  Sourcing Classification: Exact Model
+  Brand: Example Brand
+  Model / Product Family: Named Model
+candidate:
+  Selected Visual Reference URL: https://www.google.com/search?tbm=isch&q=example+brand+named+model
+  Direct Image URL: data:image/png;base64,abc
+  Match Class: retailer_exact
+  Reference Status: Verified
+  Review Notes: Looks similar in the search result.
+expected:
+  gate: fail
+  reasons: [search results are discovery only, direct image URL is unstable, exact match is unsupported]
