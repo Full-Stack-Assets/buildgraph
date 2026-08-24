@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ArtifactSpec
+metadata:
+  id: ART-015
+  name: Canon Provider and Device Completion Report
+  version: 1.1.0
+  status: verified
+  owner: DIV-10
+spec:
+  artifact_type: verification-report
+  uri: docs/architecture/verification/CANON_PROVIDER_DEVICE_DATA_FABRIC_COMPLETION_REPORT.md
+  media_type: text/markdown
+  checksum_sha256: d5339fcfe01b9425af13fcd978b31fd1492ec7f2fd9853f3d2c152a30ac28b90
+  execution_run_id: RUN-2026-003
+  evidence_state: TESTED

@@ -14,6 +14,7 @@ on:
 
 permissions:
   contents: read
+  copilot-requests: write
 
 concurrency:
   group: canon-ephemeral-sync
@@ -33,6 +34,7 @@ jobs:
       CANON_ENABLE_WRITES: "false"
       CANON_ENABLE_INFERENCE: "false"
       GITHUB_TOKEN: ${{ github.token }}
+      COPILOT_GITHUB_TOKEN: ${{ github.token }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       GEMINI_FILE_SEARCH_STORES: ${{ vars.GEMINI_FILE_SEARCH_STORES }}
       GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
@@ -72,6 +74,7 @@ jobs:
       CANON_ENABLE_INFERENCE: "true"
       CANON_REQUIRE_INFERENCE_APPROVAL: "true"
       GITHUB_TOKEN: ${{ github.token }}
+      COPILOT_GITHUB_TOKEN: ${{ github.token }}
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}

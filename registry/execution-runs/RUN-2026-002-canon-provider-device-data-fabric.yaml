@@ -13,6 +13,6 @@ spec:
   status: SUCCEEDED
   started_at: 2026-08-20T08:15:00Z
   completed_at: 2026-08-20T09:34:48Z
-  artifact_ids: [ART-007, ART-008, ART-009, ART-010, ART-011]
+  artifact_ids: [ART-011]
   evidence_ids: [EVD-004]
   trace_id: trace_canon_data_fabric_20260820

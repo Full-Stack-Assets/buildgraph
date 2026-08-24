@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ArtifactSpec
+metadata:
+  id: ART-012
+  name: Data Adapter Contract v1.1
+  version: 1.1.0
+  status: canonical
+  owner: DIV-04
+spec:
+  artifact_type: runtime-contract
+  uri: docs/architecture/DATA_ADAPTER_CONTRACT_V1_1.md
+  media_type: text/markdown
+  checksum_sha256: cad7e7d6b36d7d8c77c341cbd714301578f3afd371513f60e56e62f2a2815942
+  execution_run_id: RUN-2026-003
+  evidence_state: TESTED

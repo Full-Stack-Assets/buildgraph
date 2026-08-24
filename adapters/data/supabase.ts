@@ -53,11 +53,33 @@ function pathWithFilters(table: string, filters: Record<string, string>): string
 
 export class SupabaseAdapterError extends Error {
   readonly status: number;
-  constructor(message: string, status: number) {
+  readonly diagnostic: string | null;
+  constructor(message: string, status: number, diagnostic: string | null = null) {
     super(message);
     this.name = "SupabaseAdapterError";
     this.status = status;
+    this.diagnostic = diagnostic;
   }
+}
+
+function safeSupabaseDiagnostic(text: string): string | null {
+  if (!text) return null;
+  let value = text;
+  try {
+    const parsed = JSON.parse(text) as unknown;
+    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+      const record = parsed as Record<string, unknown>;
+      value = [record.code, record.message, record.details, record.hint]
+        .filter((part): part is string => typeof part === "string" && part.length > 0)
+        .join(": ");
+    }
+  } catch {
+    // PostgREST normally returns JSON, but a bounded plain-text response is still useful.
+  }
+  return Array.from(value, (character) => {
+    const code = character.charCodeAt(0);
+    return code <= 31 || code === 127 ? " " : character;
+  }).join("").slice(0, 2_048) || null;
 }
 
 export class SupabaseClient {
@@ -76,7 +98,12 @@ export class SupabaseClient {
     });
     const text = await response.text();
     if (!response.ok) {
-      throw new SupabaseAdapterError(`Supabase request failed (${response.status})`, response.status);
+      const diagnostic = safeSupabaseDiagnostic(text);
+      throw new SupabaseAdapterError(
+        `Supabase request failed (${response.status})${diagnostic ? `: ${diagnostic}` : ""}`,
+        response.status,
+        diagnostic
+      );
     }
     if (!text) return null;
     try { return JSON.parse(text) as unknown; } catch { return text; }
@@ -110,14 +137,35 @@ type SupabaseStoredRecord = {
   provenance: { firstObservedAt: string; lastObservedAt: string; lastRunId: string };
 };
 
+type SupabaseStoredRow = {
+  source: DataItem;
+  content: SupabaseStoredRecord["content"];
+  first_observed_at: string;
+  last_observed_at: string;
+  last_run_id: string;
+};
+
 function existingRecord(value: unknown): SupabaseStoredRecord | null {
   const rows = arrayValue(value);
   if (rows.length === 0) return null;
   const row = rows[0];
   if (!row || typeof row !== "object" || Array.isArray(row)) throw new Error("invalid Supabase Canon record");
-  const record = row as Partial<SupabaseStoredRecord> & Record<string, unknown>;
-  if (!record.source || !record.content || !record.provenance) throw new Error("invalid Supabase Canon record");
-  return record as SupabaseStoredRecord;
+  const record = row as Partial<SupabaseStoredRow> & Record<string, unknown>;
+  if (!record.source || !record.content
+    || typeof record.first_observed_at !== "string"
+    || typeof record.last_observed_at !== "string"
+    || typeof record.last_run_id !== "string") {
+    throw new Error("invalid Supabase Canon record");
+  }
+  return {
+    source: record.source,
+    content: record.content,
+    provenance: {
+      firstObservedAt: record.first_observed_at,
+      lastObservedAt: record.last_observed_at,
+      lastRunId: record.last_run_id
+    }
+  };
 }
 
 export class SupabaseCheckpointStore implements CheckpointStore {
@@ -195,7 +243,20 @@ export class SupabaseDeadLetterStore implements DeadLetterStore {
   readonly #client: SupabaseClient;
   constructor(client = new SupabaseClient()) { this.#client = client; }
   async put(letter: DeadLetter): Promise<void> {
-    await this.#client.rest("/rest/v1/canon_dead_letters", { method: "POST", headers: { Prefer: "return=minimal" }, body: JSON.stringify({ ...letter, external_id_hash: letter.externalIdHash, error_class: letter.errorClass, occurred_at: letter.occurredAt }) });
+    await this.#client.rest("/rest/v1/canon_dead_letters", {
+      method: "POST",
+      headers: { Prefer: "return=minimal" },
+      body: JSON.stringify({
+        run_id: letter.runId,
+        adapter_id: letter.adapterId,
+        external_id_hash: letter.externalIdHash,
+        phase: letter.phase,
+        occurred_at: letter.occurredAt,
+        error_class: letter.errorClass,
+        message: letter.message,
+        retryable: letter.retryable
+      })
+    });
   }
 }
 

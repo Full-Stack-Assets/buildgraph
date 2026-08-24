@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ArtifactSpec
+metadata:
+  id: ART-016
+  name: Canon Provider and Device Completion Evidence Bundle
+  version: 1.1.0
+  status: verified
+  owner: DIV-10
+spec:
+  artifact_type: checksum-evidence-bundle
+  uri: docs/architecture/verification/CANON_PROVIDER_DEVICE_DATA_FABRIC_COMPLETION_EVIDENCE.json
+  media_type: application/json
+  checksum_sha256: eb5bc9158cadb2efe76536785931009eda4d5ffcec8175254f0d48471b5f3973
+  execution_run_id: RUN-2026-003
+  evidence_state: TESTED

@@ -1,0 +1,18 @@
+api_version: buildgraph/v1
+kind: EvidenceSpec
+metadata:
+  id: EVD-004
+  name: Canon Provider and Device Fabric Verification Evidence
+  version: 1.0.0
+  status: verified
+  owner: DIV-10
+spec:
+  state: TESTED
+  claim: The server adapter contracts and deterministic provider tests passed the recorded verification gates; live credentials and Apple device verification were explicitly excluded.
+  capability_ids: [CAP-001, CAP-003, CAP-008, CAP-010]
+  artifact_ids: [ART-011]
+  execution_run_id: RUN-2026-002
+  source_uri: docs/architecture/verification/CANON_PROVIDER_DEVICE_DATA_FABRIC_VERIFICATION_REPORT.md
+  collected_at: 2026-08-20T09:34:48Z
+  checksum_sha256: 63d2eb481637732ebf3653d232bbe61ab1cabc3853547ca991f42dcef40cfc8a
+  collector: Canon deterministic repository validation suite

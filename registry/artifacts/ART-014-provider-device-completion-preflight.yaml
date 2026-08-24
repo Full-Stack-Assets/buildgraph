@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ArtifactSpec
+metadata:
+  id: ART-014
+  name: Canon Provider and Device Completion Preflight
+  version: 1.1.0
+  status: verified
+  owner: DIV-10
+spec:
+  artifact_type: preflight-result
+  uri: docs/architecture/preflight/CANON_PROVIDER_DEVICE_DATA_FABRIC_COMPLETION_RESULT.json
+  media_type: application/json
+  checksum_sha256: 41f7ad0b1aeb88bf900e33b7e6a4492a8fdc5b2d9299e75df04063cb874f56c2
+  execution_run_id: RUN-2026-003
+  evidence_state: VERIFIED
