@@ -1,0 +1,15 @@
+api_version: buildgraph/v1
+kind: ArtifactSpec
+metadata:
+  id: ART-011
+  name: Canon Provider and Device Data Fabric Evidence Bundle
+  version: 1.0.0
+  status: verified
+  owner: DIV-10
+spec:
+  artifact_type: checksum-evidence-bundle
+  uri: docs/architecture/verification/CANON_PROVIDER_DEVICE_DATA_FABRIC_EVIDENCE.json
+  media_type: application/json
+  checksum_sha256: 9c97ad09c2a452fdaec085f242ad611944104437b932498a563d11f5338069a3
+  execution_run_id: RUN-2026-002
+  evidence_state: TESTED

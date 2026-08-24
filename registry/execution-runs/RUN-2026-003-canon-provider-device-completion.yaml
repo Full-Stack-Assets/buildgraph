@@ -1,0 +1,18 @@
+api_version: buildgraph/v1
+kind: ExecutionRunSpec
+metadata:
+  id: RUN-2026-003
+  name: Canon Provider and Device Data Fabric Completion Run
+  version: 1.1.0
+  status: completed
+  owner: Full-Stack-Assets
+spec:
+  work_order_id: WO-2026-003
+  agent_instance_id: AGI-001
+  runtime_id: local
+  status: SUCCEEDED
+  started_at: 2026-08-20T09:35:00Z
+  completed_at: 2026-08-20T11:07:06Z
+  artifact_ids: [ART-012, ART-013, ART-014, ART-015, ART-016]
+  evidence_ids: [EVD-005]
+  trace_id: trace_canon_data_fabric_completion_20260820
