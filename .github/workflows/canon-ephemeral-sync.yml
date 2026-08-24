@@ -18,7 +18,6 @@ on:
 
 permissions:
   contents: read
-  copilot-requests: write
 
 concurrency:
   group: canon-ephemeral-sync
@@ -30,16 +29,13 @@ jobs:
     timeout-minutes: 10
     env:
       CANON_STORAGE_BACKEND: supabase
-      CANON_SYNC_ADAPTERS: gemini,copilot
+      CANON_SYNC_ADAPTERS: gemini
       CANON_SYNC_MAX_PAGES: 100
       CANON_SYNC_INTERVAL_MS: 300000
       CANON_SYNC_LEASE_TTL_MS: 600000
       CANON_SINK_MAX_ITEM_BYTES: 67108864
       CANON_ENABLE_WRITES: "false"
       CANON_ENABLE_INFERENCE: "false"
-      GITHUB_TOKEN: ${{ github.token }}
-      COPILOT_GITHUB_TOKEN: ${{ github.token }}
-      COPILOT_BASE_DIRECTORY: ${{ runner.temp }}/canon-copilot
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       GEMINI_FILE_SEARCH_STORES: ${{ vars.GEMINI_FILE_SEARCH_STORES }}
       GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
@@ -53,7 +49,6 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm install --no-save @github/copilot-sdk@^1.0.11
       - run: npm run sync:once
       - name: Upload run output
         if: always()
@@ -73,14 +68,11 @@ jobs:
     timeout-minutes: 10
     env:
       CANON_STORAGE_BACKEND: supabase
-      CANON_SYNC_ADAPTERS: gemini,copilot
+      CANON_SYNC_ADAPTERS: gemini
       CANON_RETRIEVAL_JOBS_FILE: config/canon-retrieval-jobs.json
       CANON_ENABLE_WRITES: "false"
       CANON_ENABLE_INFERENCE: "true"
       CANON_REQUIRE_INFERENCE_APPROVAL: "true"
-      GITHUB_TOKEN: ${{ github.token }}
-      COPILOT_GITHUB_TOKEN: ${{ github.token }}
-      COPILOT_BASE_DIRECTORY: ${{ runner.temp }}/canon-copilot
       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
@@ -93,7 +85,6 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm install --no-save @github/copilot-sdk@^1.0.11
       - name: Materialize short-lived retrieval grants
         run: |
           test -n "$CANON_RETRIEVAL_JOBS_JSON"
