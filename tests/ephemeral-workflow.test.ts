@@ -23,6 +23,8 @@ describe("Canon ephemeral workflow", () => {
       "copilot-requests": "write"
     });
     expect(workflow.jobs?.sync?.env?.COPILOT_GITHUB_TOKEN).toBe("${{ github.token }}");
+    expect(workflow.jobs?.sync?.env?.COPILOT_BASE_DIRECTORY).toBe("${{ runner.temp }}/canon-copilot");
     expect(workflow.jobs?.retrieval?.env?.COPILOT_GITHUB_TOKEN).toBe("${{ github.token }}");
+    expect(workflow.jobs?.retrieval?.env?.COPILOT_BASE_DIRECTORY).toBe("${{ runner.temp }}/canon-copilot");
   });
 });

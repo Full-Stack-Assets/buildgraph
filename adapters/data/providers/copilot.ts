@@ -32,6 +32,7 @@ export type CopilotClientLike = {
 
 export type CopilotDataAdapterConfig = {
   clientFactory?: (options?: Record<string, unknown>) => Promise<CopilotClientLike>;
+  baseDirectory?: string;
   model?: string;
   workingDirectory?: string;
   maximumEventBytes?: number;
@@ -171,6 +172,7 @@ export class CopilotDataAdapter implements AIDataAdapter {
   async #withClient<T>(operation: (client: CopilotClientLike) => Promise<T>): Promise<T> {
     const client = await (this.#config.clientFactory ?? loadCopilotClient)({
       mode: "empty",
+      ...(this.#config.baseDirectory ? { baseDirectory: this.#config.baseDirectory } : {}),
       ...(this.#config.workingDirectory ? { workingDirectory: this.#config.workingDirectory } : {})
     });
     let result: T | undefined;

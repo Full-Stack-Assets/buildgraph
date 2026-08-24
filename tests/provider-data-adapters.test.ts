@@ -212,6 +212,7 @@ describe("Gemini data adapter", () => {
 describe("Copilot data adapter", () => {
   it("reads persisted sessions and denies tools in adapter-managed writes", async () => {
     const optionsSeen: Record<string, unknown>[] = [];
+    const clientOptionsSeen: Record<string, unknown>[] = [];
     const session = (sessionId: string): CopilotSessionLike => ({
       sessionId,
       getEvents: async () => [{ type: "assistant.message", data: { content: "done" } }],
@@ -226,7 +227,8 @@ describe("Copilot data adapter", () => {
       resumeSession: async (id, options = {}) => { optionsSeen.push(options); return session(id); }
     };
     const adapter = new CopilotDataAdapter({
-      clientFactory: async () => client,
+      clientFactory: async (options = {}) => { clientOptionsSeen.push(options); return client; },
+      baseDirectory: "/tmp/canon-copilot",
       clock: () => now,
       actionPolicy: { writesEnabled: true, inferenceEnabled: true }
     });
@@ -247,6 +249,7 @@ describe("Copilot data adapter", () => {
       approvalRef: null
     }, grant("copilot", ["session:"], ["create", "inference"]))).resolves.toMatchObject({ providerObjectId: "session-new" });
     expect(optionsSeen.every((options) => Array.isArray(options.availableTools) && options.availableTools.length === 0)).toBe(true);
+    expect(clientOptionsSeen.every((options) => options.mode === "empty" && options.baseDirectory === "/tmp/canon-copilot")).toBe(true);
   });
 
   it("keeps same-timestamp cursors bounded while safely replaying overflow sessions", async () => {
